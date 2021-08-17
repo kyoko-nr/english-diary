@@ -98,9 +98,8 @@ npm set-script prepare "husky install"
 プロジェクト直下の.husky/pre-commitを以下の通り編集する
 
 ```.husky/pre-commit
-  #!/bin/sh
-  . "$(dirname "$0")/_/husky.sh"
-+
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
 - npm test
 + npm run lint-staged
 ```

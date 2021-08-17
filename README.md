@@ -67,9 +67,7 @@ npm install --save-dev eslint eslint-config-prettier prettier @typescript-eslint
   <dd>コミットしたファイル（stagingにあるファイル）にlintを実行することができる</dd>
 </dl>
 
-## ESLint
-
-##　 設定ファイル
+## 設定ファイル
 
 ### ESLint
 .eslintrc.js

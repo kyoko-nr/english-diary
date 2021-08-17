@@ -7,11 +7,6 @@ function App() {
       <ArticleEdit />
     </div>
   );
-
-
-
-
-  
 }
 
 export default App;

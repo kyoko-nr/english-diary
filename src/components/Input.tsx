@@ -2,10 +2,10 @@ type InputProps = {
   placeHolder: string
 }
 
-const Input = ( props: InputProps ) => {
+const Input = (props: InputProps): JSX.Element => {
   return (
     <div>
-      <input placeholder={ props.placeHolder }></input>
+      <input placeholder={props.placeHolder}></input>
     </div>
   )
 }

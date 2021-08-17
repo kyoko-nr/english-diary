@@ -50,7 +50,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## 導入コマンド
 ```
-npm install --save-dev eslint eslint-config-prettier prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin husky lint-staged
+npm install --save-dev eslint eslint-config-prettier prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin
 ```
 
 ## パッケージの説明
@@ -81,5 +81,58 @@ npm install --save-dev eslint eslint-config-prettier prettier @typescript-eslint
 npm run lint-fix
 ```
 
-## ESLintとPrettierをGit commitするタイミングで実行する設定
-package.jsonの"husky"と"lint-staged"を参照
+# huskyの設定
+
+## 導入
+```
+npm install --save-dev husky lint-staged
+```
+
+## huskyの初期化
+```
+npx husky install
+npm set-script prepare "husky install"
+```
+
+## スクリプトの編集
+プロジェクト直下の.husky/pre-commitを以下の通り編集する
+
+```.husky/pre-commit
+  #!/bin/sh
+  . "$(dirname "$0")/_/husky.sh"
++
+- npm test
++ npm run lint-staged
+```
+
+## package.jsonの編集
+
+scriptsにlint-stagedを追加
+
+```package.json
+"scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "prepare": "husky install",
++ "lint-staged": "lint-staged"
+},
+```
+
+末尾に以下の記述を追加
+
+```package.json
+"husky": {
+  "hooks": {
+    "pre-commit": "lint-staged"
+  }
+},
+"lint-staged": {
+  "src/**/*.{js,jsx,ts,tsx}": [
+    "npm run lint-fix"
+  ]
+}
+```
+
+以上の設定で、git commit時にprettierとESLintが起動する。
+
+### もし動かない場合
+npm(もしくはyarn)、gitのバージョンを最新にしてみる

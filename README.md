@@ -135,3 +135,11 @@ scriptsにlint-stagedを追加
 
 ### もし動かない場合
 npm(もしくはyarn)、gitのバージョンを最新にしてみる
+
+# ルーティングの設定
+以下のルータを導入する
+```
+npm install --save react-router-dom
+npm install --save-dev @types/react-router-dom
+
+```

@@ -1,9 +1,9 @@
 type TextareaProps = {
+  placeHolder: string
   rows: number
-  cols: number
 }
 
 const TextArea = (props: TextareaProps): JSX.Element => {
-  return <textarea rows={props.rows} cols={props.cols}></textarea>
+  return <textarea placeholder={props.placeHolder} rows={props.rows}></textarea>
 }
 export default TextArea

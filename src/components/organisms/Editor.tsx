@@ -1,9 +1,7 @@
 import TextField from '@material-ui/core/TextField'
 import Input from '../atoms/Input'
 
-type EditorProps = {}
-
-const Editor = (props: EditorProps): JSX.Element => {
+const Editor = (): JSX.Element => {
   return (
     <>
       <TextField label="Title" placeholder="Title of your diary" variant="outlined" fullWidth />

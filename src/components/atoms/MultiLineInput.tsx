@@ -1,22 +1,21 @@
 import TextField from '@material-ui/core/TextField'
 
-type InputProps = {
+type MultiLineInputProps = {
   title: string
   placeHolder: string
-  multiline: boolean
-  rows?: number
+  rows: number
 }
 
-const Input = (props: InputProps): JSX.Element => {
+const OneLineInput = (props: MultiLineInputProps): JSX.Element => {
   return (
     <TextField
       label={props.title}
       variant="outlined"
       placeholder={props.placeHolder}
       fullWidth
-      {...(props.multiline ? 'multiline' : '')}
+      multiline
       rows={props.rows}
     />
   )
 }
-export default Input
+export default OneLineInput

@@ -9,7 +9,7 @@ const Header = (props: HeaderProps): JSX.Element => {
   return (
     <>
       <Toolbar>
-        <Typography component="h1" align="center">
+        <Typography variant="h4" align="center">
           {props.title}
         </Typography>
       </Toolbar>

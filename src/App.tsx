@@ -1,11 +1,25 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Container } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/styles'
+import { createTheme } from '@material-ui/core'
+import { yellow } from '@material-ui/core/colors'
 
-import WelcomePage from 'components/pages/WelcomePage'
-import TopPage from 'components/pages/TopPage'
+import WelcomePage from 'pages/WelcomePage'
+import TopPage from 'pages/TopPage'
+
+import 'App.scss'
+
+// const theme = createTheme({
+//   palette: {
+//     primary: {
+//       main: yellow[500],
+//     }
+//   }
+// })
 
 function App(): JSX.Element {
   return (
+    // <ThemeProvider theme={theme}>
     <Container maxWidth="lg">
       <Router>
         <Switch>
@@ -14,6 +28,7 @@ function App(): JSX.Element {
         </Switch>
       </Router>
     </Container>
+    // </ThemeProvider>
   )
 }
 

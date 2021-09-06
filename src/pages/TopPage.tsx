@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 
-import Header from 'components/organisms/Header'
-import Editor from 'components/organisms/Editor'
+import Header from 'components/Header'
+import Editor from 'components/Editor'
 
 type Diary = {
   date: string

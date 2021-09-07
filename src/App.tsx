@@ -20,14 +20,12 @@ import 'App.scss'
 function App(): JSX.Element {
   return (
     // <ThemeProvider theme={theme}>
-    <Container maxWidth="lg">
-      <Router>
-        <Switch>
-          <Route path="/welcome" component={WelcomePage} exact></Route>
-          <Route path="/top" component={TopPage} exact></Route>
-        </Switch>
-      </Router>
-    </Container>
+    <Router>
+      <Switch>
+        <Route path="/welcome" component={WelcomePage} exact></Route>
+        <Route path="/top" component={TopPage} exact></Route>
+      </Switch>
+    </Router>
     // </ThemeProvider>
   )
 }

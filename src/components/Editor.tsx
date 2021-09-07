@@ -54,7 +54,12 @@ const Editor = (): JSX.Element => {
         type={'text'}
         onChange={handleContent}
       />
-      <Button size="large" title="submit" onClick={() => console.log('submit')} />
+      <Button size="large" variant="outlined" onClick={() => console.log('submit')}>
+        delete
+      </Button>
+      <Button size="large" variant="contained" onClick={() => console.log('submit')}>
+        save
+      </Button>
     </div>
   )
 }

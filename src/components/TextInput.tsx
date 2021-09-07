@@ -21,6 +21,7 @@ const TextInput = (props: TextInputProps): JSX.Element => {
       value={props.value}
       type={props.type}
       onChange={props.onChange}
+      variant="outlined"
     />
   )
 }

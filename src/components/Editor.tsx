@@ -1,10 +1,11 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState, useEffect } from 'react'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { Button } from '@material-ui/core'
 
 import { TextInput } from './index'
+import { Format } from 'utils/DateFormatUtils'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,8 +23,13 @@ type InputFunction = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
 const Editor = (): JSX.Element => {
   const classes = useStyles()
 
+  const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+
+  const handleDate: InputFunction = (event) => {
+    setDate(event.target.value)
+  }
 
   const handleTitle: InputFunction = (event) => {
     setTitle(event.target.value)
@@ -33,9 +39,15 @@ const Editor = (): JSX.Element => {
     setContent(event.target.value)
   }
 
+  useEffect(() => {
+    const today = new Date()
+    const str = Format(today)
+    setDate(str)
+  }, [])
+
   return (
     <div className={classes.content}>
-      <Typography variant="h5">2021/8/26</Typography>
+      <Typography variant="h5">{date}</Typography>
       <TextInput
         fullWidth={true}
         label={'Title'}

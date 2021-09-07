@@ -9,18 +9,18 @@ type Diary = {
 }
 const diaries: Diary[] = [
   {
-    date: 'Sun 8/1/2021',
+    date: 'Sun 08/01/2021',
     title: 'My first diary',
     content: 'This is my first diary. I watched some dramas on Netflix today. I like Atypical the most.',
   },
   {
-    date: 'Mon 8/2/2021',
+    date: 'Mon 08/02/2021',
     title: 'My second diary',
     content:
       'This is my second diary. I went to Minatomirai to watch a movie. The title of the movie is "In the Hights."',
   },
   {
-    date: 'Tue 8/10/2021',
+    date: 'Tue 08/10/2021',
     title: 'My third diary',
     content: 'This is my third diary. I have nothing to write today."',
   },

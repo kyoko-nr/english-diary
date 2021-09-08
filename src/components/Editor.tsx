@@ -4,8 +4,14 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { Button } from '@material-ui/core'
 
-import { TextInput } from './index'
-import { Format } from 'utils/DateFormatUtils'
+import { TextInput } from 'Components/index'
+import { Format } from 'Utils/DateFormatUtils'
+
+import { Diary } from 'Types/TypeList'
+
+type EditorProps = {
+  onSave: (value: Diary) => void
+}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -20,16 +26,12 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type InputFunction = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 
-const Editor = (): JSX.Element => {
+const Editor = (props: EditorProps): JSX.Element => {
   const classes = useStyles()
 
   const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-
-  const handleDate: InputFunction = (event) => {
-    setDate(event.target.value)
-  }
 
   const handleTitle: InputFunction = (event) => {
     setTitle(event.target.value)
@@ -37,6 +39,11 @@ const Editor = (): JSX.Element => {
 
   const handleContent: InputFunction = (event) => {
     setContent(event.target.value)
+  }
+
+  const crearFields = () => {
+    setTitle('')
+    setContent('')
   }
 
   useEffect(() => {
@@ -66,10 +73,17 @@ const Editor = (): JSX.Element => {
         type={'text'}
         onChange={handleContent}
       />
-      <Button size="large" variant="outlined" onClick={() => console.log('submit')}>
+      <Button size="large" variant="outlined" onClick={() => crearFields()}>
         delete
       </Button>
-      <Button size="large" variant="contained" onClick={() => console.log('submit')}>
+      <Button
+        size="large"
+        variant="contained"
+        onClick={() => {
+          props.onSave({ date, title, content })
+          crearFields()
+        }}
+      >
         save
       </Button>
     </div>

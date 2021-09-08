@@ -1,13 +1,9 @@
-import { Archive } from './index'
+import { Archive } from 'Components/index'
 
-type ArchiveProps = {
-  date: string
-  title: string
-  content: string
-}
+import { Diary } from 'Types/TypeList'
 
 type ArchiveListProps = {
-  list: ArchiveProps[]
+  list: Diary[]
 }
 
 const ArchiveList = (props: ArchiveListProps): JSX.Element => {

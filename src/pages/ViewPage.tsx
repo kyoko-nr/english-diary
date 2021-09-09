@@ -1,11 +1,14 @@
-import { useState } from 'react'
-
 import { Grid, Container } from '@material-ui/core'
 
-import { Header, Editor, ArchiveList } from 'Components/index'
+import { Header, ArchiveList } from 'Components/index'
+import { RouteComponentProps } from 'react-router'
 import { Diary } from 'Types/TypeList'
 
-const TopPage = (): JSX.Element => {
+type ViewPageProps = RouteComponentProps<{
+  id: string
+}>
+
+const ViewPage = (props: ViewPageProps): JSX.Element => {
   const initialDiary: Diary[] = [
     {
       id: '1',
@@ -28,23 +31,16 @@ const TopPage = (): JSX.Element => {
     },
   ]
 
-  const [diaries, setDiaries] = useState<Array<Diary>>(initialDiary)
-
-  const saveDiary = (date: string, title: string, content: string) => {
-    const id = (Math.random() * 1000).toString()
-    setDiaries([...diaries, { id, date, title, content }])
-  }
-
   return (
     <>
       <Header title="English Diary"></Header>
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <Editor onSave={saveDiary}></Editor>
+            {props.match.params.id}
           </Grid>
           <Grid item xs={12} md={4}>
-            <ArchiveList list={diaries} />
+            <ArchiveList list={initialDiary} />
           </Grid>
         </Grid>
       </Container>
@@ -52,4 +48,4 @@ const TopPage = (): JSX.Element => {
   )
 }
 
-export default TopPage
+export default ViewPage

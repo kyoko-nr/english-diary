@@ -9,8 +9,8 @@ type ArchiveListProps = {
 const ArchiveList = (props: ArchiveListProps): JSX.Element => {
   return (
     <>
-      {props.list.map((value, index) => {
-        return <Archive date={value.date} title={value.title} content={value.content} key={index.toString()} />
+      {props.list.map((value) => {
+        return <Archive date={value.date} title={value.title} content={value.content} id={value.id} key={value.id} />
       })}
     </>
   )

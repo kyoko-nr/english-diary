@@ -7,10 +7,8 @@ import { Button } from '@material-ui/core'
 import { TextInput } from 'Components/index'
 import { Format } from 'Utils/DateFormatUtils'
 
-import { Diary } from 'Types/TypeList'
-
 type EditorProps = {
-  onSave: (value: Diary) => void
+  onSave: (date: string, title: string, content: string) => void
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -80,7 +78,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         size="large"
         variant="contained"
         onClick={() => {
-          props.onSave({ date, title, content })
+          props.onSave(date, title, content)
           crearFields()
         }}
       >

@@ -1,16 +1,23 @@
-type ArchiveProps = {
-  date: string
-  title: string
-  content: string
-}
+import Card from '@material-ui/core/Card'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
 
-const Archive = (props: ArchiveProps): JSX.Element => {
+import { Diary } from 'Types/TypeList'
+
+const Archive = (props: Diary): JSX.Element => {
   return (
-    <>
-      <div>{props.date}</div>
-      <div>{props.title}</div>
-      <div>{props.content}</div>
-    </>
+    <CardActionArea component="a" href={`/view/${props.id}`}>
+      <Card>
+        <CardContent>
+          <div>{props.date}</div>
+          <Typography variant="h5" component="h2">
+            {props.title}
+          </Typography>
+          <div>{props.content}</div>
+        </CardContent>
+      </Card>
+    </CardActionArea>
   )
 }
 

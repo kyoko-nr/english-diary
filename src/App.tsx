@@ -8,6 +8,7 @@ import WelcomePage from 'pages/WelcomePage'
 import TopPage from 'pages/TopPage'
 
 import 'App.scss'
+import ViewPage from 'pages/ViewPage'
 
 // const theme = createTheme({
 //   palette: {
@@ -24,6 +25,7 @@ function App(): JSX.Element {
       <Switch>
         <Route path="/welcome" component={WelcomePage} exact></Route>
         <Route path="/top" component={TopPage} exact></Route>
+        <Route path="/view/:id" component={ViewPage}></Route>
       </Switch>
     </Router>
     // </ThemeProvider>

@@ -5,16 +5,20 @@ import Typography from '@material-ui/core/Typography'
 
 import { Diary } from 'Types/TypeList'
 
-const Archive = (props: Diary): JSX.Element => {
+type ArchiveProps = {
+  diary: Diary
+}
+
+const Archive = (props: ArchiveProps): JSX.Element => {
   return (
-    <CardActionArea component="a" href={`/view/${props.id}`}>
+    <CardActionArea component="a" href={`/view/${props.diary.id}`}>
       <Card>
         <CardContent>
-          <div>{props.date}</div>
+          <div>{props.diary.date}</div>
           <Typography variant="h5" component="h2">
-            {props.title}
+            {props.diary.title}
           </Typography>
-          <div>{props.content}</div>
+          <div>{props.diary.content}</div>
         </CardContent>
       </Card>
     </CardActionArea>

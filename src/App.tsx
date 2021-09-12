@@ -5,7 +5,7 @@ import { createTheme } from '@material-ui/core'
 import { yellow } from '@material-ui/core/colors'
 
 import WelcomePage from 'pages/WelcomePage'
-import TopPage from 'pages/TopPage'
+import EditPage from 'pages/EditPage'
 
 import 'App.scss'
 import ViewPage from 'pages/ViewPage'
@@ -24,7 +24,8 @@ function App(): JSX.Element {
     <Router>
       <Switch>
         <Route path="/welcome" component={WelcomePage} exact></Route>
-        <Route path="/top" component={TopPage} exact></Route>
+        <Route path="/top" component={EditPage} exact></Route>
+        <Route path="/edit/:id" component={EditPage} exact></Route>
         <Route path="/view/:id" component={ViewPage}></Route>
       </Switch>
     </Router>

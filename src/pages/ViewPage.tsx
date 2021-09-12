@@ -1,35 +1,28 @@
+import { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+
 import { Grid, Container } from '@material-ui/core'
 
-import { Header, ArchiveList } from 'Components/index'
-import { RouteComponentProps } from 'react-router'
+import { Header, ArchiveList, Viewer } from 'Components/index'
 import { Diary } from 'Types/TypeList'
+import { fetchDiaries, fetchDiary, deleteDiary } from 'Utils/DiaryManager'
 
 type ViewPageProps = RouteComponentProps<{
   id: string
 }>
 
 const ViewPage = (props: ViewPageProps): JSX.Element => {
-  const initialDiary: Diary[] = [
-    {
-      id: '1',
-      date: 'Sun 08/01/2021',
-      title: 'My first diary',
-      content: 'This is my first diary. I watched some dramas on Netflix today. I like Atypical the most.',
-    },
-    {
-      id: '2',
-      date: 'Mon 08/02/2021',
-      title: 'My second diary',
-      content:
-        'This is my second diary. I went to Minatomirai to watch a movie. The title of the movie is "In the Hights."',
-    },
-    {
-      id: '3',
-      date: 'Tue 08/10/2021',
-      title: 'My third diary',
-      content: 'This is my third diary. I have nothing to write today."',
-    },
-  ]
+  const [diary, setDiary] = useState<Diary>()
+  const [archives, setArchives] = useState<Array<Diary>>()
+
+  const deleteDiaryButton = (id: string): void => {
+    setArchives(deleteDiary(id))
+  }
+
+  useEffect(() => {
+    setDiary(fetchDiary(props.match.params.id))
+    setArchives(fetchDiaries())
+  }, [])
 
   return (
     <>
@@ -37,10 +30,14 @@ const ViewPage = (props: ViewPageProps): JSX.Element => {
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            {props.match.params.id}
+            {diary ? (
+              <Viewer diary={diary} onDelete={deleteDiaryButton} />
+            ) : (
+              <div> undefined : {props.match.params.id}</div>
+            )}
           </Grid>
           <Grid item xs={12} md={4}>
-            <ArchiveList list={initialDiary} />
+            {archives ? <ArchiveList list={archives} /> : <div>No diaries</div>}
           </Grid>
         </Grid>
       </Container>

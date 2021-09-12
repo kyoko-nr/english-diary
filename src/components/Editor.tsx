@@ -5,10 +5,12 @@ import Typography from '@material-ui/core/Typography'
 import { Button } from '@material-ui/core'
 
 import { TextInput } from 'Components/index'
-import { Format } from 'Utils/DateFormatUtils'
+import { formatDate } from 'Utils/DateFormatUtils'
+import { Diary, SaveFunc } from 'Types/TypeList'
 
 type EditorProps = {
-  onSave: (date: string, title: string, content: string) => void
+  onSave: SaveFunc
+  diary?: Diary
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -45,9 +47,15 @@ const Editor = (props: EditorProps): JSX.Element => {
   }
 
   useEffect(() => {
-    const today = new Date()
-    const str = Format(today)
-    setDate(str)
+    if (props.diary) {
+      setDate(props.diary.date)
+      setTitle(props.diary.title)
+      setContent(props.diary.content)
+    } else {
+      const today = new Date()
+      const str = formatDate(today)
+      setDate(str)
+    }
   }, [])
 
   return (
@@ -72,13 +80,13 @@ const Editor = (props: EditorProps): JSX.Element => {
         onChange={handleContent}
       />
       <Button size="large" variant="outlined" onClick={() => crearFields()}>
-        delete
+        clear
       </Button>
       <Button
         size="large"
         variant="contained"
         onClick={() => {
-          props.onSave(date, title, content)
+          props.diary ? props.onSave(date, title, content, props.diary.id) : props.onSave(date, title, content)
           crearFields()
         }}
       >

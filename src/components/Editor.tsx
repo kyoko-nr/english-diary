@@ -79,12 +79,11 @@ const Editor = (props: EditorProps): JSX.Element => {
         type={'text'}
         onChange={handleContent}
       />
-      <Button size="large" variant="outlined" onClick={() => crearFields()}>
+      <Button className={'second'} onClick={() => crearFields()}>
         clear
       </Button>
       <Button
-        size="large"
-        variant="contained"
+        className={'save'}
         onClick={() => {
           props.diary ? props.onSave(date, title, content, props.diary.id) : props.onSave(date, title, content)
           crearFields()

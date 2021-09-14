@@ -30,10 +30,10 @@ const Viewer = (props: ViewerProps): JSX.Element => {
         {props.diary.title}
       </Typography>
       <div>{props.diary.content}</div>
-      <Button size="large" variant="outlined" onClick={() => props.onDelete(props.diary.id)}>
+      <Button className={'second'} onClick={() => props.onDelete(props.diary.id)}>
         delete
       </Button>
-      <Button size="large" variant="contained" href={`/edit/${props.diary.id}`}>
+      <Button className={'edit'} href={`/edit/${props.diary.id}`}>
         edit
       </Button>
     </div>

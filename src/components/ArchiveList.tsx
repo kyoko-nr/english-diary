@@ -8,11 +8,11 @@ type ArchiveListProps = {
 
 const ArchiveList = (props: ArchiveListProps): JSX.Element => {
   return (
-    <>
+    <div className={'content'}>
       {props.list.map((value) => {
         return <Archive diary={value} key={value.id} />
       })}
-    </>
+    </div>
   )
 }
 

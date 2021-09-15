@@ -12,13 +12,13 @@ type ArchiveProps = {
 const Archive = (props: ArchiveProps): JSX.Element => {
   return (
     <CardActionArea component="a" href={`/view/${props.diary.id}`}>
-      <Card>
+      <Card className={'archive'}>
         <CardContent>
-          <div>{props.diary.date}</div>
-          <Typography variant="h5" component="h2">
+          <div className={'date'}>{props.diary.date}</div>
+          <Typography className={'title'} component="h2">
             {props.diary.title}
           </Typography>
-          <div>{props.diary.content}</div>
+          <div className={'diary-content'}>{props.diary.content}</div>
         </CardContent>
       </Card>
     </CardActionArea>

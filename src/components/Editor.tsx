@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useEffect } from 'react'
+import { ChangeEvent, useState, useEffect, useDebugValue } from 'react'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
@@ -13,32 +13,24 @@ type EditorProps = {
   diary?: Diary
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    content: {
-      padding: theme.spacing(3),
-      '& .MuiTextField-root': {
-        marginBottom: theme.spacing(3),
-      },
-    },
-  })
-)
-
 type InputFunction = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 
 const Editor = (props: EditorProps): JSX.Element => {
-  const classes = useStyles()
-
   const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [counter, setCounter] = useState(0)
 
   const handleTitle: InputFunction = (event) => {
     setTitle(event.target.value)
   }
 
   const handleContent: InputFunction = (event) => {
+    const value = event.target.value
     setContent(event.target.value)
+    const splited = value.split(/[\s]/)
+    const count = splited.filter((w) => w !== '').length
+    setCounter(count)
   }
 
   const crearFields = () => {
@@ -59,9 +51,10 @@ const Editor = (props: EditorProps): JSX.Element => {
   }, [])
 
   return (
-    <div className={classes.content}>
-      <Typography variant="h5">{date}</Typography>
+    <div className={'content diary'}>
+      <div className={'date'}>{date}</div>
       <TextInput
+        className={'title'}
         fullWidth={true}
         label={'Title'}
         multiline={false}
@@ -70,27 +63,31 @@ const Editor = (props: EditorProps): JSX.Element => {
         type={'text'}
         onChange={handleTitle}
       />
+      <div className={'word-counter'}>{counter} words</div>
       <TextInput
+        className={'diary-content'}
         fullWidth={true}
-        label={'Content'}
         multiline={true}
         rows={20}
         value={content}
         type={'text'}
+        placeholder={'Describe your day here!'}
         onChange={handleContent}
       />
-      <Button className={'second'} onClick={() => crearFields()}>
-        clear
-      </Button>
-      <Button
-        className={'save'}
-        onClick={() => {
-          props.diary ? props.onSave(date, title, content, props.diary.id) : props.onSave(date, title, content)
-          crearFields()
-        }}
-      >
-        save
-      </Button>
+      <div className={'button-wrapper'}>
+        <Button className={'second'} onClick={() => crearFields()}>
+          clear
+        </Button>
+        <Button
+          className={'save'}
+          onClick={() => {
+            props.diary ? props.onSave(date, title, content, props.diary.id) : props.onSave(date, title, content)
+            crearFields()
+          }}
+        >
+          save
+        </Button>
+      </div>
     </div>
   )
 }

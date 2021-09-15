@@ -1,6 +1,6 @@
+import { useState, useEffect } from 'react'
 import { Button } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 
 import { Diary } from 'Types/TypeList'
 
@@ -9,33 +9,29 @@ type ViewerProps = {
   onDelete: (id: string) => void
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    content: {
-      padding: theme.spacing(3),
-      '& .MuiTextField-root': {
-        marginBottom: theme.spacing(3),
-      },
-    },
-  })
-)
-
 const Viewer = (props: ViewerProps): JSX.Element => {
-  const classes = useStyles()
+  const [counter, setCounter] = useState(0)
+
+  useEffect(() => {
+    const splited = props.diary.content.split(/[\s]/)
+    const count = splited.filter((w) => w !== '').length
+    setCounter(count)
+  }, [])
 
   return (
-    <div className={classes.content}>
-      <Typography variant="h5">{props.diary.date}</Typography>
-      <Typography variant="h4" component="h2">
-        {props.diary.title}
-      </Typography>
-      <div>{props.diary.content}</div>
-      <Button className={'second'} onClick={() => props.onDelete(props.diary.id)}>
-        delete
-      </Button>
-      <Button className={'edit'} href={`/edit/${props.diary.id}`}>
-        edit
-      </Button>
+    <div className={'content diary'}>
+      <div className={'date'}>{props.diary.date}</div>
+      <Typography className={'title title-label'}>{props.diary.title}</Typography>
+      <div className={'word-counter'}>{counter} words</div>
+      <div className={'diary-content'}>{props.diary.content}</div>
+      <div className={'button-wrapper'}>
+        <Button className={'second'} onClick={() => props.onDelete(props.diary.id)}>
+          delete
+        </Button>
+        <Button className={'edit'} href={`/edit/${props.diary.id}`}>
+          edit
+        </Button>
+      </div>
     </div>
   )
 }

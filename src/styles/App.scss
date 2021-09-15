@@ -1,8 +1,30 @@
 @import 'modules/variables';
 @import 'modules/button';
 @import 'modules/header';
+@import 'modules/diary';
+@import 'modules/archive';
+
+.font-xxs {
+  font-size: 10px;
+}
+.font-xs {
+  font-size: 12px;
+}
+.font-sm {
+  font-size: 14px;
+}
+.font-md {
+  font-size: 16px;
+}
+.font-lg {
+  font-size: 24px;
+}
 
 #root {
+  @extend .font-md;
   color: $cGrey;
-  font-size: 16px;
+}
+
+.content {
+  padding: 24px;
 }

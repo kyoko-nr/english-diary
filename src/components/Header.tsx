@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Link } from '@material-ui/core'
+import { AppBar, Toolbar, Typography, Link, Container } from '@material-ui/core'
 
 type HeaderProps = {
   title: string
@@ -7,13 +7,15 @@ type HeaderProps = {
 const Header = (props: HeaderProps): JSX.Element => {
   return (
     <AppBar position="sticky">
-      <Toolbar>
-        <Link color={'inherit'} underline={'none'} component={'a'} href={'/top'}>
-          <Typography variant="h4" align="center">
-            {props.title}
-          </Typography>
-        </Link>
-      </Toolbar>
+      <Container maxWidth="lg">
+        <Toolbar>
+          <Link color={'inherit'} underline={'none'} component={'a'} href={'/top'}>
+            <Typography variant="h4" align="center">
+              {props.title}
+            </Typography>
+          </Link>
+        </Toolbar>
+      </Container>
     </AppBar>
   )
 }

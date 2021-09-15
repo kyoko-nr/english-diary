@@ -1,0 +1,26 @@
+.MuiCard-root.archive {
+  color: $cGrey;
+
+  &.MuiPaper-elevation1 {
+    box-shadow: none;
+  }
+
+  & .MuiCardContent-root {
+    padding: 16px;
+    border-bottom: 1px solid $cGrey;
+  }
+
+  & .date {
+    @extend .font-xxs;
+    margin-bottom: 4px;
+  }
+
+  & .title {
+    @extend .font-sm;
+    margin-bottom: 4px;
+  }
+
+  & .diary-content {
+    @extend .font-xs;
+  }
+}

@@ -33,6 +33,6 @@
   }
 
   & .MuiButton-label {
-    font-size: 16px;
+    @extend .font-md;
   }
 }

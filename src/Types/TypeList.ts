@@ -3,6 +3,7 @@ export type Diary = {
   date: string
   title: string
   content: string
+  userId: string
 }
 
 export type SaveFunc = (date: string, title: string, content: string, id?: string) => void

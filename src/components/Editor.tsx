@@ -1,16 +1,15 @@
-import { ChangeEvent, useState, useEffect, useDebugValue } from 'react'
+import { ChangeEvent, useState, useEffect } from 'react'
 
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
 import { Button } from '@material-ui/core'
 
-import { TextInput } from 'Components/index'
-import { formatDate } from 'Utils/DateFormatUtils'
-import { Diary, SaveFunc } from 'Types/TypeList'
+import { TextInput } from 'components/index'
+import { formatDate } from 'utils/DateFormatUtils'
+import { fetchDiary } from 'utils/DiaryManager'
+import { SaveFunc } from 'types/TypeList'
 
 type EditorProps = {
   onSave: SaveFunc
-  diary?: Diary
+  idToEdit?: string
 }
 
 type InputFunction = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
@@ -39,10 +38,13 @@ const Editor = (props: EditorProps): JSX.Element => {
   }
 
   useEffect(() => {
-    if (props.diary) {
-      setDate(props.diary.date)
-      setTitle(props.diary.title)
-      setContent(props.diary.content)
+    console.log('editor props:', props)
+    if (props.idToEdit) {
+      fetchDiary(props.idToEdit).then((diary) => {
+        setDate(diary.date)
+        setTitle(diary.title)
+        setContent(diary.content)
+      })
     } else {
       const today = new Date()
       const str = formatDate(today)
@@ -81,7 +83,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         <Button
           className={'save'}
           onClick={() => {
-            props.diary ? props.onSave(date, title, content, props.diary.id) : props.onSave(date, title, content)
+            props.idToEdit ? props.onSave(date, title, content, props.idToEdit) : props.onSave(date, title, content)
             crearFields()
           }}
         >

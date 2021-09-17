@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
-import { Diary } from 'Types/TypeList'
+import { Diary } from 'types/TypeList'
 
 type ViewerProps = {
   diary: Diary

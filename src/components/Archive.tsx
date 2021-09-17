@@ -3,7 +3,7 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 
-import { Diary } from 'Types/TypeList'
+import { Diary } from 'types/TypeList'
 
 type ArchiveProps = {
   diary: Diary

@@ -11,16 +11,16 @@
   }
 
   & .date {
-    @extend .font-xxs;
+    @extend .font-xs;
     margin-bottom: 4px;
   }
 
   & .title {
-    @extend .font-sm;
+    @extend .font-md;
     margin-bottom: 4px;
   }
 
   & .diary-content {
-    @extend .font-xs;
+    @extend .font-sm;
   }
 }

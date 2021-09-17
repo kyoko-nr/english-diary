@@ -1,6 +1,6 @@
-import { Archive } from 'Components/index'
+import { Archive } from 'components/index'
 
-import { Diary } from 'Types/TypeList'
+import { Diary } from 'types/TypeList'
 
 type ArchiveListProps = {
   list: Diary[]

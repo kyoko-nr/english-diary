@@ -1,4 +1,6 @@
-import { Diary, SaveFunc } from 'Types/TypeList'
+import { db } from 'firebase/index'
+import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'
+import { Diary } from 'types/TypeList'
 
 const initialDiary: Diary[] = [
   {
@@ -6,6 +8,7 @@ const initialDiary: Diary[] = [
     date: 'Sun 08/01/2021',
     title: 'My first diary',
     content: 'This is my first diary. I watched some dramas on Netflix today. I like Atypical the most.',
+    userId: 'kyoko',
   },
   {
     id: '2',
@@ -13,21 +16,44 @@ const initialDiary: Diary[] = [
     title: 'My second diary',
     content:
       'This is my second diary. I went to Minatomirai to watch a movie. The title of the movie is "In the Hights."',
+    userId: 'kyoko',
   },
   {
     id: '3',
     date: 'Tue 08/10/2021',
     title: 'My third diary',
     content: 'This is my third diary. I have nothing to write today."',
+    userId: 'kyoko',
   },
 ]
-
-export const fetchDiaries = (): Diary[] => {
-  return initialDiary
+/**
+ * Fetch all diaries.
+ * @returns diaries
+ */
+export const fetchDiaries = async (): Promise<Diary[]> => {
+  const diaries: Diary[] = []
+  const snapshot = await getDocs(collection(db, 'diaries'))
+  snapshot.forEach((doc) => {
+    const data = doc.data()
+    diaries.push({ id: doc.id, date: data.date, title: data.title, content: data.title, userId: data.userId })
+  })
+  return diaries
 }
 
-export const fetchDiary = (id: string): Diary | undefined => {
-  return initialDiary.find((diary) => diary.id === id)
+/**
+ * Fetch one diary.
+ * @param id id
+ * @returns diary
+ */
+export const fetchDiary = async (id: string): Promise<Diary> => {
+  const docRef = doc(db, 'diaries', id)
+  const snapshot = await getDoc(docRef)
+  if (snapshot.exists()) {
+    const data = snapshot.data()
+    return { id: snapshot.id, date: data.date, title: data.title, content: data.content, userId: data.userId }
+  } else {
+    return Promise.reject(`Invalid id : ${id}`)
+  }
 }
 
 export const deleteDiary = (id: string): Diary[] => {
@@ -43,6 +69,12 @@ export const updateDiary = (update: Diary): Diary[] => {
   return initialDiary
 }
 
-export const insertDiary = (insert: Diary): Diary[] => {
-  return [...initialDiary, insert]
+export const insertDiary = async (insert: Diary): Promise<Diary[]> => {
+  await addDoc(collection(db, 'diaries'), {
+    date: insert.date,
+    title: insert.title,
+    content: insert.content,
+    userId: 'kyoko',
+  })
+  return await fetchDiaries()
 }

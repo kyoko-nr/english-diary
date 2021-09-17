@@ -3,9 +3,9 @@ import { RouteComponentProps } from 'react-router'
 
 import { Grid, Container } from '@material-ui/core'
 
-import { Header, ArchiveList, Viewer } from 'Components/index'
-import { Diary } from 'Types/TypeList'
-import { fetchDiaries, fetchDiary, deleteDiary } from 'Utils/DiaryManager'
+import { Header, ArchiveList, Viewer } from 'components/index'
+import { Diary } from 'types/TypeList'
+import { fetchDiaries, deleteDiary, fetchDiary } from 'utils/DiaryManager'
 
 type ViewPageProps = RouteComponentProps<{
   id: string
@@ -20,8 +20,10 @@ const ViewPage = (props: ViewPageProps): JSX.Element => {
   }
 
   useEffect(() => {
-    setDiary(fetchDiary(props.match.params.id))
-    setArchives(fetchDiaries())
+    fetchDiaries().then((diaries) => {
+      setArchives(diaries)
+      setDiary(diaries.find((diary) => diary.id === props.match.params.id))
+    })
   }, [])
 
   return (
@@ -30,11 +32,7 @@ const ViewPage = (props: ViewPageProps): JSX.Element => {
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            {diary ? (
-              <Viewer diary={diary} onDelete={deleteDiaryButton} />
-            ) : (
-              <div> undefined : {props.match.params.id}</div>
-            )}
+            {diary ? <Viewer diary={diary} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
           </Grid>
           <Grid item xs={12} md={4}>
             {archives ? <ArchiveList list={archives} /> : <div>No diaries</div>}

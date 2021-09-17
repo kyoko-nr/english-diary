@@ -3,9 +3,9 @@ import { RouteComponentProps } from 'react-router'
 
 import { Grid, Container } from '@material-ui/core'
 
-import { Header, Editor, ArchiveList } from 'Components/index'
-import { Diary, SaveFunc } from 'Types/TypeList'
-import { fetchDiaries, updateDiary, insertDiary } from 'Utils/DiaryManager'
+import { Header, Editor, ArchiveList } from 'components/index'
+import { Diary, SaveFunc } from 'types/TypeList'
+import { fetchDiaries, updateDiary, insertDiary } from 'utils/DiaryManager'
 
 type EditPageProps = RouteComponentProps<{
   id: string
@@ -16,16 +16,18 @@ const EditPage = (props: EditPageProps): JSX.Element => {
 
   const saveDiary: SaveFunc = (date, title, content, id?) => {
     if (id) {
-      setArchives(updateDiary({ id, date, title, content }))
+      setArchives(updateDiary({ id, date, title, content, userId: 'kyoko' }))
     } else {
-      const newId = (Math.random() * 1000).toString()
-      setArchives(insertDiary({ id: newId, date, title, content }))
+      insertDiary({ id: '', date, title, content, userId: 'kyoko' }).then((updated) => {
+        setArchives(updated)
+      })
     }
   }
 
   useEffect(() => {
-    const diaries = fetchDiaries()
-    setArchives(diaries)
+    fetchDiaries().then((diaries) => {
+      setArchives(diaries)
+    })
   }, [])
 
   return (
@@ -34,7 +36,7 @@ const EditPage = (props: EditPageProps): JSX.Element => {
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            <Editor onSave={saveDiary}></Editor>
+            <Editor onSave={saveDiary} idToEdit={props.match.params.id}></Editor>
           </Grid>
           <Grid item xs={12} md={4}>
             {archives ? <ArchiveList list={archives} /> : <div>No diaries</div>}

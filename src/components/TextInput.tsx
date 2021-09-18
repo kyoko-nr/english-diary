@@ -7,9 +7,10 @@ type TextInputProps = {
   multiline: boolean
   rows: number
   value: string
-  type: 'text'
+  type: 'text' | 'email' | 'password'
   className?: string
   placeholder?: string
+  variant: 'outlined' | 'standard'
   onChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 }
 
@@ -25,7 +26,7 @@ const TextInput = (props: TextInputProps): JSX.Element => {
       type={props.type}
       onChange={props.onChange}
       placeholder={props.placeholder}
-      variant="outlined"
+      variant={props.variant}
     />
   )
 }

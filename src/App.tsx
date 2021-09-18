@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import WelcomePage from 'pages/WelcomePage'
+import SigninPage from 'pages/SigninPage'
 import EditPage from 'pages/EditPage'
 
 import 'styles/App.scss'
@@ -10,7 +10,7 @@ function App(): JSX.Element {
   return (
     <Router>
       <Switch>
-        <Route path="/welcome" component={WelcomePage} exact></Route>
+        <Route path="/" component={SigninPage} exact></Route>
         <Route path="/top" component={EditPage} exact></Route>
         <Route path="/edit/:id" component={EditPage} exact></Route>
         <Route path="/view/:id" component={ViewPage}></Route>

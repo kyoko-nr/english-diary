@@ -5,7 +5,7 @@ import { Grid, Container } from '@material-ui/core'
 
 import { Header, ArchiveList, Viewer } from 'components/index'
 import { Diary } from 'types/TypeList'
-import { fetchDiaries, deleteDiary, fetchDiary } from 'utils/DiaryManager'
+import { fetchDiaries, deleteDiary } from 'utils/DiaryManager'
 
 type ViewPageProps = RouteComponentProps<{
   id: string

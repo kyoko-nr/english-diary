@@ -5,14 +5,12 @@ import { Button } from '@material-ui/core'
 import { TextInput } from 'components/index'
 import { formatDate } from 'utils/DateFormatUtils'
 import { fetchDiary } from 'utils/DiaryManager'
-import { SaveFunc } from 'types/TypeList'
+import { SaveFunc, InputFunction } from 'types/TypeList'
 
 type EditorProps = {
   onSave: SaveFunc
   idToEdit?: string
 }
-
-type InputFunction = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 
 const Editor = (props: EditorProps): JSX.Element => {
   const [date, setDate] = useState('')
@@ -64,6 +62,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         value={title}
         type={'text'}
         onChange={handleTitle}
+        variant={'outlined'}
       />
       <div className={'word-counter'}>{counter} words</div>
       <TextInput
@@ -75,6 +74,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         type={'text'}
         placeholder={'Describe your day here!'}
         onChange={handleContent}
+        variant={'outlined'}
       />
       <div className={'button-wrapper'}>
         <Button className={'second'} onClick={() => crearFields()}>

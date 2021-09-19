@@ -1,21 +1,11 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-
-import SigninPage from 'pages/SigninPage'
-import EditPage from 'pages/EditPage'
-
+import Router from 'Router'
 import 'styles/App.scss'
-import ViewPage from 'pages/ViewPage'
 
 function App(): JSX.Element {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" component={SigninPage} exact></Route>
-        <Route path="/top" component={EditPage} exact></Route>
-        <Route path="/edit/:id" component={EditPage} exact></Route>
-        <Route path="/view/:id" component={ViewPage}></Route>
-      </Switch>
-    </Router>
+    <main>
+      <Router />
+    </main>
   )
 }
 

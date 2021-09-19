@@ -7,11 +7,11 @@ import { Header, ArchiveList, Viewer } from 'components/index'
 import { Diary } from 'types/TypeList'
 import { fetchDiaries, deleteDiary } from 'utils/DiaryManager'
 
-type ViewPageProps = RouteComponentProps<{
+type PostProps = RouteComponentProps<{
   id: string
 }>
 
-const ViewPage = (props: ViewPageProps): JSX.Element => {
+const Post = (props: PostProps): JSX.Element => {
   const [diary, setDiary] = useState<Diary>()
   const [archives, setArchives] = useState<Array<Diary>>()
 
@@ -43,4 +43,4 @@ const ViewPage = (props: ViewPageProps): JSX.Element => {
   )
 }
 
-export default ViewPage
+export default Post

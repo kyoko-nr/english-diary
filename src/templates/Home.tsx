@@ -7,11 +7,11 @@ import { Header, Editor, ArchiveList } from 'components/index'
 import { Diary, SaveFunc } from 'types/TypeList'
 import { fetchDiaries, updateDiary, insertDiary } from 'utils/DiaryManager'
 
-type EditPageProps = RouteComponentProps<{
+type HomeProps = RouteComponentProps<{
   id: string
 }>
 
-const EditPage = (props: EditPageProps): JSX.Element => {
+const Home = (props: HomeProps): JSX.Element => {
   const [archives, setArchives] = useState<Array<Diary>>()
 
   const saveDiary: SaveFunc = (date, title, content, id?) => {
@@ -47,4 +47,4 @@ const EditPage = (props: EditPageProps): JSX.Element => {
   )
 }
 
-export default EditPage
+export default Home

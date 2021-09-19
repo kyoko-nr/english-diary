@@ -10,7 +10,7 @@ import { TextInput } from 'components/index'
 import { InputFunction } from 'types/TypeList'
 import { AnimationMixer } from 'three'
 
-const SigninPage = (): JSX.Element => {
+const Login = (): JSX.Element => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -88,4 +88,4 @@ const SigninPage = (): JSX.Element => {
   )
 }
 
-export default SigninPage
+export default Login

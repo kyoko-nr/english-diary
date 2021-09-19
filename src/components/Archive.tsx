@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
@@ -10,8 +12,10 @@ type ArchiveProps = {
 }
 
 const Archive = (props: ArchiveProps): JSX.Element => {
+  const dispatch = useDispatch()
+
   return (
-    <CardActionArea component="a" href={`/view/${props.diary.id}`}>
+    <CardActionArea component="a" onClick={() => dispatch(push(`/posts/${props.diary.id}`))}>
       <Card className={'archive'}>
         <CardContent>
           <div className={'date'}>{props.diary.date}</div>

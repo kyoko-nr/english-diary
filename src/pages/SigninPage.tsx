@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import ReactDOM from 'react-dom'
+import { Canvas, useLoader } from '@react-three/fiber'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 
 import { Container, Typography, Link, Button } from '@material-ui/core'
 
 import { TextInput } from 'components/index'
 import { InputFunction } from 'types/TypeList'
+import { AnimationMixer } from 'three'
 
 const SigninPage = (): JSX.Element => {
   const [email, setEmail] = useState('')
@@ -17,12 +22,36 @@ const SigninPage = (): JSX.Element => {
     setPassword(event.target.value)
   }
 
+  const Model = (): JSX.Element => {
+    const gltf = useLoader(GLTFLoader, '/model_nodraco.glb')
+    console.log(gltf)
+    // const mixer = new AnimationMixer(gltf.scene)
+    // const action = mixer.clipAction(gltf.animations[1])
+    // action.play()
+    return <primitive object={gltf.scene} dispose={null} position={[0, -2, 0]} scale={1} />
+  }
+
   return (
     <div className={'signin'}>
       <Container maxWidth="lg">
         <Typography className={'signin-title'} component="h1" variant="h4">
           English Diary
         </Typography>
+        {/**
+         * three js *
+         */}
+        <div id="canvas-container">
+          <Canvas>
+            <ambientLight intensity={1}></ambientLight>
+            <directionalLight intensity={3}></directionalLight>
+            <Suspense fallback={null}>
+              <Model />
+            </Suspense>
+          </Canvas>
+        </div>
+        {/**
+         * three js *
+         */}
         <TextInput
           className={'signin-input'}
           fullWidth={false}

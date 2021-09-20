@@ -1,34 +1,38 @@
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useCallback, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import ReactDOM from 'react-dom'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 
-import { Container, Typography, Link, Button } from '@material-ui/core'
+import { Container, Typography, Link } from '@material-ui/core'
 
-import { TextInput } from 'components/index'
-import { InputFunction } from 'types/TypeList'
+import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
 import { AnimationMixer } from 'three'
 
-const Login = (): JSX.Element => {
+import { signIn } from 'reducks/users/operations'
+
+const signin = (): JSX.Element => {
   const dispatch = useDispatch()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleEmail: InputFunction = (event) => {
-    setEmail(event.target.value)
-  }
+  const inputEmail = useCallback(
+    (event) => {
+      setEmail(event.target.value)
+    },
+    [setEmail]
+  )
 
-  const handlePassword: InputFunction = (event) => {
-    setPassword(event.target.value)
-  }
+  const inputPassword = useCallback(
+    (event) => {
+      setPassword(event.target.value)
+    },
+    [setPassword]
+  )
 
   const Model = (): JSX.Element => {
     const gltf = useLoader(GLTFLoader, '/model_nodraco.glb')
-    console.log(gltf)
     // const mixer = new AnimationMixer(gltf.scene)
     // const action = mixer.clipAction(gltf.animations[1])
     // action.play()
@@ -36,9 +40,9 @@ const Login = (): JSX.Element => {
   }
 
   return (
-    <div className={'login'}>
+    <div className={'signin'}>
       <Container maxWidth="lg">
-        <Typography className={'login-title'} component="h1" variant="h4">
+        <Typography className={'signin-title'} component="h1" variant="h4">
           English Diary
         </Typography>
         {/**
@@ -57,35 +61,35 @@ const Login = (): JSX.Element => {
          * three js *
          */}
         <TextInput
-          className={'login-input'}
+          className={'signin-input'}
           fullWidth={false}
           label={'Email'}
           multiline={false}
           rows={1}
           type={'email'}
           value={email}
-          onChange={handleEmail}
+          onChange={inputEmail}
           variant={'standard'}
+          required={true}
         />
         <TextInput
-          className={'login-input'}
+          className={'signin-input'}
           fullWidth={false}
           label={'Password'}
           multiline={false}
           rows={1}
           type={'password'}
           value={password}
-          onChange={handlePassword}
+          onChange={inputPassword}
           variant={'standard'}
+          required={true}
         />
-        <Link className={'login-forgot'} component={'button'} onClick={() => console.log('forgot')} color={'inherit'}>
+        <Link className={'signin-forgot'} component={'button'} onClick={() => console.log('forgot')} color={'inherit'}>
           Forgot your password?
         </Link>
-        <Button className={'login-submit'} onClick={() => console.log('sign in')}>
-          sign in
-        </Button>
+        <PlaneLargeButton label={'sign in'} onClick={() => dispatch(signIn({ email, password }))} />
         <Link
-          className={'login-signup'}
+          className={'signin-signup'}
           component={'button'}
           onClick={() => dispatch(push(`/signup`))}
           color={'initial'}
@@ -97,4 +101,4 @@ const Login = (): JSX.Element => {
   )
 }
 
-export default Login
+export default signin

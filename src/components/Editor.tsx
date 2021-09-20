@@ -1,11 +1,9 @@
-import { ChangeEvent, useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
-import { Button } from '@material-ui/core'
-
-import { TextInput } from 'components/index'
+import { TextInput, PrimaryMidButton, OutlineMidButton } from 'components/UIKit/index'
 import { formatDate } from 'utils/DateFormatUtils'
 import { fetchDiary } from 'utils/DiaryManager'
-import { SaveFunc, InputFunction } from 'types/TypeList'
+import { SaveFunc } from 'types/TypeList'
 
 type EditorProps = {
   onSave: SaveFunc
@@ -18,19 +16,25 @@ const Editor = (props: EditorProps): JSX.Element => {
   const [content, setContent] = useState('')
   const [counter, setCounter] = useState(0)
 
-  const handleTitle: InputFunction = (event) => {
-    setTitle(event.target.value)
-  }
+  const inputTitle = useCallback(
+    (event) => {
+      setTitle(event.target.value)
+    },
+    [setTitle]
+  )
 
-  const handleContent: InputFunction = (event) => {
-    const value = event.target.value
-    setContent(event.target.value)
-    const splited = value.split(/[\s]/)
-    const count = splited.filter((w) => w !== '').length
-    setCounter(count)
-  }
+  const inputContent = useCallback(
+    (event) => {
+      const value = event.target.value
+      setContent(event.target.value)
+      const splited = value.split(/[\s]/)
+      const count = splited.filter((w: string) => w !== '').length
+      setCounter(count)
+    },
+    [setContent, setCounter]
+  )
 
-  const crearFields = () => {
+  const clearFields = () => {
     setTitle('')
     setContent('')
   }
@@ -61,7 +65,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         rows={1}
         value={title}
         type={'text'}
-        onChange={handleTitle}
+        onChange={inputTitle}
         variant={'outlined'}
       />
       <div className={'word-counter'}>{counter} words</div>
@@ -73,14 +77,17 @@ const Editor = (props: EditorProps): JSX.Element => {
         value={content}
         type={'text'}
         placeholder={'Describe your day here!'}
-        onChange={handleContent}
+        onChange={inputContent}
         variant={'outlined'}
       />
       <div className={'button-wrapper'}>
-        <Button className={'second'} onClick={() => crearFields()}>
+        <OutlineMidButton label={'clear'} onClick={clearFields} />
+        <PrimaryMidButton onClick={clearFields} label={'save'} />
+
+        {/* <Button className={'second'} onClick={() => crearFields()}>
           clear
-        </Button>
-        <Button
+        </Button> */}
+        {/* <Button
           className={'save'}
           onClick={() => {
             props.idToEdit ? props.onSave(date, title, content, props.idToEdit) : props.onSave(date, title, content)
@@ -88,7 +95,7 @@ const Editor = (props: EditorProps): JSX.Element => {
           }}
         >
           save
-        </Button>
+        </Button> */}
       </div>
     </div>
   )

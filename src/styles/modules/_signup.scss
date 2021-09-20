@@ -11,19 +11,14 @@
     justify-content: center;
   }
 
-  &-input {
-    width: 400px;
+  &-title.MuiTypography-root {
+    margin-bottom: 32px;
+    color: $cBlue;
   }
 
-  &-submit.MuiButtonBase-root.MuiButton-root {
-    background-color: $cWhite;
-    color: $cGrey;
+  &-input.MuiFormControl-root {
     width: 400px;
-    margin-top: 32px;
-
-    &:hover {
-      background-color: rgb(243, 243, 243);
-    }
+    margin-bottom: 8px;
   }
 
 }

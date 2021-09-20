@@ -1,83 +1,104 @@
-import { useState } from 'react'
-import { Container, Typography, Link, Button } from '@material-ui/core'
-import { TextInput } from 'components/index'
-import { InputFunction } from 'types/TypeList'
+import { useState, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { Container, Typography } from '@material-ui/core'
+import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
+
+import { signUp } from 'reducks/users/operations'
 
 const Signup = (): JSX.Element => {
+  const dispatch = useDispatch()
+
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
-  const handleUsername: InputFunction = (event) => {
-    setUsername(event.target.value)
-  }
+  const inputUsername = useCallback(
+    (event) => {
+      setUsername(event.target.value)
+    },
+    [setUsername]
+  )
 
-  const handleEmail: InputFunction = (event) => {
-    setEmail(event.target.value)
-  }
+  const inputEmail = useCallback(
+    (event) => {
+      setEmail(event.target.value)
+    },
+    [setEmail]
+  )
 
-  const handlePassword: InputFunction = (event) => {
-    setPassword(event.target.value)
-  }
+  const inputPassword = useCallback(
+    (event) => {
+      setPassword(event.target.value)
+    },
+    [setPassword]
+  )
 
-  const handlePasswordConfirm: InputFunction = (event) => {
-    setPasswordConfirm(event.target.value)
-  }
+  const inputPasswordConfirm = useCallback(
+    (event) => {
+      setPasswordConfirm(event.target.value)
+    },
+    [setPasswordConfirm]
+  )
 
   return (
     <div className={'signup'}>
       <Container maxWidth="lg">
-        {/* <Typography className={'signup-title'} component="h1" variant="h4">
-          Sign up
-        </Typography> */}
+        <Typography className={'signup-title'} component="h2" variant="h4">
+          Sign up for your English Diary!
+        </Typography>
         <TextInput
           className={'signup-input'}
           fullWidth={false}
-          label={'User name *'}
+          label={'User name'}
           multiline={false}
           rows={1}
           type={'text'}
           value={username}
-          onChange={handleUsername}
+          onChange={inputUsername}
           variant={'standard'}
+          required={true}
         />
         <TextInput
           className={'signup-input'}
           fullWidth={false}
-          label={'Email *'}
+          label={'Email'}
           multiline={false}
           rows={1}
           type={'email'}
           value={email}
-          onChange={handleEmail}
+          onChange={inputEmail}
           variant={'standard'}
+          required={true}
         />
         <TextInput
           className={'signup-input'}
           fullWidth={false}
-          label={'Password *'}
+          label={'Password'}
           multiline={false}
           rows={1}
           type={'password'}
           value={password}
-          onChange={handlePassword}
+          onChange={inputPassword}
           variant={'standard'}
+          required={true}
         />
         <TextInput
           className={'signup-input'}
           fullWidth={false}
-          label={'Password to confirm *'}
+          label={'Password to confirm'}
           multiline={false}
           rows={1}
           type={'password'}
           value={passwordConfirm}
-          onChange={handlePasswordConfirm}
+          onChange={inputPasswordConfirm}
           variant={'standard'}
+          required={true}
         />
-        <Button className={'signup-submit'} onClick={() => console.log('sign in')}>
-          sign up
-        </Button>
+        <PlaneLargeButton
+          label={'sign up'}
+          onClick={() => dispatch(signUp({ username, email, password, passwordConfirm }))}
+        />
       </Container>
     </div>
   )

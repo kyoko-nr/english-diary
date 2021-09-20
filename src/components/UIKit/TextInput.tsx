@@ -11,6 +11,7 @@ type TextInputProps = {
   className?: string
   placeholder?: string
   variant: 'outlined' | 'standard'
+  required?: boolean
   onChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 }
 
@@ -27,6 +28,7 @@ const TextInput = (props: TextInputProps): JSX.Element => {
       onChange={props.onChange}
       placeholder={props.placeholder}
       variant={props.variant}
+      required={props.required}
     />
   )
 }

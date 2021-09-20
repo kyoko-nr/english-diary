@@ -2,13 +2,15 @@ import { createStore as reduxCreateStore, combineReducers, applyMiddleware } fro
 import { UsersReducer } from '../users/reducers'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import * as History from 'history'
+import thunk from 'redux-thunk'
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default function createStore(history: History.History) {
   return reduxCreateStore(
     combineReducers({
       router: connectRouter(history),
       users: UsersReducer,
     }),
-    applyMiddleware(routerMiddleware(history))
+    applyMiddleware(routerMiddleware(history), thunk)
   )
 }

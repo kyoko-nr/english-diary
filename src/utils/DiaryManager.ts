@@ -1,5 +1,5 @@
 import { db } from 'firebase/index'
-import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'
+import { collection, getDocs, doc, getDoc, addDoc, Timestamp } from 'firebase/firestore'
 import { Diary } from 'types/TypeList'
 
 const initialDiary: Diary[] = [

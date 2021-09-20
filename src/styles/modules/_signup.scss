@@ -1,4 +1,4 @@
-.signin {
+.signup {
   height: 100vh;
   width: 100vw;
   background-color: $cYellow;
@@ -15,12 +15,6 @@
     width: 400px;
   }
 
-  &-forgot.MuiLink-root {
-    @extend .font-sm;
-    margin-top: 16px;
-    color: $cGrey;
-  }
-
   &-submit.MuiButtonBase-root.MuiButton-root {
     background-color: $cWhite;
     color: $cGrey;
@@ -30,13 +24,6 @@
     &:hover {
       background-color: rgb(243, 243, 243);
     }
-  }
-
-  &-signup.MuiLink-root  {
-    color: $cPurple;
-    text-transform: uppercase;
-    font-weight: 500;
-    margin-top: 16px;
   }
 
 }

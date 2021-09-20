@@ -1,4 +1,6 @@
 import { useState, useEffect, Suspense } from 'react'
+import { useDispatch } from 'react-redux'
+import { push } from 'connected-react-router'
 import ReactDOM from 'react-dom'
 import { Canvas, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -11,6 +13,8 @@ import { InputFunction } from 'types/TypeList'
 import { AnimationMixer } from 'three'
 
 const Login = (): JSX.Element => {
+  const dispatch = useDispatch()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -32,9 +36,9 @@ const Login = (): JSX.Element => {
   }
 
   return (
-    <div className={'signin'}>
+    <div className={'login'}>
       <Container maxWidth="lg">
-        <Typography className={'signin-title'} component="h1" variant="h4">
+        <Typography className={'login-title'} component="h1" variant="h4">
           English Diary
         </Typography>
         {/**
@@ -53,7 +57,7 @@ const Login = (): JSX.Element => {
          * three js *
          */}
         <TextInput
-          className={'signin-input'}
+          className={'login-input'}
           fullWidth={false}
           label={'Email'}
           multiline={false}
@@ -64,7 +68,7 @@ const Login = (): JSX.Element => {
           variant={'standard'}
         />
         <TextInput
-          className={'signin-input'}
+          className={'login-input'}
           fullWidth={false}
           label={'Password'}
           multiline={false}
@@ -74,13 +78,18 @@ const Login = (): JSX.Element => {
           onChange={handlePassword}
           variant={'standard'}
         />
-        <Link className={'signin-forgot'} href={'#'} color={'inherit'}>
+        <Link className={'login-forgot'} component={'button'} onClick={() => console.log('forgot')} color={'inherit'}>
           Forgot your password?
         </Link>
-        <Button className={'signin-submit'} onClick={() => console.log('sign in')}>
+        <Button className={'login-submit'} onClick={() => console.log('sign in')}>
           sign in
         </Button>
-        <Link className={'signin-signup'} href={'#'} color={'initial'}>
+        <Link
+          className={'login-signup'}
+          component={'button'}
+          onClick={() => dispatch(push(`/signup`))}
+          color={'initial'}
+        >
           sign up
         </Link>
       </Container>

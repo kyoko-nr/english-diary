@@ -1,7 +1,7 @@
 import { useState, useCallback, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { Canvas, useLoader } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import { Container, Typography, Link } from '@material-ui/core'
@@ -9,7 +9,7 @@ import { Container, Typography, Link } from '@material-ui/core'
 import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
 import { AnimationMixer } from 'three'
 
-import { resetPassword, signIn } from 'reducks/users/operations'
+import { signIn } from 'reducks/users/operations'
 
 const signin = (): JSX.Element => {
   const dispatch = useDispatch()
@@ -33,9 +33,17 @@ const signin = (): JSX.Element => {
 
   const Model = (): JSX.Element => {
     const gltf = useLoader(GLTFLoader, '/model_nodraco.glb')
-    // const mixer = new AnimationMixer(gltf.scene)
-    // const action = mixer.clipAction(gltf.animations[1])
-    // action.play()
+    const mixer = new AnimationMixer(gltf.scene)
+    if (mixer) {
+      gltf.animations.forEach((animation) => {
+        const action = mixer.clipAction(animation)
+        action.play()
+      })
+    }
+
+    useFrame((state, delta) => {
+      mixer.update(delta)
+    })
     return <primitive object={gltf.scene} dispose={null} position={[0, -2, 0]} scale={1} />
   }
 

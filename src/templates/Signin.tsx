@@ -9,7 +9,7 @@ import { Container, Typography, Link } from '@material-ui/core'
 import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
 import { AnimationMixer } from 'three'
 
-import { signIn } from 'reducks/users/operations'
+import { resetPassword, signIn } from 'reducks/users/operations'
 
 const signin = (): JSX.Element => {
   const dispatch = useDispatch()
@@ -84,7 +84,12 @@ const signin = (): JSX.Element => {
           variant={'standard'}
           required={true}
         />
-        <Link className={'signin-forgot'} component={'button'} onClick={() => console.log('forgot')} color={'inherit'}>
+        <Link
+          className={'signin-forgot'}
+          component={'button'}
+          color={'inherit'}
+          onClick={() => dispatch(push('/signin/reset'))}
+        >
           Forgot your password?
         </Link>
         <PlaneLargeButton label={'sign in'} onClick={() => dispatch(signIn({ email, password }))} />

@@ -1,10 +1,36 @@
 import { push } from 'connected-react-router'
 import { signUpParams, signInParams } from './types'
 import { auth, db } from 'firebase/index'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  UserCredential,
+  signOut,
+  sendPasswordResetEmail,
+} from 'firebase/auth'
 import { Timestamp, setDoc, doc, getDoc } from 'firebase/firestore'
-import { Dispatch } from 'redux'
-import { signInAction } from './actions'
+import { Dispatch, Unsubscribe } from 'redux'
+import { signInAction, signOutAction } from './actions'
+
+export const listenAuthState = () => {
+  return async (dispatch: Dispatch): Promise<Unsubscribe> => {
+    return onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const uid = user.uid
+        getDoc(doc(db, 'users', uid)).then((snapshot) => {
+          const data = snapshot.data()
+          if (data) {
+            dispatch(signInAction({ username: data.username, uid: data.uid, isSignedIn: true }))
+            dispatch(push('/'))
+          }
+        })
+      } else {
+        dispatch(push('/signin'))
+      }
+    })
+  }
+}
 
 export const signIn = (params: signInParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
@@ -68,5 +94,32 @@ export const signUp = (params: signUpParams) => {
       .catch((error) => {
         console.log(error)
       })
+  }
+}
+
+export const signOutFrom = () => {
+  return async (dispatch: Dispatch): Promise<void> => {
+    signOut(auth).then(() => {
+      dispatch(signOutAction())
+      dispatch(push('/signin'))
+    })
+  }
+}
+
+export const resetPassword = (email: string) => {
+  return async (dispatch: Dispatch): Promise<void> => {
+    if (!email) {
+      alert('Unvalid email')
+      return Promise.reject()
+    } else {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert('Password reset email was sent!')
+          dispatch(push('/signin'))
+        })
+        .catch(() => {
+          alert('Failed to send email')
+        })
+    }
   }
 }

@@ -4,7 +4,7 @@ export type userState = {
   username: string
 }
 
-export type signInAction = {
+export type signInOutAction = {
   type: string
   payload: userState
 }

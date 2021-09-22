@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Container, Typography } from '@material-ui/core'
-import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
+import { StandardTextInput, PlaneLargeButton } from 'components/UIKit/index'
 
 import { signUp } from 'reducks/users/operations'
 
@@ -42,13 +42,13 @@ const Signup = (): JSX.Element => {
   )
 
   return (
-    <div className={'signup'}>
+    <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
-        <Typography className={'signup-title'} component="h2" variant="h4">
+        <Typography component="h2" variant="h4">
           Sign up for your English Diary!
         </Typography>
-        <TextInput
-          className={'signup-input'}
+        <div className={'spacer-32'}></div>
+        <StandardTextInput
           fullWidth={false}
           label={'User name'}
           multiline={false}
@@ -56,11 +56,10 @@ const Signup = (): JSX.Element => {
           type={'text'}
           value={username}
           onChange={inputUsername}
-          variant={'standard'}
           required={true}
         />
-        <TextInput
-          className={'signup-input'}
+        <div className={'spacer-8'}></div>
+        <StandardTextInput
           fullWidth={false}
           label={'Email'}
           multiline={false}
@@ -68,11 +67,10 @@ const Signup = (): JSX.Element => {
           type={'email'}
           value={email}
           onChange={inputEmail}
-          variant={'standard'}
           required={true}
         />
-        <TextInput
-          className={'signup-input'}
+        <div className={'spacer-8'}></div>
+        <StandardTextInput
           fullWidth={false}
           label={'Password'}
           multiline={false}
@@ -80,11 +78,10 @@ const Signup = (): JSX.Element => {
           type={'password'}
           value={password}
           onChange={inputPassword}
-          variant={'standard'}
           required={true}
         />
-        <TextInput
-          className={'signup-input'}
+        <div className={'spacer-8'}></div>
+        <StandardTextInput
           fullWidth={false}
           label={'Password to confirm'}
           multiline={false}
@@ -92,7 +89,6 @@ const Signup = (): JSX.Element => {
           type={'password'}
           value={passwordConfirm}
           onChange={inputPasswordConfirm}
-          variant={'standard'}
           required={true}
         />
         <PlaneLargeButton

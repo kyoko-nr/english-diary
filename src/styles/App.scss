@@ -1,9 +1,6 @@
 @import 'modules/variables';
-@import 'modules/header';
-@import 'modules/diary';
+@import 'modules/spacer';
 @import 'modules/archive';
-@import 'modules/signin';
-@import 'modules/signup';
 @import 'modules/reset';
 
 .font-xxs {
@@ -26,7 +23,29 @@
   @extend .font-md;
   color: $cGrey;
 }
-
 .content {
   padding: 24px;
+}
+.full-window {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+.bg-yellow {
+  background-color: $cYellow;
+}
+.flex-column {
+  & .MuiContainer-root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  & > button {
+    margin: 0 8px 0 8px;
+  }
 }

@@ -1,13 +1,13 @@
 import { useState, useCallback, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
+
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-
-import { Container, Typography, Link } from '@material-ui/core'
-
-import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
 import { AnimationMixer } from 'three'
+
+import { Container, Typography } from '@material-ui/core'
+import { StandardTextInput, PlaneLargeButton, SimpleLink } from 'components/UIKit/index'
 
 import { signIn } from 'reducks/users/operations'
 
@@ -48,9 +48,9 @@ const signin = (): JSX.Element => {
   }
 
   return (
-    <div className={'signin'}>
+    <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
-        <Typography className={'signin-title'} component="h1" variant="h4">
+        <Typography component="h1" variant="h4">
           English Diary
         </Typography>
         {/**
@@ -68,8 +68,7 @@ const signin = (): JSX.Element => {
         {/**
          * three js *
          */}
-        <TextInput
-          className={'signin-input'}
+        <StandardTextInput
           fullWidth={false}
           label={'Email'}
           multiline={false}
@@ -77,11 +76,10 @@ const signin = (): JSX.Element => {
           type={'email'}
           value={email}
           onChange={inputEmail}
-          variant={'standard'}
           required={true}
         />
-        <TextInput
-          className={'signin-input'}
+        <div className={'spacer-8'}></div>
+        <StandardTextInput
           fullWidth={false}
           label={'Password'}
           multiline={false}
@@ -89,26 +87,27 @@ const signin = (): JSX.Element => {
           type={'password'}
           value={password}
           onChange={inputPassword}
-          variant={'standard'}
           required={true}
         />
-        <Link
-          className={'signin-forgot'}
+        <div className={'spacer-16'}></div>
+        <SimpleLink
+          label={'Forgot your password?'}
           component={'button'}
-          color={'inherit'}
           onClick={() => dispatch(push('/signin/reset'))}
-        >
-          Forgot your password?
-        </Link>
+          color={'textPrimary'}
+          variant={'body2'}
+        />
+        <div className={'spacer-32'}></div>
         <PlaneLargeButton label={'sign in'} onClick={() => dispatch(signIn({ email, password }))} />
-        <Link
-          className={'signin-signup'}
+        <div className={'spacer-16'}></div>
+        <SimpleLink
+          label={'sign up'}
           component={'button'}
           onClick={() => dispatch(push(`/signup`))}
-          color={'initial'}
-        >
-          sign up
-        </Link>
+          color={'primary'}
+          upperCase={true}
+          variant={'body1'}
+        />
       </Container>
     </div>
   )

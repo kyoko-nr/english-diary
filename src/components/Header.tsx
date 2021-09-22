@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { AppBar, Toolbar, Typography, Link, Container } from '@material-ui/core'
 import { signOutFrom } from 'reducks/users/operations'
+import { SimpleLink } from './UIKit/index'
 
 type HeaderProps = {
   title: string
@@ -11,7 +12,7 @@ const Header = (props: HeaderProps): JSX.Element => {
   const dispatch = useDispatch()
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" color={'secondary'}>
       <Container maxWidth="lg">
         <Toolbar>
           <Link color={'inherit'} underline={'none'} component={'a'} onClick={() => dispatch(push('/'))}>
@@ -19,9 +20,14 @@ const Header = (props: HeaderProps): JSX.Element => {
               {props.title}
             </Typography>
           </Link>
-          <Link component={'button'} onClick={() => dispatch(signOutFrom())}>
-            SIGN OUT
-          </Link>
+          <SimpleLink
+            label={'sign out'}
+            component={'button'}
+            onClick={() => dispatch(signOutFrom())}
+            color={'primary'}
+            upperCase={true}
+            variant={'body1'}
+          />
         </Toolbar>
       </Container>
     </AppBar>

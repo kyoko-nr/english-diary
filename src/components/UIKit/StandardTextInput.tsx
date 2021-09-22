@@ -2,16 +2,14 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import { ChangeEvent } from 'react'
 
-type TextInputProps = {
+type StandardTextInputProps = {
   fullWidth: boolean
   label?: string
   multiline: boolean
   rows: number
   value: string
   type: 'text' | 'email' | 'password'
-  className?: string
   placeholder?: string
-  variant: 'outlined' | 'standard'
   required?: boolean
   onChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 }
@@ -19,12 +17,12 @@ type TextInputProps = {
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      borderRadius: 8,
+      width: 400,
     },
   })
 )
 
-const TextInput = (props: TextInputProps): JSX.Element => {
+const StandardTextInput = (props: StandardTextInputProps): JSX.Element => {
   const classes = useStyles()
 
   return (
@@ -38,10 +36,10 @@ const TextInput = (props: TextInputProps): JSX.Element => {
       type={props.type}
       onChange={props.onChange}
       placeholder={props.placeholder}
-      variant={props.variant}
+      variant={'standard'}
       required={props.required}
     />
   )
 }
 
-export default TextInput
+export default StandardTextInput

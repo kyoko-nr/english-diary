@@ -28,9 +28,7 @@ const theme = createTheme({
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
-      <main>
-        <Router />
-      </main>
+      <Router />
     </ThemeProvider>
   )
 }

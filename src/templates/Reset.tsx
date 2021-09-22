@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { Container, Typography } from '@material-ui/core'
-import { TextInput, PlaneLargeButton } from 'components/UIKit/index'
+import { push } from 'connected-react-router'
+import { Container } from '@material-ui/core'
+import { SimpleLink, PlaneLargeButton, StandardTextInput, Label } from 'components/UIKit/index'
 
 import { resetPassword } from 'reducks/users/operations'
 
@@ -18,13 +19,11 @@ const Reset = (): JSX.Element => {
   )
 
   return (
-    <div className={'reset'}>
+    <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
-        <Typography className={'reset-title'} component="h2" variant="h4">
-          Reset your password
-        </Typography>
-        <TextInput
-          className={'reset-input'}
+        <Label label={'Reset your password'} variant={'h4'} align={'center'} />
+        <div className={'spacer-40'}></div>
+        <StandardTextInput
           fullWidth={false}
           label={'Email'}
           multiline={false}
@@ -32,10 +31,17 @@ const Reset = (): JSX.Element => {
           type={'email'}
           value={email}
           onChange={inputEmail}
-          variant={'standard'}
           required={true}
         />
         <PlaneLargeButton label={'send email'} onClick={() => dispatch(resetPassword(email))} />
+        <div className={'spacer-16'}></div>
+        <SimpleLink
+          label={'Do you already have an account?'}
+          component={'button'}
+          onClick={() => dispatch(push('/signin'))}
+          color={'textPrimary'}
+          variant={'body2'}
+        />
       </Container>
     </div>
   )

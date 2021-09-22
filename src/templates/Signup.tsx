@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { Container, Typography } from '@material-ui/core'
-import { StandardTextInput, PlaneLargeButton } from 'components/UIKit/index'
+import { push } from 'connected-react-router'
+import { Container } from '@material-ui/core'
+import { StandardTextInput, PlaneLargeButton, Label, SimpleLink } from 'components/UIKit/index'
 
 import { signUp } from 'reducks/users/operations'
 
@@ -44,10 +45,8 @@ const Signup = (): JSX.Element => {
   return (
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
-        <Typography component="h2" variant="h4">
-          Sign up for your English Diary!
-        </Typography>
-        <div className={'spacer-32'}></div>
+        <Label label={'Sign up for your English Diary!'} variant={'h4'} align={'center'} />
+        <div className={'spacer-40'}></div>
         <StandardTextInput
           fullWidth={false}
           label={'User name'}
@@ -91,9 +90,18 @@ const Signup = (): JSX.Element => {
           onChange={inputPasswordConfirm}
           required={true}
         />
+        <div className={'spacer-16'}></div>
         <PlaneLargeButton
           label={'sign up'}
           onClick={() => dispatch(signUp({ username, email, password, passwordConfirm }))}
+        />
+        <div className={'spacer-16'}></div>
+        <SimpleLink
+          label={'Go to sign in page'}
+          component={'button'}
+          onClick={() => dispatch(push('/signin'))}
+          color={'textPrimary'}
+          variant={'body2'}
         />
       </Container>
     </div>

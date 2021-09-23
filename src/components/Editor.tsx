@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDiary, saveDiary } from 'reducks/diaries/operations'
+import { fetchDiary, saveDiary } from 'reducks/diaries/operations'
 import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
 import { formatDate } from 'utils/DateFormatUtils'
 import { Timestamp } from '@firebase/firestore'
@@ -57,7 +57,7 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   useEffect(() => {
     if (props.idToEdit) {
-      getDiary(props.idToEdit).then((diary) => {
+      fetchDiary(props.idToEdit).then((diary) => {
         setId(diary.id)
         setUserId(diary.userId)
         setDate(diary.date)

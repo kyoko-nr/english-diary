@@ -30,7 +30,7 @@ export const saveDiary = (diary: diaryState) => {
   }
 }
 
-export const getDiary = async (id: string): Promise<diaryState> => {
+export const fetchDiary = async (id: string): Promise<diaryState> => {
   console.log('id : ', id)
   const docref = doc(db, 'diaries', id)
   const docSnap = await getDoc(docref)

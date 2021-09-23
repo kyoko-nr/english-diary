@@ -1,30 +1,30 @@
 import { db } from 'firebase/index'
-import { collection, getDocs, doc, getDoc, addDoc, Timestamp } from 'firebase/firestore'
+import { collection, getDocs, doc, getDoc, addDoc } from 'firebase/firestore'
 import { Diary } from 'types/TypeList'
 
 const initialDiary: Diary[] = [
-  {
-    id: '1',
-    date: 'Sun 08/01/2021',
-    title: 'My first diary',
-    content: 'This is my first diary. I watched some dramas on Netflix today. I like Atypical the most.',
-    userId: 'kyoko',
-  },
-  {
-    id: '2',
-    date: 'Mon 08/02/2021',
-    title: 'My second diary',
-    content:
-      'This is my second diary. I went to Minatomirai to watch a movie. The title of the movie is "In the Hights."',
-    userId: 'kyoko',
-  },
-  {
-    id: '3',
-    date: 'Tue 08/10/2021',
-    title: 'My third diary',
-    content: 'This is my third diary. I have nothing to write today."',
-    userId: 'kyoko',
-  },
+  // {
+  //   id: '1',
+  //   date: 'Sun 08/01/2021',
+  //   title: 'My first diary',
+  //   content: 'This is my first diary. I watched some dramas on Netflix today. I like Atypical the most.',
+  //   userId: 'kyoko',
+  // },
+  // {
+  //   id: '2',
+  //   date: 'Mon 08/02/2021',
+  //   title: 'My second diary',
+  //   content:
+  //     'This is my second diary. I went to Minatomirai to watch a movie. The title of the movie is "In the Hights."',
+  //   userId: 'kyoko',
+  // },
+  // {
+  //   id: '3',
+  //   date: 'Tue 08/10/2021',
+  //   title: 'My third diary',
+  //   content: 'This is my third diary. I have nothing to write today."',
+  //   userId: 'kyoko',
+  // },
 ]
 /**
  * Fetch all diaries.
@@ -35,7 +35,7 @@ export const fetchDiaries = async (): Promise<Diary[]> => {
   const snapshot = await getDocs(collection(db, 'diaries'))
   snapshot.forEach((doc) => {
     const data = doc.data()
-    diaries.push({ id: doc.id, date: data.date, title: data.title, content: data.title, userId: data.userId })
+    diaries.push({ id: doc.id, date: new Date(data.date), title: data.title, content: data.title, userId: data.userId })
   })
   return diaries
 }

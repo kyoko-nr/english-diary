@@ -4,7 +4,9 @@ const initialState = {
     uid: '',
     username: '',
   },
-  diaris: {},
+  diaries: {
+    list: [],
+  },
 }
 
 export default initialState

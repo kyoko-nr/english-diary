@@ -4,7 +4,7 @@ import { makeStyles, createStyles } from '@material-ui/styles'
 type TextMidButtonProps = {
   label: string
   onClick: () => void
-  color: 'primary'
+  color: 'primary' | 'default'
 }
 
 const useStyles = makeStyles(() =>

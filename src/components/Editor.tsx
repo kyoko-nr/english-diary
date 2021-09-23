@@ -1,17 +1,23 @@
 import { useState, useEffect, useCallback } from 'react'
-
+import { useDispatch, useSelector } from 'react-redux'
+import { getDiary, saveDiary } from 'reducks/diaries/operations'
 import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
 import { formatDate } from 'utils/DateFormatUtils'
-import { fetchDiary } from 'utils/DiaryManager'
-import { SaveFunc } from 'types/TypeList'
+import { Timestamp } from '@firebase/firestore'
+import { getUserId } from 'reducks/users/selectors'
 
 type EditorProps = {
-  onSave: SaveFunc
   idToEdit?: string
 }
 
 const Editor = (props: EditorProps): JSX.Element => {
-  const [date, setDate] = useState('')
+  const dispatch = useDispatch()
+  const selector = useSelector((state) => state)
+
+  const [id, setId] = useState('')
+  const [userId, setUserId] = useState('')
+  const [date, setDate] = useState(Timestamp.now())
+  const [datestr, setDatestr] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [counter, setCounter] = useState(0)
@@ -27,37 +33,48 @@ const Editor = (props: EditorProps): JSX.Element => {
     (event) => {
       const value = event.target.value
       setContent(event.target.value)
-      const splited = value.split(/[\s]/)
-      const count = splited.filter((w: string) => w !== '').length
-      setCounter(count)
+      setCounter(countWords(value))
     },
     [setContent, setCounter]
   )
 
-  const clearFields = () => {
+  const countWords = (value: string): number => {
+    const splited = value.split(/[\s]/)
+    const count = splited.filter((w: string) => w !== '').length
+    return count
+  }
+
+  const initFields = () => {
+    setId('')
+    setUserId(getUserId(selector))
+    const today = new Date()
+    setDate(Timestamp.fromDate(today))
+    setDatestr(formatDate(today))
     setTitle('')
     setContent('')
+    setCounter(0)
   }
 
   useEffect(() => {
-    console.log('editor props:', props)
     if (props.idToEdit) {
-      fetchDiary(props.idToEdit).then((diary) => {
+      getDiary(props.idToEdit).then((diary) => {
+        setId(diary.id)
+        setUserId(diary.userId)
         setDate(diary.date)
+        setDatestr(formatDate(diary.date.toDate()))
         setTitle(diary.title)
         setContent(diary.content)
+        setCounter(countWords(diary.content))
       })
     } else {
-      const today = new Date()
-      const str = formatDate(today)
-      setDate(str)
+      initFields()
     }
-  }, [])
+  }, [id])
 
   return (
     <div className={'content'}>
-      <div className={'spacer-24'}></div>
-      <Label label={date} variant={'body1'} align={'left'} />
+      <div className={'spacer-8'}></div>
+      <Label label={datestr} variant={'body1'} align={'left'} />
       <div className={'spacer-24'}></div>
       <TextInput
         fullWidth={true}
@@ -75,7 +92,7 @@ const Editor = (props: EditorProps): JSX.Element => {
       <TextInput
         fullWidth={true}
         multiline={true}
-        rows={20}
+        rows={16}
         value={content}
         type={'text'}
         placeholder={'Describe your day here!'}
@@ -84,21 +101,15 @@ const Editor = (props: EditorProps): JSX.Element => {
       />
       <div className={'spacer-32'}></div>
       <div className={'button-wrapper'}>
-        <OutlineMidButton label={'clear'} onClick={clearFields} />
-        <ContainedMidButton color={'primary'} onClick={clearFields} label={'save'} />
-
-        {/* <Button className={'second'} onClick={() => crearFields()}>
-          clear
-        </Button> */}
-        {/* <Button
-          className={'save'}
+        <OutlineMidButton label={'clear'} onClick={initFields} />
+        <ContainedMidButton
+          color={'primary'}
           onClick={() => {
-            props.idToEdit ? props.onSave(date, title, content, props.idToEdit) : props.onSave(date, title, content)
-            crearFields()
+            dispatch(saveDiary({ id, userId, date, title, content }))
+            initFields()
           }}
-        >
-          save
-        </Button> */}
+          label={'save'}
+        />
       </div>
     </div>
   )

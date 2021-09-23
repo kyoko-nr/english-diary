@@ -16,7 +16,7 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const Logo = (props: LogoProps) => {
+const Logo = (props: LogoProps): JSX.Element => {
   const classes = useStyles()
   const isLink = props.isLink
 

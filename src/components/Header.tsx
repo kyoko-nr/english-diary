@@ -1,14 +1,10 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { AppBar, Toolbar, Typography, Link, Container } from '@material-ui/core'
+import { AppBar, Toolbar, Container } from '@material-ui/core'
 import { signOutFrom } from 'reducks/users/operations'
 import { TextMidButton, Logo } from './UIKit/index'
 
-type HeaderProps = {
-  title: string
-}
-
-const Header = (props: HeaderProps): JSX.Element => {
+const Header = (): JSX.Element => {
   const dispatch = useDispatch()
 
   return (
@@ -16,7 +12,7 @@ const Header = (props: HeaderProps): JSX.Element => {
       <Container maxWidth="lg">
         <Toolbar>
           <Logo variant={'h5'} component={'div'} isLink={true} />
-          <TextMidButton label={'sign out'} onClick={() => dispatch(signOutFrom())} color={'primary'} />
+          <TextMidButton label={'sign out'} onClick={() => dispatch(signOutFrom())} color={'default'} />
         </Toolbar>
       </Container>
     </AppBar>

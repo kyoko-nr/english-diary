@@ -20,15 +20,15 @@ const Post = (props: PostProps): JSX.Element => {
   }
 
   useEffect(() => {
-    fetchDiaries().then((diaries) => {
-      setArchives(diaries)
-      setDiary(diaries.find((diary) => diary.id === props.match.params.id))
-    })
+    // fetchDiaries().then((diaries) => {
+    //   setArchives(diaries)
+    //   setDiary(diaries.find((diary) => diary.id === props.match.params.id))
+    // })
   }, [])
 
   return (
     <>
-      <Header title="English Diary"></Header>
+      <Header />
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>

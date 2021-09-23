@@ -13,16 +13,17 @@ import { Timestamp, setDoc, doc, getDoc } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
 import { signInAction, signOutAction } from './actions'
 
+const DOC_NAME = 'users'
+
 export const listenAuthState = () => {
   return async (dispatch: Dispatch): Promise<Unsubscribe> => {
     return onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid
-        getDoc(doc(db, 'users', uid)).then((snapshot) => {
+        getDoc(doc(db, DOC_NAME, uid)).then((snapshot) => {
           const data = snapshot.data()
           if (data) {
             dispatch(signInAction({ username: data.username, uid: data.uid, isSignedIn: true }))
-            dispatch(push('/'))
           }
         })
       } else {
@@ -45,7 +46,7 @@ export const signIn = (params: signInParams) => {
         const user = result.user
         if (user) {
           const uid = user.uid
-          getDoc(doc(db, 'users', uid)).then((snapshot) => {
+          getDoc(doc(db, DOC_NAME, uid)).then((snapshot) => {
             const data = snapshot.data()
             if (data) {
               dispatch(signInAction({ username: data.username, uid: data.uid, isSignedIn: true }))
@@ -86,7 +87,7 @@ export const signUp = (params: signUpParams) => {
             usename: params.username,
           }
 
-          setDoc(doc(db, 'users', uid), userInitialData).then(() => {
+          setDoc(doc(db, DOC_NAME, uid), userInitialData).then(() => {
             dispatch(push('/'))
           })
         }

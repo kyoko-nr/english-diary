@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button'
 import { makeStyles, createStyles } from '@material-ui/styles'
 
-type ContainedyMidButtonProps = {
+type TextMidButtonProps = {
   label: string
   onClick: () => void
-  color: 'primary' | 'secondary'
+  color: 'primary'
 }
 
 const useStyles = makeStyles(() =>
@@ -18,14 +18,14 @@ const useStyles = makeStyles(() =>
   })
 )
 
-const ContainedyMidButton = (props: ContainedyMidButtonProps): JSX.Element => {
+const TextMidButton = (props: TextMidButtonProps): JSX.Element => {
   const classes = useStyles()
 
   return (
-    <Button className={classes.root} onClick={props.onClick} variant={'contained'} color={props.color}>
+    <Button className={classes.root} onClick={props.onClick} variant={'text'} color={props.color}>
       {props.label}
     </Button>
   )
 }
 
-export default ContainedyMidButton
+export default TextMidButton

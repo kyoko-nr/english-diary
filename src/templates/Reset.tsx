@@ -36,7 +36,7 @@ const Reset = (): JSX.Element => {
         <PlaneLargeButton label={'send email'} onClick={() => dispatch(resetPassword(email))} />
         <div className={'spacer-16'}></div>
         <SimpleLink
-          label={'Do you already have an account?'}
+          label={'Already have an account?'}
           component={'button'}
           onClick={() => dispatch(push('/signin'))}
           color={'textPrimary'}

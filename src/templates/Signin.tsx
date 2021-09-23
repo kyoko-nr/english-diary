@@ -2,7 +2,7 @@ import { useState, useCallback, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { Container } from '@material-ui/core'
-import { StandardTextInput, PlaneLargeButton, SimpleLink, Label } from 'components/UIKit/index'
+import { StandardTextInput, PlaneLargeButton, SimpleLink, TextLargeButton, Logo } from 'components/UIKit/index'
 
 import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
@@ -49,7 +49,7 @@ const signin = (): JSX.Element => {
   return (
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
-        <Label label={'English Diary'} variant={'h4'} align={'center'} />
+        <Logo variant={'h4'} component={'h1'} isLink={false} />
         {/**
          * three js *
          */}
@@ -96,14 +96,7 @@ const signin = (): JSX.Element => {
         />
         <PlaneLargeButton label={'sign in'} onClick={() => dispatch(signIn({ email, password }))} />
         <div className={'spacer-16'}></div>
-        <SimpleLink
-          label={'sign up'}
-          component={'button'}
-          onClick={() => dispatch(push(`/signup`))}
-          color={'primary'}
-          upperCase={true}
-          variant={'body1'}
-        />
+        <TextLargeButton label={'sign up'} onClick={() => dispatch(push(`/signup`))} color={'primary'} />
       </Container>
     </div>
   )

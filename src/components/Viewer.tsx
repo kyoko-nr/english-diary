@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
 
-import { ContainedyMidButton, OutlineMidButton } from 'components/UIKit/index'
+import { ContainedMidButton, OutlineMidButton } from 'components/UIKit/index'
 
 import { Diary } from 'types/TypeList'
 
@@ -27,7 +27,7 @@ const Viewer = (props: ViewerProps): JSX.Element => {
       <div className={'diary-content'}>{props.diary.content}</div>
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'delete'} onClick={() => console.log('delete')} />
-        <ContainedyMidButton label={'edit'} onClick={() => console.log('edit')} color={'secondary'} />
+        <ContainedMidButton label={'edit'} onClick={() => console.log('edit')} color={'secondary'} />
         {/* <Button className={'second'} onClick={() => props.onDelete(props.diary.id)}>
           delete
         </Button> */}

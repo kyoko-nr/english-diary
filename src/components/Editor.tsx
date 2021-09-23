@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 
-import { TextInput, ContainedyMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
+import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
 import { formatDate } from 'utils/DateFormatUtils'
 import { fetchDiary } from 'utils/DiaryManager'
 import { SaveFunc } from 'types/TypeList'
@@ -85,7 +85,7 @@ const Editor = (props: EditorProps): JSX.Element => {
       <div className={'spacer-32'}></div>
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} onClick={clearFields} />
-        <ContainedyMidButton color={'primary'} onClick={clearFields} label={'save'} />
+        <ContainedMidButton color={'primary'} onClick={clearFields} label={'save'} />
 
         {/* <Button className={'second'} onClick={() => crearFields()}>
           clear

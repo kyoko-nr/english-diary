@@ -35,7 +35,7 @@ const Post = (props: PostProps): JSX.Element => {
             {diary ? <Viewer diary={diary} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
           </Grid>
           <Grid item xs={12} md={4}>
-            {archives ? <ArchiveList list={archives} /> : <div>No diaries</div>}
+            {/* {archives ? <ArchiveList list={archives} /> : <div>No diaries</div>} */}
           </Grid>
         </Grid>
       </Container>

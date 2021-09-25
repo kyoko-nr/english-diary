@@ -3,7 +3,7 @@ import { Timestamp } from '@firebase/firestore'
 export type diaryState = {
   id: string
   userId: string
-  date: Timestamp
+  date: string
   title: string
   content: string
 }
@@ -18,10 +18,15 @@ export type diaryDbState = {
   updatedAt: Timestamp
 }
 
-export type saveAction = {
+export type fetchDiariesAction = {
   type: string
-  payload: diaryState
+  payload: diaryState[]
 }
+
+// export type saveAction = {
+//   type: string
+//   payload: diaryState
+// }
 
 // export type DiaryDb = {
 //   id: string

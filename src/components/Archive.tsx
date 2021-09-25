@@ -5,24 +5,47 @@ import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 
-import { Diary } from 'types/TypeList'
+import { diaryState } from 'reducks/diaries/types'
+import { createStyles, makeStyles } from '@material-ui/styles'
 
 type ArchiveProps = {
-  diary: Diary
+  diary: diaryState
 }
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    card: {
+      boxShadow: 'none',
+    },
+    cardContent: {
+      padding: 16,
+      borderBottom: '1px solid #4a4a4a',
+    },
+    date: {
+      fontSize: 12,
+      marginBottom: 4,
+    },
+    title: {
+      fontSize: 16,
+      marginBottom: 4,
+    },
+    content: {
+      fontSize: 14,
+    },
+  })
+)
 
 const Archive = (props: ArchiveProps): JSX.Element => {
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   return (
     <CardActionArea component="a" onClick={() => dispatch(push(`/posts/${props.diary.id}`))}>
-      <Card className={'archive'}>
-        <CardContent>
-          <div className={'date'}>{props.diary.date}</div>
-          <Typography className={'title'} component="h2">
-            {props.diary.title}
-          </Typography>
-          <div className={'diary-content'}>{props.diary.content}</div>
+      <Card className={classes.card}>
+        <CardContent className={classes.cardContent}>
+          <div className={classes.date}>{props.diary.date}</div>
+          <h2 className={classes.title}>{props.diary.title}</h2>
+          <div className={classes.content}>{props.diary.content}</div>
         </CardContent>
       </Card>
     </CardActionArea>

@@ -1,6 +1,6 @@
 @import 'modules/variables';
 @import 'modules/spacer';
-@import 'modules/archive';
+// @import 'modules/archive';
 
 .font-xxs {
   font-size: 10px;
@@ -23,7 +23,7 @@
   color: $cGrey;
 }
 .content {
-  padding: 24px;
+  padding: 16px;
 }
 .full-window {
   height: 100vh;

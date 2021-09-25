@@ -2,8 +2,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchDiary, saveDiary } from 'reducks/diaries/operations'
 import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
-import { formatDate } from 'utils/DateFormatUtils'
-import { Timestamp } from '@firebase/firestore'
 import { getUserId } from 'reducks/users/selectors'
 
 type EditorProps = {
@@ -16,8 +14,7 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   const [id, setId] = useState('')
   const [userId, setUserId] = useState('')
-  const [date, setDate] = useState(Timestamp.now())
-  const [datestr, setDatestr] = useState('')
+  const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [counter, setCounter] = useState(0)
@@ -48,8 +45,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     setId('')
     setUserId(getUserId(selector))
     const today = new Date()
-    setDate(Timestamp.fromDate(today))
-    setDatestr(formatDate(today))
+    setDate(today.toDateString())
     setTitle('')
     setContent('')
     setCounter(0)
@@ -61,7 +57,6 @@ const Editor = (props: EditorProps): JSX.Element => {
         setId(diary.id)
         setUserId(diary.userId)
         setDate(diary.date)
-        setDatestr(formatDate(diary.date.toDate()))
         setTitle(diary.title)
         setContent(diary.content)
         setCounter(countWords(diary.content))
@@ -74,7 +69,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   return (
     <div className={'content'}>
       <div className={'spacer-8'}></div>
-      <Label label={datestr} variant={'body1'} align={'left'} />
+      <Label label={date} variant={'body1'} align={'left'} />
       <div className={'spacer-24'}></div>
       <TextInput
         fullWidth={true}

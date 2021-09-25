@@ -3,7 +3,6 @@ import { push } from 'connected-react-router'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
 
 import { diaryState } from 'reducks/diaries/types'
 import { createStyles, makeStyles } from '@material-ui/styles'

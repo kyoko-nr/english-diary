@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
-import Typography from '@material-ui/core/Typography'
+import { diaryState } from 'reducks/diaries/types'
 
 import { ContainedMidButton, Label, OutlineMidButton } from 'components/UIKit/index'
-
-import { diaryState } from 'reducks/diaries/types'
 
 type ViewerProps = {
   diary: diaryState

@@ -4,38 +4,41 @@ import { RouteComponentProps } from 'react-router'
 import { Grid, Container } from '@material-ui/core'
 
 import { Header, ArchiveList, Viewer } from 'components/index'
-import { Diary } from 'types/TypeList'
-import { fetchDiaries, deleteDiary } from 'utils/DiaryManager'
+import { useSelector } from 'react-redux'
+import { diaryState } from 'reducks/diaries/types'
+import { getDiaries } from 'reducks/diaries/selectors'
 
 type PostProps = RouteComponentProps<{
   id: string
 }>
 
 const Post = (props: PostProps): JSX.Element => {
-  const [diary, setDiary] = useState<Diary>()
-  const [archives, setArchives] = useState<Array<Diary>>()
+  const selector = useSelector((state) => state)
+  const diaries = getDiaries(selector)
+
+  const [diaryToShow, setDiaryToShow] = useState<diaryState>()
 
   const deleteDiaryButton = (id: string): void => {
-    setArchives(deleteDiary(id))
+    // setArchives(deleteDiary(id))
   }
 
   useEffect(() => {
-    // fetchDiaries().then((diaries) => {
-    //   setArchives(diaries)
-    //   setDiary(diaries.find((diary) => diary.id === props.match.params.id))
-    // })
+    const id = props.match.params.id
+    console.log('post diaries : ', diaries)
+    const diary = diaries.filter((diary: diaryState) => diary.id === id)
+    setDiaryToShow(diary[0])
   }, [])
 
   return (
     <>
       <Header />
       <Container maxWidth="lg">
-        <Grid container spacing={2}>
+        <Grid container spacing={1} className={'content'}>
           <Grid item xs={12} md={8}>
-            {diary ? <Viewer diary={diary} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
+            {diaryToShow ? <Viewer diary={diaryToShow} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
           </Grid>
           <Grid item xs={12} md={4}>
-            {/* {archives ? <ArchiveList list={archives} /> : <div>No diaries</div>} */}
+            <ArchiveList />
           </Grid>
         </Grid>
       </Container>

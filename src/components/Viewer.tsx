@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import Typography from '@material-ui/core/Typography'
 
-import { ContainedMidButton, OutlineMidButton } from 'components/UIKit/index'
+import { ContainedMidButton, Label, OutlineMidButton } from 'components/UIKit/index'
 
-import { Diary } from 'types/TypeList'
+import { diaryState } from 'reducks/diaries/types'
 
 type ViewerProps = {
-  diary: Diary
+  diary: diaryState
   onDelete: (id: string) => void
 }
 
@@ -14,26 +14,26 @@ const Viewer = (props: ViewerProps): JSX.Element => {
   const [counter, setCounter] = useState(0)
 
   useEffect(() => {
-    const splited = props.diary.content.split(/[\s]/)
+    const content = props.diary.content
+    const splited = content.split(/[\s]/)
     const count = splited.filter((w) => w !== '').length
     setCounter(count)
   }, [])
 
   return (
-    <div className={'content diary'}>
-      <div className={'date'}>{props.diary.date}</div>
-      <Typography className={'title title-label'}>{props.diary.title}</Typography>
-      <div className={'word-counter'}>{counter} words</div>
-      <div className={'diary-content'}>{props.diary.content}</div>
+    <div className={'content'}>
+      <div className={'spacer-8'}></div>
+      <Label label={props.diary.date} variant={'body1'} align={'left'} />
+      <div className={'spacer-24'}></div>
+      <Label label={props.diary.title} variant={'h5'} align={'left'} />
+      <div className={'spacer-24'}></div>
+      <Label label={`${counter} words`} variant={'caption'} align={'right'} />
+      <div className={'spacer-8'}></div>
+      <Label label={props.diary.content} variant={'body1'} align={'left'} />
+      <div className={'spacer-32'}></div>
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'delete'} onClick={() => console.log('delete')} />
         <ContainedMidButton label={'edit'} onClick={() => console.log('edit')} color={'secondary'} />
-        {/* <Button className={'second'} onClick={() => props.onDelete(props.diary.id)}>
-          delete
-        </Button> */}
-        {/* <Button className={'edit'} href={`/edit/${props.diary.id}`}>
-          edit
-        </Button> */}
       </div>
     </div>
   )

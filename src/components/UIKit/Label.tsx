@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Typography } from '@material-ui/core'
 
 type LabelProps = {
   label: string
-  variant: 'h4' | 'body1' | 'body2' | 'caption'
+  variant: 'h4' | 'h5' | 'body1' | 'body2' | 'caption'
   align: 'center' | 'right' | 'left'
 }
 

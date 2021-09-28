@@ -53,6 +53,7 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   useEffect(() => {
     if (props.idToEdit) {
+      console.log('id to edit : ', props.idToEdit)
       fetchDiary(props.idToEdit).then((diary) => {
         setId(diary.id)
         setUserId(diary.userId)

@@ -27,9 +27,15 @@ const useStyles = makeStyles(() =>
     title: {
       fontSize: 16,
       marginBottom: 4,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
     },
     content: {
       fontSize: 14,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
     },
   })
 )
@@ -39,7 +45,7 @@ const Archive = (props: ArchiveProps): JSX.Element => {
   const classes = useStyles()
 
   return (
-    <CardActionArea component="a" onClick={() => dispatch(push(`/posts/${props.diary.id}`))}>
+    <CardActionArea component="a" onClick={() => dispatch(push(`/post/${props.diary.id}`))}>
       <Card className={classes.card}>
         <CardContent className={classes.cardContent}>
           <div className={classes.date}>{props.diary.date}</div>

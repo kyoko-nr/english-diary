@@ -1,15 +1,28 @@
-export type userState = {
+import { Timestamp } from '@firebase/firestore'
+
+export type UserState = {
   isSignedIn: boolean
   uid: string
   username: string
+  diaries: Diary[]
+  editing: Diary | undefined
 }
 
-export type signInOutAction = {
+export type Diary = {
+  id: string
+  date: Timestamp | undefined
+  title: string
+  content: string
+  createdAt: Timestamp | undefined
+  updatedAt: Timestamp | undefined
+}
+
+export type SignInOutAction = {
   type: string
-  payload: userState
+  payload: UserState
 }
 
-export type signUpParams = {
+export type SignUpParams = {
   username: string
   email: string
   password: string

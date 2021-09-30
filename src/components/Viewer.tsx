@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { diaryState } from 'reducks/diaries/types'
 
 import { ContainedMidButton, Label, OutlineMidButton } from 'components/UIKit/index'
+import { Diary } from 'reducks/users/types'
 
 type ViewerProps = {
-  diary: diaryState
+  diary: Diary
   onDelete: (id: string) => void
 }
 
@@ -21,7 +21,7 @@ const Viewer = (props: ViewerProps): JSX.Element => {
   return (
     <div className={'content'}>
       <div className={'spacer-8'}></div>
-      <Label label={props.diary.date} variant={'body1'} align={'left'} />
+      {props.diary.date && <Label label={props.diary.date.toDate().toDateString()} variant={'body1'} align={'left'} />}
       <div className={'spacer-24'}></div>
       <Label label={props.diary.title} variant={'h5'} align={'left'} />
       <div className={'spacer-24'}></div>

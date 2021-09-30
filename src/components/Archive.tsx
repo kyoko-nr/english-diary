@@ -4,11 +4,11 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 
-import { diaryState } from 'reducks/diaries/types'
 import { createStyles, makeStyles } from '@material-ui/styles'
+import { Diary } from 'reducks/users/types'
 
 type ArchiveProps = {
-  diary: diaryState
+  diary: Diary
 }
 
 const useStyles = makeStyles(() =>

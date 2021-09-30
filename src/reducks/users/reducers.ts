@@ -2,7 +2,7 @@ import * as Actions from './actions'
 import initialState from 'reducks/store/initialState'
 import * as Types from './types'
 
-export const UsersReducer = (state = initialState.users, action: Types.signInOutAction): Types.userState => {
+export const UsersReducer = (state = initialState.users, action: Types.SignInOutAction): Types.UserState => {
   switch (action.type) {
     case Actions.SIGN_IN:
       return {

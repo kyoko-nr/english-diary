@@ -1,5 +1,5 @@
 import { push } from 'connected-react-router'
-import { signUpParams, signInParams } from './types'
+import { SignUpParams, signInParams, Diary } from './types'
 import { auth, db } from 'firebase/index'
 import {
   createUserWithEmailAndPassword,
@@ -9,21 +9,34 @@ import {
   signOut,
   sendPasswordResetEmail,
 } from 'firebase/auth'
-import { Timestamp, setDoc, doc, getDoc } from 'firebase/firestore'
+import { Timestamp, setDoc, doc, getDoc, collection } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
 import { signInAction, signOutAction } from './actions'
 
-const DOC_NAME = 'users'
+const DOC_NAME_USERS = 'users'
+const DOC_NAME_DIARIES = 'diaries'
 
+/**
+ * Listen authentification state of App.
+ * @returns
+ */
 export const listenAuthState = () => {
   return async (dispatch: Dispatch): Promise<Unsubscribe> => {
     return onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid
-        getDoc(doc(db, DOC_NAME, uid)).then((snapshot) => {
+        getDoc(doc(db, DOC_NAME_USERS, uid)).then((snapshot) => {
           const data = snapshot.data()
           if (data) {
-            dispatch(signInAction({ username: data.username, uid: data.uid, isSignedIn: true }))
+            dispatch(
+              signInAction({
+                username: data.username,
+                uid: data.uid,
+                isSignedIn: true,
+                diaries: data.diaries,
+                editing: undefined,
+              })
+            )
           }
         })
       } else {
@@ -33,6 +46,11 @@ export const listenAuthState = () => {
   }
 }
 
+/**
+ * Sign in.
+ * @param params param
+ * @returns
+ */
 export const signIn = (params: signInParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
     // TODO: validation
@@ -46,10 +64,18 @@ export const signIn = (params: signInParams) => {
         const user = result.user
         if (user) {
           const uid = user.uid
-          getDoc(doc(db, DOC_NAME, uid)).then((snapshot) => {
+          getDoc(doc(db, DOC_NAME_USERS, uid)).then((snapshot) => {
             const data = snapshot.data()
             if (data) {
-              dispatch(signInAction({ username: data.username, uid: data.uid, isSignedIn: true }))
+              dispatch(
+                signInAction({
+                  username: data.username,
+                  uid: data.uid,
+                  isSignedIn: true,
+                  diaries: data.diaries,
+                  editing: undefined,
+                })
+              )
               dispatch(push('/'))
             }
           })
@@ -61,7 +87,12 @@ export const signIn = (params: signInParams) => {
   }
 }
 
-export const signUp = (params: signUpParams) => {
+/**
+ * Sign up
+ * @param params params
+ * @returns
+ */
+export const signUp = (params: SignUpParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
     // TODO: Validation
     if (params.username === '' || params.email === '' || params.password === '' || params.passwordConfirm === '') {
@@ -80,14 +111,15 @@ export const signUp = (params: signUpParams) => {
           const uid = user.uid
           const timestamp = Timestamp.now()
           const userInitialData = {
-            created_at: timestamp,
+            createdAt: timestamp,
             email: params.email,
             uid: uid,
-            updated_at: timestamp,
+            updatedAt: timestamp,
             usename: params.username,
+            diaries: doc,
           }
 
-          setDoc(doc(db, DOC_NAME, uid), userInitialData).then(() => {
+          setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData).then(() => {
             dispatch(push('/'))
           })
         }
@@ -98,6 +130,10 @@ export const signUp = (params: signUpParams) => {
   }
 }
 
+/**
+ * Sign out.
+ * @returns
+ */
 export const signOutFrom = () => {
   return async (dispatch: Dispatch): Promise<void> => {
     signOut(auth).then(() => {
@@ -107,6 +143,11 @@ export const signOutFrom = () => {
   }
 }
 
+/**
+ * Reset password.
+ * @param email e-mail address
+ * @returns
+ */
 export const resetPassword = (email: string) => {
   return async (dispatch: Dispatch): Promise<void> => {
     if (!email) {
@@ -122,5 +163,38 @@ export const resetPassword = (email: string) => {
           alert('Failed to send email')
         })
     }
+  }
+}
+
+/**
+ * Save diary.
+ * @param diary diary
+ * @returns
+ */
+export const saveDiary = (diary: Diary) => {
+  return async (dispatch: Dispatch, getState: any): Promise<void> => {
+    const timestamp = Timestamp.now()
+    const uid = getState().users.uid
+
+    if (diary.id) {
+      // update
+      const data: Diary = {
+        ...diary,
+        updatedAt: timestamp,
+      }
+      await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diary.id), data)
+    } else {
+      // create
+      const diaryRef = doc(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
+      const id = diaryRef.id
+      const data: Diary = {
+        ...diary,
+        id: id,
+        updatedAt: timestamp,
+        createdAt: timestamp,
+      }
+      await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), data)
+    }
+    dispatch(push('/'))
   }
 }

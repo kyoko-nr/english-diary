@@ -1,29 +1,18 @@
 import { Archive } from 'components/index'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchDiaries } from 'reducks/diaries/operations'
-import { getDiaries } from 'reducks/diaries/selectors'
-import { diaryState } from 'reducks/diaries/types'
-import { getUserId } from 'reducks/users/selectors'
+import { getDiaries } from 'reducks/users/selectors'
+import { Diary } from 'reducks/users/types'
 
 const ArchiveList = (): JSX.Element => {
-  const dispatch = useDispatch()
   const selector = useSelector((state) => state)
-  let diaries = getDiaries(selector)
+  const diaries = getDiaries(selector)
   console.log('archive list diaries: ', diaries)
-
-  // const [diaries, setDiaries] = useState<diaryState[]>()
-
-  useEffect(() => {
-    const userId = getUserId(selector)
-    dispatch(fetchDiaries(userId))
-    diaries = getDiaries(selector)
-  }, [])
 
   return (
     <div className={'content'}>
       {diaries &&
-        diaries.map((value: diaryState) => {
+        diaries.map((value: Diary) => {
           return <Archive diary={value} key={value.id} />
         })}
     </div>

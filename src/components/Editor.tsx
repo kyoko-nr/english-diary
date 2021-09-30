@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchDiary, saveDiary } from 'reducks/diaries/operations'
 import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
-import { getUserId } from 'reducks/users/selectors'
+import { getDiaries } from 'reducks/users/selectors'
+import { Diary } from 'reducks/users/types'
+import { saveDiary } from 'reducks/users/operations'
+import { Timestamp } from '@firebase/firestore'
 
 type EditorProps = {
   idToEdit?: string
@@ -11,12 +13,14 @@ type EditorProps = {
 const Editor = (props: EditorProps): JSX.Element => {
   const dispatch = useDispatch()
   const selector = useSelector((state) => state)
+  const diaries = getDiaries(selector)
 
   const [id, setId] = useState('')
-  const [userId, setUserId] = useState('')
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(Timestamp.now())
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [createdAt, setCreatedAt] = useState()
+  const [updatedAt, setUpdatedAt] = useState()
   const [counter, setCounter] = useState(0)
 
   const inputTitle = useCallback(
@@ -43,9 +47,7 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   const initFields = () => {
     setId('')
-    setUserId(getUserId(selector))
-    const today = new Date()
-    setDate(today.toDateString())
+    setDate(Timestamp.now())
     setTitle('')
     setContent('')
     setCounter(0)
@@ -54,14 +56,14 @@ const Editor = (props: EditorProps): JSX.Element => {
   useEffect(() => {
     if (props.idToEdit) {
       console.log('id to edit : ', props.idToEdit)
-      fetchDiary(props.idToEdit).then((diary) => {
-        setId(diary.id)
-        setUserId(diary.userId)
-        setDate(diary.date)
-        setTitle(diary.title)
-        setContent(diary.content)
-        setCounter(countWords(diary.content))
-      })
+      const diary = diaries.filter((diary: Diary) => diary.id == props.idToEdit)[0]
+      setId(diary.id)
+      setDate(diary.date)
+      setTitle(diary.title)
+      setContent(diary.content)
+      setCreatedAt(diary.createdAt)
+      setUpdatedAt(diary.updatedAt)
+      setCounter(countWords(diary.content))
     } else {
       initFields()
     }
@@ -70,7 +72,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   return (
     <div className={'content'}>
       <div className={'spacer-8'}></div>
-      <Label label={date} variant={'body1'} align={'left'} />
+      <Label label={date.toDate().toDateString()} variant={'body1'} align={'left'} />
       <div className={'spacer-24'}></div>
       <TextInput
         fullWidth={true}
@@ -101,7 +103,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         <ContainedMidButton
           color={'primary'}
           onClick={() => {
-            dispatch(saveDiary({ id, userId, date, title, content }))
+            dispatch(saveDiary({ id, date, title, content, updatedAt, createdAt }))
             initFields()
           }}
           label={'save'}

@@ -1,21 +1,45 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { AppBar, Toolbar, Container } from '@material-ui/core'
+import { AppBar, Toolbar } from '@material-ui/core'
 import { signOutFrom } from 'reducks/users/operations'
 import { TextMidButton, Logo } from './UIKit/index'
+import { makeStyles, createStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      flexGlow: 1,
+    },
+    menuBar: {
+      backgroundColor: '#FFDB46',
+      color: '#4a4a4a',
+    },
+    toolBar: {
+      margin: '0 auto',
+      maxWidth: 1280,
+      width: '100%',
+    },
+    signOut: {
+      margin: '0 0 0 auto',
+    },
+  })
+)
 
 const Header = (): JSX.Element => {
   const dispatch = useDispatch()
+  const classes = useStyles()
 
   return (
-    <AppBar position="sticky" color={'secondary'}>
-      <Container maxWidth="lg">
-        <Toolbar>
-          <Logo variant={'h5'} component={'div'} isLink={true} />
-          <TextMidButton label={'sign out'} onClick={() => dispatch(signOutFrom())} color={'default'} />
+    <div className={classes.root}>
+      <AppBar position="fixed" className={classes.menuBar}>
+        <Toolbar className={classes.toolBar}>
+          <Logo variant={'h5'} component={'div'} onClick={() => dispatch(push('/'))} />
+          <span className={classes.signOut}>
+            <TextMidButton label={'sign out'} onClick={() => dispatch(signOutFrom())} color={'default'} />
+          </span>
         </Toolbar>
-      </Container>
-    </AppBar>
+      </AppBar>
+    </div>
   )
 }
 

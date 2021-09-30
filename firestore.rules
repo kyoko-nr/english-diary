@@ -7,14 +7,10 @@ service cloud.firestore {
       allow update: if request.auth.uid == userId;
       allow delete: if request.auth.uid == userId;
       allow write: if request.auth.uid != null;
-    }
 
-    match /diaries/{diaryId} {
-      allow read: if request.auth.uid != null;
-      // allow create;
-      // allow update: if request.auth.uid == userId;
-      // allow delete: if request.auth.uid == userId;
-      allow write: if request.auth.uid != null;
+      match /diaries/{diaryId} {
+        allow read, write, create, update: if request.auth.uid == userId;
+      }
     }
   }
 

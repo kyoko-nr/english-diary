@@ -3,10 +3,19 @@ const initialState = {
     isSignedIn: false,
     uid: '',
     username: '',
+    diaries: [],
+    editing: {
+      id: '',
+      date: undefined,
+      title: '',
+      content: '',
+      createdAt: undefined,
+      updatedAt: undefined,
+    },
   },
-  diaries: {
-    list: [],
-  },
+  // diaries: {
+  //   list: [],
+  // },
 }
 
 export default initialState

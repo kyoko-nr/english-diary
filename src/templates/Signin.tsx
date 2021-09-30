@@ -49,7 +49,7 @@ const signin = (): JSX.Element => {
   return (
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
-        <Logo variant={'h4'} component={'h1'} isLink={false} />
+        <Logo variant={'h4'} component={'h1'} />
         {/**
          * three js *
          */}

@@ -1,5 +1,3 @@
-import { Timestamp } from '@firebase/firestore'
-
 export type UserState = {
   isSignedIn: boolean
   uid: string
@@ -10,11 +8,9 @@ export type UserState = {
 
 export type Diary = {
   id: string
-  date: Timestamp | undefined
+  date: string
   title: string
   content: string
-  createdAt: Timestamp | undefined
-  updatedAt: Timestamp | undefined
 }
 
 export type SignInOutAction = {

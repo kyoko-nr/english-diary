@@ -6,11 +6,9 @@ const initialState = {
     diaries: [],
     editing: {
       id: '',
-      date: undefined,
+      date: '',
       title: '',
       content: '',
-      createdAt: undefined,
-      updatedAt: undefined,
     },
   },
   // diaries: {

@@ -8,16 +8,14 @@ import { makeStyles, createStyles } from '@material-ui/styles'
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      flexGlow: 1,
+      flexGrow: 1,
     },
     menuBar: {
       backgroundColor: '#FFDB46',
       color: '#4a4a4a',
     },
     toolBar: {
-      margin: '0 auto',
       maxWidth: 1280,
-      width: '100%',
     },
     signOut: {
       margin: '0 0 0 auto',

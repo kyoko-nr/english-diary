@@ -9,7 +9,7 @@ import {
   signOut,
   sendPasswordResetEmail,
 } from 'firebase/auth'
-import { Timestamp, setDoc, doc, getDoc, collection } from 'firebase/firestore'
+import { Timestamp, setDoc, doc, getDoc, collection, getDocs } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
 import { signInAction, signOutAction } from './actions'
 
@@ -22,23 +22,13 @@ const DOC_NAME_DIARIES = 'diaries'
  */
 export const listenAuthState = () => {
   return async (dispatch: Dispatch): Promise<Unsubscribe> => {
-    return onAuthStateChanged(auth, (user) => {
+    return onAuthStateChanged(auth, async (user) => {
       if (user) {
         const uid = user.uid
-        getDoc(doc(db, DOC_NAME_USERS, uid)).then((snapshot) => {
-          const data = snapshot.data()
-          if (data) {
-            dispatch(
-              signInAction({
-                username: data.username,
-                uid: data.uid,
-                isSignedIn: true,
-                diaries: data.diaries,
-                editing: undefined,
-              })
-            )
-          }
-        })
+        const usersState = await fetchUsersState(uid)
+        if (usersState) {
+          dispatch(signInAction(usersState))
+        }
       } else {
         dispatch(push('/signin'))
       }
@@ -60,25 +50,15 @@ export const signIn = (params: signInParams) => {
     }
 
     return signInWithEmailAndPassword(auth, params.email, params.password)
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user
         if (user) {
           const uid = user.uid
-          getDoc(doc(db, DOC_NAME_USERS, uid)).then((snapshot) => {
-            const data = snapshot.data()
-            if (data) {
-              dispatch(
-                signInAction({
-                  username: data.username,
-                  uid: data.uid,
-                  isSignedIn: true,
-                  diaries: data.diaries,
-                  editing: undefined,
-                })
-              )
-              dispatch(push('/'))
-            }
-          })
+          const usersState = await fetchUsersState(uid)
+          if (usersState) {
+            dispatch(signInAction(usersState))
+            dispatch(push('/'))
+          }
         }
       })
       .catch((error) => {
@@ -105,7 +85,7 @@ export const signUp = (params: SignUpParams) => {
     }
 
     return createUserWithEmailAndPassword(auth, params.email, params.password)
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user
         if (user) {
           const uid = user.uid
@@ -119,9 +99,8 @@ export const signUp = (params: SignUpParams) => {
             diaries: doc,
           }
 
-          setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData).then(() => {
-            dispatch(push('/'))
-          })
+          await setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData)
+          dispatch(push('/'))
         }
       })
       .catch((error) => {
@@ -178,23 +157,61 @@ export const saveDiary = (diary: Diary) => {
 
     if (diary.id) {
       // update
-      const data: Diary = {
-        ...diary,
-        updatedAt: timestamp,
-      }
-      await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diary.id), data)
+      await setDoc(
+        doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diary.id),
+        {
+          title: diary.title,
+          content: diary.content,
+          updatedAt: timestamp,
+        },
+        { merge: true }
+      )
     } else {
       // create
       const diaryRef = doc(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
       const id = diaryRef.id
-      const data: Diary = {
-        ...diary,
+      await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), {
         id: id,
-        updatedAt: timestamp,
+        date: diary.date,
+        title: diary.title,
+        content: diary.content,
         createdAt: timestamp,
-      }
-      await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), data)
+        updatedAt: timestamp,
+      })
     }
+
     dispatch(push('/'))
+  }
+}
+
+/**
+ * Fetch users state
+ * @param uid uid
+ * @returns users state
+ */
+const fetchUsersState = async (uid: string) => {
+  const users = await getDoc(doc(db, DOC_NAME_USERS, uid))
+  const usersData = users.data()
+
+  if (usersData) {
+    const diaries: Diary[] = []
+    const snapShot = await getDocs(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
+    snapShot.forEach((diary) => {
+      const data = diary.data()
+      diaries.push({
+        id: data.id,
+        date: data.date,
+        title: data.title,
+        content: data.content,
+      })
+    })
+
+    return {
+      username: usersData.username,
+      uid: usersData.uid,
+      isSignedIn: true,
+      diaries: diaries,
+      editing: undefined,
+    }
   }
 }

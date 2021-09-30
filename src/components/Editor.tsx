@@ -4,7 +4,6 @@ import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'componen
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
 import { saveDiary } from 'reducks/users/operations'
-import { Timestamp } from '@firebase/firestore'
 
 type EditorProps = {
   idToEdit?: string
@@ -16,11 +15,9 @@ const Editor = (props: EditorProps): JSX.Element => {
   const diaries = getDiaries(selector)
 
   const [id, setId] = useState('')
-  const [date, setDate] = useState(Timestamp.now())
+  const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [createdAt, setCreatedAt] = useState()
-  const [updatedAt, setUpdatedAt] = useState()
   const [counter, setCounter] = useState(0)
 
   const inputTitle = useCallback(
@@ -47,7 +44,7 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   const initFields = () => {
     setId('')
-    setDate(Timestamp.now())
+    setDate(new Date().toDateString())
     setTitle('')
     setContent('')
     setCounter(0)
@@ -61,8 +58,6 @@ const Editor = (props: EditorProps): JSX.Element => {
       setDate(diary.date)
       setTitle(diary.title)
       setContent(diary.content)
-      setCreatedAt(diary.createdAt)
-      setUpdatedAt(diary.updatedAt)
       setCounter(countWords(diary.content))
     } else {
       initFields()
@@ -72,7 +67,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   return (
     <div className={'content'}>
       <div className={'spacer-8'}></div>
-      <Label label={date.toDate().toDateString()} variant={'body1'} align={'left'} />
+      <Label label={date} variant={'body1'} align={'left'} />
       <div className={'spacer-24'}></div>
       <TextInput
         fullWidth={true}
@@ -103,7 +98,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         <ContainedMidButton
           color={'primary'}
           onClick={() => {
-            dispatch(saveDiary({ id, date, title, content, updatedAt, createdAt }))
+            dispatch(saveDiary({ id, date, title, content }))
             initFields()
           }}
           label={'save'}

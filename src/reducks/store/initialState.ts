@@ -4,7 +4,7 @@ const initialState = {
     uid: '',
     username: '',
     diaries: [],
-    editing: {
+    current: {
       id: '',
       date: '',
       title: '',

@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-
-import { Grid, Container } from '@material-ui/core'
-
-import { Header, ArchiveList, Viewer } from 'components/index'
 import { useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
+import { Grid, Container } from '@material-ui/core'
+import { Header, ArchiveList, Viewer } from 'components/index'
 
 type PostProps = RouteComponentProps<{
   id: string
@@ -14,8 +12,6 @@ type PostProps = RouteComponentProps<{
 
 const Post = (props: PostProps): JSX.Element => {
   const selector = useSelector((state) => state)
-  const diaries = getDiaries(selector)
-
   const [diaryToShow, setDiaryToShow] = useState<Diary>()
 
   const deleteDiaryButton = (id: string): void => {
@@ -24,10 +20,10 @@ const Post = (props: PostProps): JSX.Element => {
 
   useEffect(() => {
     const id = props.match.params.id
-    console.log('post diaries : ', diaries)
+    const diaries = getDiaries(selector)
     const diary = diaries.filter((diary: Diary) => diary.id === id)
     setDiaryToShow(diary[0])
-  }, [])
+  }, [props.match.params.id])
 
   return (
     <>

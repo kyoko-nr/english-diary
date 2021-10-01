@@ -211,7 +211,7 @@ const fetchUsersState = async (uid: string) => {
       uid: usersData.uid,
       isSignedIn: true,
       diaries: diaries,
-      editing: undefined,
+      current: undefined,
     }
   }
 }

@@ -31,7 +31,7 @@ const Header = (): JSX.Element => {
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.menuBar}>
         <Toolbar className={classes.toolBar}>
-          <Logo variant={'h5'} component={'div'} onClick={() => dispatch(push('/'))} />
+          <Logo variant={'h5'} component={'div'} onClick={() => dispatch(push('/'))} isLink={true} />
           <span className={classes.signOut}>
             <TextMidButton label={'sign out'} onClick={() => dispatch(signOutFrom())} color={'default'} />
           </span>

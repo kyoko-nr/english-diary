@@ -9,7 +9,7 @@ export const signInAction = (userState: Types.UserState): Types.SignInOutAction 
       uid: userState.uid,
       username: userState.username,
       diaries: userState.diaries,
-      editing: userState.editing,
+      current: userState.current,
     },
   }
 }
@@ -23,7 +23,7 @@ export const signOutAction = (): Types.SignInOutAction => {
       uid: '',
       username: '',
       diaries: [],
-      editing: undefined,
+      current: undefined,
     },
   }
 }

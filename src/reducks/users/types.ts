@@ -3,7 +3,7 @@ export type UserState = {
   uid: string
   username: string
   diaries: Diary[]
-  editing: Diary | undefined
+  current: Diary | undefined
 }
 
 export type Diary = {

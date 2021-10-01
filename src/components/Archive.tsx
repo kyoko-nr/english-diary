@@ -1,11 +1,10 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
+import { Diary } from 'reducks/users/types'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
-
 import { createStyles, makeStyles } from '@material-ui/styles'
-import { Diary } from 'reducks/users/types'
 
 type ArchiveProps = {
   diary: Diary

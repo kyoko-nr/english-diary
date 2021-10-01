@@ -7,7 +7,6 @@ import { Diary } from 'reducks/users/types'
 const ArchiveList = (): JSX.Element => {
   const selector = useSelector((state) => state)
   const diaries = getDiaries(selector)
-  console.log('archive list diaries: ', diaries)
 
   return (
     <div className={'content'}>

@@ -5,6 +5,7 @@ type LogoProps = {
   variant: 'h4' | 'h5'
   component: 'h1' | 'div'
   onClick?: () => void
+  isLink?: boolean
 }
 
 const useStyles = makeStyles(() =>
@@ -13,15 +14,23 @@ const useStyles = makeStyles(() =>
       fontFamily: 'Pacifico, cursive',
       color: '#4a4a4a',
     },
+    link: {
+      cursor: 'pointer',
+    },
   })
 )
 
 const Logo = (props: LogoProps): JSX.Element => {
   const classes = useStyles()
-  const isLink = false
+  const isLink = props.isLink
 
   return (
-    <Typography className={classes.root} variant={props.variant} component={props.component} onClick={props.onClick}>
+    <Typography
+      className={isLink ? `${classes.link} ${classes.root}` : classes.root}
+      variant={props.variant}
+      component={props.component}
+      onClick={props.onClick}
+    >
       English Diary
     </Typography>
   )

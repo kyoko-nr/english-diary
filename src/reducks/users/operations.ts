@@ -11,7 +11,7 @@ import {
 } from 'firebase/auth'
 import { Timestamp, setDoc, doc, getDoc, collection, getDocs } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
-import { signInAction, signOutAction } from './actions'
+import { signInAction, signOutAction, saveDirayAction } from './actions'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
@@ -154,11 +154,13 @@ export const saveDiary = (diary: Diary) => {
   return async (dispatch: Dispatch, getState: any): Promise<void> => {
     const timestamp = Timestamp.now()
     const uid = getState().users.uid
+    let id = ''
 
     if (diary.id) {
       // update
+      id = diary.id
       await setDoc(
-        doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diary.id),
+        doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id),
         {
           title: diary.title,
           content: diary.content,
@@ -169,7 +171,7 @@ export const saveDiary = (diary: Diary) => {
     } else {
       // create
       const diaryRef = doc(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
-      const id = diaryRef.id
+      id = diaryRef.id
       await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), {
         id: id,
         date: diary.date,
@@ -180,7 +182,13 @@ export const saveDiary = (diary: Diary) => {
       })
     }
 
-    dispatch(push('/'))
+    const usersState = await fetchUsersState(uid)
+    if (usersState) {
+      dispatch(saveDirayAction(usersState))
+      dispatch(push(`/post/${id}`))
+    } else {
+      alert('unable to update')
+    }
   }
 }
 
@@ -194,24 +202,32 @@ const fetchUsersState = async (uid: string) => {
   const usersData = users.data()
 
   if (usersData) {
-    const diaries: Diary[] = []
-    const snapShot = await getDocs(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
-    snapShot.forEach((diary) => {
-      const data = diary.data()
-      diaries.push({
-        id: data.id,
-        date: data.date,
-        title: data.title,
-        content: data.content,
-      })
-    })
-
+    const diaries = await fetchDiaries(uid)
     return {
       username: usersData.username,
       uid: usersData.uid,
       isSignedIn: true,
       diaries: diaries,
-      current: undefined,
     }
   }
+}
+
+/**
+ * Fetch diaries of uid.
+ * @param uid uid
+ * @returns Promise of diaries array
+ */
+const fetchDiaries = async (uid: string): Promise<Diary[]> => {
+  const diaries: Diary[] = []
+  const snapShot = await getDocs(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
+  snapShot.forEach((diary) => {
+    const data = diary.data()
+    diaries.push({
+      id: data.id,
+      date: data.date,
+      title: data.title,
+      content: data.content,
+    })
+  })
+  return diaries
 }

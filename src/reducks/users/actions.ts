@@ -1,7 +1,7 @@
 import * as Types from './types'
 
 export const SIGN_IN = 'SIGN_IN'
-export const signInAction = (userState: Types.UserState): Types.SignInOutAction => {
+export const signInAction = (userState: Types.UserState): Types.UsersAction => {
   return {
     type: 'SIGN_IN',
     payload: {
@@ -9,13 +9,12 @@ export const signInAction = (userState: Types.UserState): Types.SignInOutAction 
       uid: userState.uid,
       username: userState.username,
       diaries: userState.diaries,
-      current: userState.current,
     },
   }
 }
 
 export const SIGN_OUT = 'SIGN_OUT'
-export const signOutAction = (): Types.SignInOutAction => {
+export const signOutAction = (): Types.UsersAction => {
   return {
     type: 'SIGN_OUT',
     payload: {
@@ -23,7 +22,16 @@ export const signOutAction = (): Types.SignInOutAction => {
       uid: '',
       username: '',
       diaries: [],
-      current: undefined,
+    },
+  }
+}
+
+export const SAVE_DIARY = 'SAVE_DIARY'
+export const saveDirayAction = (userState: Types.UserState): Types.UsersAction => {
+  return {
+    type: 'SAVE_DIARY',
+    payload: {
+      ...userState,
     },
   }
 }

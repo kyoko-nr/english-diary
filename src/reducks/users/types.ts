@@ -3,7 +3,6 @@ export type UserState = {
   uid: string
   username: string
   diaries: Diary[]
-  current: Diary | undefined
 }
 
 export type Diary = {
@@ -13,7 +12,7 @@ export type Diary = {
   content: string
 }
 
-export type SignInOutAction = {
+export type UsersAction = {
   type: string
   payload: UserState
 }

@@ -1,8 +1,7 @@
-import { Archive } from 'components/index'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
+import { Archive } from 'components/index'
 
 const ArchiveList = (): JSX.Element => {
   const selector = useSelector((state) => state)

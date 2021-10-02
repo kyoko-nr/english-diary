@@ -28,6 +28,8 @@ export const listenAuthState = () => {
         const usersState = await fetchUsersState(uid)
         if (usersState) {
           dispatch(signInAction(usersState))
+        } else {
+          dispatch(push('/error/001'))
         }
       } else {
         dispatch(push('/signin'))
@@ -46,7 +48,7 @@ export const signIn = (params: signInParams) => {
     // TODO: validation
     if (params.email === '' || params.password === '') {
       alert('You need to fill up all forms')
-      return Promise.reject()
+      return
     }
 
     return signInWithEmailAndPassword(auth, params.email, params.password)
@@ -58,11 +60,14 @@ export const signIn = (params: signInParams) => {
           if (usersState) {
             dispatch(signInAction(usersState))
             dispatch(push('/'))
+          } else {
+            console.log('no users state')
           }
         }
       })
       .catch((error) => {
         console.log(error)
+        dispatch(push('/error/002'))
       })
   }
 }
@@ -77,11 +82,11 @@ export const signUp = (params: SignUpParams) => {
     // TODO: Validation
     if (params.username === '' || params.email === '' || params.password === '' || params.passwordConfirm === '') {
       alert('You need to fill up all forms')
-      return Promise.reject()
+      return
     }
     if (params.password !== params.passwordConfirm) {
       alert("Password doesn't match to password to confirm.")
-      return Promise.reject()
+      return
     }
 
     return createUserWithEmailAndPassword(auth, params.email, params.password)
@@ -96,7 +101,6 @@ export const signUp = (params: SignUpParams) => {
             uid: uid,
             updatedAt: timestamp,
             usename: params.username,
-            diaries: doc,
           }
 
           await setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData)
@@ -105,6 +109,7 @@ export const signUp = (params: SignUpParams) => {
       })
       .catch((error) => {
         console.log(error)
+        dispatch(push('/error/002'))
       })
   }
 }
@@ -131,7 +136,7 @@ export const resetPassword = (email: string) => {
   return async (dispatch: Dispatch): Promise<void> => {
     if (!email) {
       alert('Unvalid email')
-      return Promise.reject()
+      return
     } else {
       sendPasswordResetEmail(auth, email)
         .then(() => {
@@ -187,7 +192,7 @@ export const saveDiary = (diary: Diary) => {
       dispatch(updateDirayAction(usersState))
       dispatch(push(`/post/${id}`))
     } else {
-      alert('unable to update')
+      dispatch(push('/error/001'))
     }
   }
 }
@@ -205,7 +210,7 @@ export const deleteDiary = (id: string) => {
       dispatch(updateDirayAction(usersState))
       dispatch(push('/'))
     } else {
-      alert('unable to update')
+      dispatch(push('/error/001'))
     }
   }
 }
@@ -237,7 +242,6 @@ const fetchUsersState = async (uid: string) => {
  */
 const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const diaries: Diary[] = []
-  // const snapShot = await getDocs(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
   const q = query(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES), orderBy('date', 'desc'), orderBy('title'))
   const snapShot = await getDocs(q)
   snapShot.forEach((diary) => {

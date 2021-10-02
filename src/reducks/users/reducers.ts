@@ -13,7 +13,7 @@ export const UsersReducer = (state = initialState.users, action: Types.UsersActi
       return {
         ...action.payload,
       }
-    case Actions.SAVE_DIARY:
+    case Actions.UPDATE_DIARY:
       return {
         ...state,
         diaries: action.payload.diaries,

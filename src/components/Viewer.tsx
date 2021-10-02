@@ -15,17 +15,17 @@ const Viewer = (props: ViewerProps): JSX.Element => {
 
   return (
     <div className={'content'}>
-      <div className={'spacer-8'}></div>
+      <div className={'spacer-8'} />
       {props.diary.date && <Label label={props.diary.date} variant={'body1'} align={'left'} />}
-      <div className={'spacer-24'}></div>
+      <div className={'spacer-24'} />
       <Label label={props.diary.title} variant={'h5'} align={'left'} />
-      <div className={'spacer-24'}></div>
+      <div className={'spacer-24'} />
       <Label label={`${count} words`} variant={'caption'} align={'right'} />
-      <div className={'spacer-8'}></div>
+      <div className={'spacer-8'} />
       <Label label={props.diary.content} variant={'body1'} align={'left'} />
-      <div className={'spacer-32'}></div>
+      <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
-        <OutlineMidButton label={'delete'} onClick={() => console.log('delete')} />
+        <OutlineMidButton label={'delete'} onClick={() => props.onDelete(props.diary.id)} />
         <ContainedMidButton
           label={'edit'}
           color={'secondary'}

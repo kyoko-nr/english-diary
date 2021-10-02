@@ -9,9 +9,9 @@ import {
   signOut,
   sendPasswordResetEmail,
 } from 'firebase/auth'
-import { Timestamp, setDoc, doc, getDoc, collection, getDocs } from 'firebase/firestore'
+import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
-import { signInAction, signOutAction, saveDirayAction } from './actions'
+import { signInAction, signOutAction, updateDirayAction } from './actions'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
@@ -151,7 +151,7 @@ export const resetPassword = (email: string) => {
  * @returns
  */
 export const saveDiary = (diary: Diary) => {
-  return async (dispatch: Dispatch, getState: any): Promise<void> => {
+  return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
     const timestamp = Timestamp.now()
     const uid = getState().users.uid
     let id = ''
@@ -174,7 +174,7 @@ export const saveDiary = (diary: Diary) => {
       id = diaryRef.id
       await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), {
         id: id,
-        date: diary.date,
+        date: Timestamp.fromDate(new Date(diary.date)),
         title: diary.title,
         content: diary.content,
         createdAt: timestamp,
@@ -184,8 +184,26 @@ export const saveDiary = (diary: Diary) => {
 
     const usersState = await fetchUsersState(uid)
     if (usersState) {
-      dispatch(saveDirayAction(usersState))
+      dispatch(updateDirayAction(usersState))
       dispatch(push(`/post/${id}`))
+    } else {
+      alert('unable to update')
+    }
+  }
+}
+/**
+ * Delete a diary.
+ * @param id diary id
+ * @returns
+ */
+export const deleteDiary = (id: string) => {
+  return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
+    const uid = getState().users.uid
+    await deleteDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id))
+    const usersState = await fetchUsersState(uid)
+    if (usersState) {
+      dispatch(updateDirayAction(usersState))
+      dispatch(push('/'))
     } else {
       alert('unable to update')
     }
@@ -219,12 +237,14 @@ const fetchUsersState = async (uid: string) => {
  */
 const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const diaries: Diary[] = []
-  const snapShot = await getDocs(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
+  // const snapShot = await getDocs(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
+  const q = query(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES), orderBy('date', 'desc'), orderBy('title'))
+  const snapShot = await getDocs(q)
   snapShot.forEach((diary) => {
     const data = diary.data()
     diaries.push({
       id: data.id,
-      date: data.date,
+      date: data.date.toDate().toDateString(),
       title: data.title,
       content: data.content,
     })

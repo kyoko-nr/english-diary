@@ -1,22 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
 import { Grid, Container } from '@material-ui/core'
 import { Header, ArchiveList, Viewer } from 'components/index'
+import { deleteDiary } from 'reducks/users/operations'
 
 type PostProps = RouteComponentProps<{
   id: string
 }>
 
 const Post = (props: PostProps): JSX.Element => {
+  const dispatch = useDispatch()
   const selector = useSelector((state) => state)
   const [diaryToShow, setDiaryToShow] = useState<Diary>()
 
-  const deleteDiaryButton = (id: string): void => {
-    // setArchives(deleteDiary(id))
-  }
+  const deleteDiaryButton = useCallback(
+    (id: string): void => {
+      if (confirm('Are you sure to delete this diary?')) {
+        dispatch(deleteDiary(id))
+      }
+    },
+    [diaryToShow]
+  )
 
   useEffect(() => {
     const id = props.match.params.id

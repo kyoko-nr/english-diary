@@ -46,7 +46,7 @@ const Signup = (): JSX.Element => {
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
         <Label label={'Sign up for your English Diary!'} variant={'h4'} align={'center'} />
-        <div className={'spacer-40'}></div>
+        <div className={'spacer-40'} />
         <StandardTextInput
           fullWidth={false}
           label={'User name'}
@@ -57,7 +57,7 @@ const Signup = (): JSX.Element => {
           onChange={inputUsername}
           required={true}
         />
-        <div className={'spacer-8'}></div>
+        <div className={'spacer-8'} />
         <StandardTextInput
           fullWidth={false}
           label={'Email'}
@@ -68,7 +68,7 @@ const Signup = (): JSX.Element => {
           onChange={inputEmail}
           required={true}
         />
-        <div className={'spacer-8'}></div>
+        <div className={'spacer-8'} />
         <StandardTextInput
           fullWidth={false}
           label={'Password'}
@@ -79,7 +79,7 @@ const Signup = (): JSX.Element => {
           onChange={inputPassword}
           required={true}
         />
-        <div className={'spacer-8'}></div>
+        <div className={'spacer-8'} />
         <StandardTextInput
           fullWidth={false}
           label={'Password to confirm'}
@@ -90,12 +90,12 @@ const Signup = (): JSX.Element => {
           onChange={inputPasswordConfirm}
           required={true}
         />
-        <div className={'spacer-16'}></div>
+        <div className={'spacer-16'} />
         <PlaneLargeButton
           label={'sign up'}
           onClick={() => dispatch(signUp({ username, email, password, passwordConfirm }))}
         />
-        <div className={'spacer-16'}></div>
+        <div className={'spacer-16'} />
         <SimpleLink
           label={'Go to sign in page'}
           component={'button'}

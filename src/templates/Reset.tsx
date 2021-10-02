@@ -22,7 +22,7 @@ const Reset = (): JSX.Element => {
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
         <Label label={'Reset your password'} variant={'h4'} align={'center'} />
-        <div className={'spacer-40'}></div>
+        <div className={'spacer-40'} />
         <StandardTextInput
           fullWidth={false}
           label={'Email'}
@@ -34,7 +34,7 @@ const Reset = (): JSX.Element => {
           required={true}
         />
         <PlaneLargeButton label={'send email'} onClick={() => dispatch(resetPassword(email))} />
-        <div className={'spacer-16'}></div>
+        <div className={'spacer-16'} />
         <SimpleLink
           label={'Already have an account?'}
           component={'button'}

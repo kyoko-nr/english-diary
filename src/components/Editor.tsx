@@ -61,9 +61,9 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   return (
     <div className={'content'}>
-      <div className={'spacer-8'}></div>
+      <div className={'spacer-8'} />
       <Label label={date} variant={'body1'} align={'left'} />
-      <div className={'spacer-24'}></div>
+      <div className={'spacer-24'} />
       <TextInput
         fullWidth={true}
         label={'Title'}
@@ -74,9 +74,9 @@ const Editor = (props: EditorProps): JSX.Element => {
         onChange={inputTitle}
         variant={'outlined'}
       />
-      <div className={'spacer-24'}></div>
+      <div className={'spacer-24'} />
       <Label label={`${counter} words`} variant={'caption'} align={'right'} />
-      <div className={'spacer-8'}></div>
+      <div className={'spacer-8'} />
       <TextInput
         fullWidth={true}
         multiline={true}
@@ -87,7 +87,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         onChange={inputContent}
         variant={'outlined'}
       />
-      <div className={'spacer-32'}></div>
+      <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} onClick={initFields} />
         <ContainedMidButton

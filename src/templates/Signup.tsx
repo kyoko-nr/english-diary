@@ -12,6 +12,7 @@ const Signup = (): JSX.Element => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isErrorPassword, setIsErrorPassword] = useState(false)
   const [passwordConfirm, setPasswordConfirm] = useState('')
 
   const inputUsername = useCallback(
@@ -30,7 +31,10 @@ const Signup = (): JSX.Element => {
 
   const inputPassword = useCallback(
     (event) => {
-      setPassword(event.target.value)
+      const val = event.target.value
+      setPassword(val)
+      const regExp = /[0-9a-zA-Z!#$%&'*+/=?^_`{|}~-]{6,}/
+      setIsErrorPassword(!regExp.test(val))
     },
     [setPassword]
   )
@@ -78,6 +82,8 @@ const Signup = (): JSX.Element => {
           value={password}
           onChange={inputPassword}
           required={true}
+          error={isErrorPassword}
+          helperText={'Password must contain at leaset 6 or more characters'}
         />
         <div className={'spacer-8'} />
         <StandardTextInput

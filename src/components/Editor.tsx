@@ -92,10 +92,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         <OutlineMidButton label={'clear'} onClick={initFields} />
         <ContainedMidButton
           color={'primary'}
-          onClick={() => {
-            dispatch(saveDiary({ id, date, title, content }))
-            initFields()
-          }}
+          onClick={() => dispatch(saveDiary({ id, date, title, content }))}
           label={'save'}
         />
       </div>

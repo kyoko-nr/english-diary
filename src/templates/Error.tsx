@@ -13,9 +13,7 @@ const Error = (props: ErrorProps): JSX.Element => {
   const errorId = props.match.params.id
   let error
   for (const [key, val] of Object.entries(Errors)) {
-    if (key === errorId) {
-      error = val
-    }
+    error = key === errorId && val
   }
 
   return (

@@ -242,7 +242,11 @@ const fetchUsersState = async (uid: string) => {
  */
 const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const diaries: Diary[] = []
-  const q = query(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES), orderBy('date', 'desc'), orderBy('title'))
+  const q = query(
+    collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES),
+    orderBy('date', 'desc'),
+    orderBy('createdAt', 'desc')
+  )
   const snapShot = await getDocs(q)
   snapShot.forEach((diary) => {
     const data = diary.data()

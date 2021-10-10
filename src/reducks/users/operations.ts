@@ -11,11 +11,22 @@ import {
 } from 'firebase/auth'
 import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
-import { signInAction, signOutAction, updateDirayAction } from './actions'
+import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction } from './actions'
 import { validateEmail, validateTextOnlyEnglish } from 'utils/validation'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
+
+export const changeCurrentYM = (date: Date) => {
+  return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
+    const usersState = getState().users
+    const newState = {
+      ...usersState,
+      currentYM: date,
+    }
+    dispatch(changeCurrentYMAction(newState))
+  }
+}
 
 /**
  * Listen authentification state of App.
@@ -190,7 +201,7 @@ export const saveDiary = (diary: Diary) => {
       id = diaryRef.id
       await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), {
         id: id,
-        date: Timestamp.fromDate(new Date(diary.date)),
+        date: Timestamp.fromDate(diary.date),
         title: diary.title,
         content: diary.content,
         createdAt: timestamp,
@@ -242,6 +253,7 @@ const fetchUsersState = async (uid: string) => {
       uid: usersData.uid,
       isSignedIn: true,
       diaries: diaries,
+      currentYM: new Date(),
     }
   }
 }
@@ -263,7 +275,7 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
     const data = diary.data()
     diaries.push({
       id: data.id,
-      date: data.date.toDate().toDateString(),
+      date: data.date.toDate(),
       title: data.title,
       content: data.content,
     })

@@ -18,6 +18,11 @@ export const UsersReducer = (state = initialState.users, action: Types.UsersActi
         ...state,
         diaries: action.payload.diaries,
       }
+    case Actions.CHANGE_CURRENT_YM:
+      return {
+        ...state,
+        currentYM: action.payload.currentYM,
+      }
     default:
       return state
   }

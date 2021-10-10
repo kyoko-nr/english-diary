@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
 import { createStyles, makeStyles } from '@material-ui/styles'
+import { FormatDate } from '../UIKit/index'
 
 type ArchiveProps = {
   diary: Diary
@@ -47,7 +48,7 @@ const Archive = (props: ArchiveProps): JSX.Element => {
     <CardActionArea component="a" onClick={() => dispatch(push(`/post/${props.diary.id}`))}>
       <Card className={classes.card}>
         <CardContent className={classes.cardContent}>
-          <div className={classes.date}>{props.diary.date}</div>
+          <FormatDate date={props.diary.date} format={'date'} variant={'caption'} align={'left'} />
           <h2 className={classes.title}>{props.diary.title}</h2>
           <div className={classes.content}>{props.diary.content}</div>
         </CardContent>

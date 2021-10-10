@@ -1,6 +1,4 @@
 export { default as Editor } from './Editor'
 export { default as Header } from './Header'
-export { default as Archive } from './Archive'
-export { default as ArchiveList } from './ArchiveList'
 export { default as Viewer } from './Viewer'
 export { default as SignInForm } from './SignInForm'

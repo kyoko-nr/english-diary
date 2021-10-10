@@ -4,6 +4,7 @@ const initialState = {
     uid: '',
     username: '',
     diaries: [],
+    currentYM: undefined,
   },
 }
 

@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
 import { Grid, Container } from '@material-ui/core'
-import { Header, ArchiveList, Viewer } from 'components/index'
+import { Header, Viewer } from 'components/index'
+import { ArchiveList } from 'components/Archive/index'
 import { deleteDiary } from 'reducks/users/operations'
 
 type PostProps = RouteComponentProps<{

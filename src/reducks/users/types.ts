@@ -3,11 +3,12 @@ export type UserState = {
   uid: string
   username: string
   diaries: Diary[]
+  currentYM: Date | undefined
 }
 
 export type Diary = {
   id: string
-  date: string
+  date: Date
   title: string
   content: string
 }

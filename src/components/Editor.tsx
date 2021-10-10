@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-import { TextInput, ContainedMidButton, OutlineMidButton, Label } from 'components/UIKit/index'
+import { TextInput, ContainedMidButton, OutlineMidButton, Label, FormatDate } from 'components/UIKit/index'
 import { Diary } from 'reducks/users/types'
 import { saveDiary } from 'reducks/users/operations'
 
@@ -12,7 +12,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   const dispatch = useDispatch()
 
   const [id, setId] = useState('')
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState(new Date())
   const [title, setTitle] = useState('')
   const [titleErr, setTitleErr] = useState(false)
   const [content, setContent] = useState('')
@@ -49,7 +49,7 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   const initFields = () => {
     setId('')
-    setDate(new Date().toDateString())
+    setDate(new Date())
     setTitle('')
     setContent('')
     setCounter(0)
@@ -70,7 +70,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   return (
     <div className={'content'}>
       <div className={'spacer-8'} />
-      <Label label={date} variant={'body1'} align={'left'} />
+      <FormatDate date={date} format={'date'} variant={'body1'} align={'left'} />
       <div className={'spacer-24'} />
       <TextInput
         fullWidth={true}

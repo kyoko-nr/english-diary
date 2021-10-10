@@ -5,9 +5,9 @@ import { Model } from './index'
 const Scene = (): JSX.Element => {
   return (
     <div id="canvas-container">
-      <Canvas>
-        <ambientLight intensity={1}></ambientLight>
-        <directionalLight intensity={3}></directionalLight>
+      <Canvas camera={{ fov: 75, position: [0, 0, 4] }}>
+        <ambientLight intensity={0.6} />
+        <directionalLight intensity={1.2} position={[0, 0, 6]} />
         <Suspense fallback={null}>
           <Model />
         </Suspense>

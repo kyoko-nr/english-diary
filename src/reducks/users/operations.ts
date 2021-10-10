@@ -12,6 +12,7 @@ import {
 import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
 import { signInAction, signOutAction, updateDirayAction } from './actions'
+import { validateEmail, validateTextOnlyEnglish } from 'utils/validation'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
@@ -157,6 +158,16 @@ export const resetPassword = (email: string) => {
  */
 export const saveDiary = (diary: Diary) => {
   return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
+    // Validation
+    if (diary.content.length === 0 || diary.title.length === 0) {
+      alert('Title and Content must be filled.')
+      return
+    }
+    if (!validateTextOnlyEnglish(diary.title) || validateTextOnlyEnglish(diary.content)) {
+      alert('Please write "English" diary!')
+      return
+    }
+
     const timestamp = Timestamp.now()
     const uid = getState().users.uid
     let id = ''

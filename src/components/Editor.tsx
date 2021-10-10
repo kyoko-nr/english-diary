@@ -14,15 +14,23 @@ const Editor = (props: EditorProps): JSX.Element => {
   const [id, setId] = useState('')
   const [date, setDate] = useState('')
   const [title, setTitle] = useState('')
+  const [titleErr, setTitleErr] = useState(false)
   const [content, setContent] = useState('')
+  const [contentErr, setContentErr] = useState(false)
   const [counter, setCounter] = useState(0)
 
-  const inputTitle = useCallback(
-    (event) => {
-      setTitle(event.target.value)
-    },
-    [setTitle]
+  const titleCheck = useCallback(() => {
+    console.log('title : ', title)
+    title.length === 0 ? setTitleErr(true) : setTitleErr(false)
+    console.log('title error : ', titleErr)
+  }, [setTitleErr])
+
+  const contentCheck = useCallback(
+    () => (content.length === 0 ? setContentErr(true) : setContentErr(false)),
+    [setContentErr]
   )
+
+  const inputTitle = useCallback((event) => setTitle(event.target.value), [setTitle])
 
   const inputContent = useCallback(
     (event) => {
@@ -73,11 +81,15 @@ const Editor = (props: EditorProps): JSX.Element => {
         type={'text'}
         onChange={inputTitle}
         variant={'outlined'}
+        required={true}
+        onBlurErrorCheck={titleCheck}
+        error={titleErr}
       />
       <div className={'spacer-24'} />
       <Label label={`${counter} words`} variant={'caption'} align={'right'} />
       <div className={'spacer-8'} />
       <TextInput
+        label={'Content'}
         fullWidth={true}
         multiline={true}
         rows={16}
@@ -86,6 +98,9 @@ const Editor = (props: EditorProps): JSX.Element => {
         placeholder={'Describe your day here!'}
         onChange={inputContent}
         variant={'outlined'}
+        required={true}
+        onBlurErrorCheck={contentCheck}
+        error={contentErr}
       />
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>

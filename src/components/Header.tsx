@@ -13,9 +13,13 @@ const useStyles = makeStyles(() =>
     menuBar: {
       backgroundColor: '#FFDB46',
       color: '#4a4a4a',
+      display: 'flex',
+      alignItems: 'center',
     },
     toolBar: {
       maxWidth: 1280,
+      width: '100%',
+      boxSizing: 'border-box',
     },
     signOut: {
       margin: '0 0 0 auto',

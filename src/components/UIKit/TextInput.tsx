@@ -14,8 +14,8 @@ type TextInputProps = {
   variant: 'outlined' | 'standard'
   required?: boolean
   onChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
-  onBlurErrorCheck?: () => void
   error?: boolean
+  helperText?: string
 }
 
 const useStyles = makeStyles(() =>
@@ -28,6 +28,7 @@ const useStyles = makeStyles(() =>
 
 const TextInput = (props: TextInputProps): JSX.Element => {
   const classes = useStyles()
+  const helperText = props.error ? props.helperText : ' '
 
   return (
     <TextField
@@ -42,8 +43,8 @@ const TextInput = (props: TextInputProps): JSX.Element => {
       placeholder={props.placeholder}
       variant={props.variant}
       required={props.required}
-      onBlur={props.onBlurErrorCheck}
       error={props.error}
+      helperText={helperText}
     />
   )
 }

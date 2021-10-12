@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
 import { Grid, Container } from '@material-ui/core'
-import { Header, Editor } from 'components/index'
+import { Header, Editor, DrawerNav } from 'components/index'
 import { ArchiveList } from 'components/Archive/index'
 
 type HomeProps = RouteComponentProps<{
@@ -32,6 +32,7 @@ const Home = (props: HomeProps): JSX.Element => {
           </Grid>
           <Grid item xs={12} md={4}>
             <ArchiveList />
+            {/* <DrawerNav /> */}
           </Grid>
         </Grid>
       </Container>

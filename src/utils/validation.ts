@@ -18,6 +18,6 @@ export const validateEmail = (email: string): boolean => {
  * @returns true: valid, false: invalid
  */
 export const validateTextOnlyEnglish = (text: string): boolean => {
-  const regexp = /^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/
+  const regexp = /^[a-zA-Z0-9!-/:-@¥[-`{-~\s]*$/
   return regexp.test(text)
 }

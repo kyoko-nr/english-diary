@@ -9,7 +9,7 @@ type ArrowIconButtonProps = {
 }
 const ArrowIconButton = (props: ArrowIconButtonProps): JSX.Element => {
   return (
-    <IconButton onClick={() => props.onClick(props.nextYM)}>
+    <IconButton onClick={() => props.onClick(props.nextYM)} color={'primary'}>
       {props.type === 'forward' ? <ArrowForwardIosIcon /> : <ArrowBackIosNewIcon />}
     </IconButton>
   )

@@ -12,7 +12,6 @@ const useStyles = makeStyles(() =>
     root: {
       padding: 4,
       display: 'flex',
-      // backgroundColor: '#000000'
       justifyContent: 'space-between',
 
       '& .MuiTypography-root': {

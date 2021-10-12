@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
 import { Grid, Container } from '@material-ui/core'
-import { Header, Viewer } from 'components/index'
+import { Header, Viewer, DrawerNav } from 'components/index'
 import { ArchiveList } from 'components/Archive/index'
 import { deleteDiary } from 'reducks/users/operations'
 
@@ -43,6 +43,7 @@ const Post = (props: PostProps): JSX.Element => {
           </Grid>
           <Grid item xs={12} md={4}>
             <ArchiveList />
+            {/* <DrawerNav /> */}
           </Grid>
         </Grid>
       </Container>

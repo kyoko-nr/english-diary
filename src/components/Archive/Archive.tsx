@@ -27,6 +27,7 @@ const useStyles = makeStyles(() =>
     title: {
       fontSize: 16,
       marginBottom: 4,
+      marginTop: 8,
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',

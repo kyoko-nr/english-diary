@@ -19,26 +19,25 @@ const Editor = (props: EditorProps): JSX.Element => {
   const [contentErr, setContentErr] = useState(false)
   const [counter, setCounter] = useState(0)
 
-  const titleCheck = useCallback(() => {
-    console.log('title : ', title)
-    title.length === 0 ? setTitleErr(true) : setTitleErr(false)
-    console.log('title error : ', titleErr)
-  }, [setTitleErr])
-
-  const contentCheck = useCallback(
-    () => (content.length === 0 ? setContentErr(true) : setContentErr(false)),
-    [setContentErr]
+  const inputTitle = useCallback(
+    (event) => {
+      const value = event.target.value
+      setTitle(value)
+      const isTitleError = value.length === 0
+      setTitleErr(isTitleError)
+    },
+    [setTitle, setTitleErr]
   )
-
-  const inputTitle = useCallback((event) => setTitle(event.target.value), [setTitle])
 
   const inputContent = useCallback(
     (event) => {
       const value = event.target.value
-      setContent(event.target.value)
+      setContent(value)
       setCounter(countWords(value))
+      const isContentErr = value.length === 0
+      setContentErr(isContentErr)
     },
-    [setContent, setCounter]
+    [setContent, setCounter, setContentErr]
   )
 
   const countWords = (value: string): number => {
@@ -82,10 +81,10 @@ const Editor = (props: EditorProps): JSX.Element => {
         onChange={inputTitle}
         variant={'outlined'}
         required={true}
-        onBlurErrorCheck={titleCheck}
         error={titleErr}
+        helperText={'Title is required!'}
       />
-      <div className={'spacer-24'} />
+      <div className={'spacer-8'} />
       <Label label={`${counter} words`} variant={'caption'} align={'right'} />
       <div className={'spacer-8'} />
       <TextInput
@@ -99,10 +98,10 @@ const Editor = (props: EditorProps): JSX.Element => {
         onChange={inputContent}
         variant={'outlined'}
         required={true}
-        onBlurErrorCheck={contentCheck}
         error={contentErr}
+        helperText={'Content is required!'}
       />
-      <div className={'spacer-32'} />
+      <div className={'spacer-16'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} onClick={initFields} />
         <ContainedMidButton

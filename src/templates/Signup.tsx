@@ -1,106 +1,100 @@
-import { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { Container } from '@material-ui/core'
-import { StandardTextInput, PlaneLargeButton, Label, SimpleLink } from 'components/UIKit/index'
-
 import { signUp } from 'reducks/users/operations'
+import { useForm } from 'react-hook-form'
+import { Container } from '@material-ui/core'
+import { PlaneLargeButton, Label, SimpleLink, TextInputStandard } from 'components/UIKit/index'
+import { EmailRegExp, ErrorMessages } from 'utils/validation'
 
 const Signup = (): JSX.Element => {
   const dispatch = useDispatch()
+  const { control, handleSubmit, watch } = useForm<IFormInput>()
 
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isErrorPassword, setIsErrorPassword] = useState(false)
-  const [passwordConfirm, setPasswordConfirm] = useState('')
+  interface IFormInput {
+    username: string
+    email: string
+    password: string
+    passwordConfirm: string
+  }
 
-  const inputUsername = useCallback(
-    (event) => {
-      setUsername(event.target.value)
-    },
-    [setUsername]
-  )
+  const onSubmit = (data: IFormInput) => {
+    dispatch(
+      signUp({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        passwordConfirm: data.passwordConfirm,
+      })
+    )
+  }
 
-  const inputEmail = useCallback(
-    (event) => {
-      setEmail(event.target.value)
-    },
-    [setEmail]
-  )
-
-  const inputPassword = useCallback(
-    (event) => {
-      const val = event.target.value
-      setPassword(val)
-      const regExp = /[0-9a-zA-Z!#$%&'*+/=?^_`{|}~-]{6,}/
-      setIsErrorPassword(!regExp.test(val))
-    },
-    [setPassword]
-  )
-
-  const inputPasswordConfirm = useCallback(
-    (event) => {
-      setPasswordConfirm(event.target.value)
-    },
-    [setPasswordConfirm]
-  )
+  const matchPassword = (val: string): boolean => {
+    const password = watch('password')
+    return val === password
+  }
 
   return (
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
         <Label label={'Sign up for your English Diary!'} variant={'h4'} align={'center'} />
         <div className={'spacer-40'} />
-        <StandardTextInput
+        <TextInputStandard
+          control={control}
           fullWidth={false}
+          name={'username'}
+          rules={{
+            required: ErrorMessages.required,
+          }}
+          defaultValue={''}
           label={'User name'}
-          multiline={false}
-          rows={1}
           type={'text'}
-          value={username}
-          onChange={inputUsername}
           required={true}
         />
         <div className={'spacer-8'} />
-        <StandardTextInput
+        <TextInputStandard
+          control={control}
           fullWidth={false}
+          name={'email'}
+          rules={{
+            required: ErrorMessages.required,
+            pattern: { value: EmailRegExp, message: ErrorMessages.emailInvalid },
+          }}
+          defaultValue={''}
           label={'Email'}
-          multiline={false}
-          rows={1}
           type={'email'}
-          value={email}
-          onChange={inputEmail}
           required={true}
         />
         <div className={'spacer-8'} />
-        <StandardTextInput
+        <TextInputStandard
+          control={control}
           fullWidth={false}
+          name={'password'}
+          rules={{
+            required: ErrorMessages.required,
+            minLength: { value: 6, message: ErrorMessages.shortPassword },
+          }}
+          defaultValue={''}
           label={'Password'}
-          multiline={false}
-          rows={1}
           type={'password'}
-          value={password}
-          onChange={inputPassword}
           required={true}
-          error={isErrorPassword}
-          helperText={'Password must contain at leaset 6 or more characters'}
         />
         <div className={'spacer-8'} />
-        <StandardTextInput
+        <TextInputStandard
+          control={control}
           fullWidth={false}
+          name={'passwordConfirm'}
+          rules={{
+            required: ErrorMessages.required,
+            minLength: { value: 6, message: ErrorMessages.shortPassword },
+            validate: { match: (val) => matchPassword(val) || ErrorMessages.unmatchPassword },
+          }}
+          defaultValue={''}
           label={'Password to confirm'}
-          multiline={false}
-          rows={1}
           type={'password'}
-          value={passwordConfirm}
-          onChange={inputPasswordConfirm}
           required={true}
         />
         <div className={'spacer-16'} />
-        <PlaneLargeButton
-          label={'sign up'}
-          onClick={() => dispatch(signUp({ username, email, password, passwordConfirm }))}
-        />
+        <PlaneLargeButton label={'sign up'} onClick={handleSubmit(onSubmit)} />
         <div className={'spacer-16'} />
         <SimpleLink
           label={'Go to sign in page'}

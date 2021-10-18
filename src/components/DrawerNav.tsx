@@ -1,5 +1,5 @@
+import { Drawer } from '@material-ui/core'
 import { useState } from 'react'
-import Drawer from '@mui/material/Drawer'
 import { ArchiveList } from './Archive/index'
 
 const DrawerNav = (): JSX.Element => {
@@ -19,19 +19,19 @@ const DrawerNav = (): JSX.Element => {
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
-        sx={{
-          display: { xs: 'block', sm: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 },
-        }}
+        // sx={{
+        //   display: { xs: 'block', sm: 'none' },
+        //   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 300 },
+        // }}
       >
         <ArchiveList />
       </Drawer>
       <Drawer
         variant="permanent"
-        sx={{
-          display: { xs: 'none', sm: 'block' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 320 },
-        }}
+        // sx={{
+        //   display: { xs: 'none', sm: 'block' },
+        //   '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 320 },
+        // }}
         open
       >
         <ArchiveList />

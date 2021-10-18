@@ -1,39 +1,55 @@
-import { useCallback, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { signIn } from 'reducks/users/operations'
-import { StandardTextInput, PlaneLargeButton, SimpleLink, TextLargeButton } from 'components/UIKit/index'
+import { useForm } from 'react-hook-form'
+import { PlaneLargeButton, SimpleLink, TextLargeButton, TextInputStandard } from 'components/UIKit/index'
+import { EmailRegExp, ErrorMessages } from 'utils/validation'
 
 const SignInForm = (): JSX.Element => {
   const dispatch = useDispatch()
+  const { control, handleSubmit } = useForm<IFormInput>()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  interface IFormInput {
+    email: string
+    password: string
+  }
 
-  const inputEmail = useCallback((event) => setEmail(event.target.value), [setEmail])
-  const inputPassword = useCallback((event) => setPassword(event.target.value), [setPassword])
+  const onSubmit = (data: IFormInput) => {
+    dispatch(
+      signIn({
+        email: data.email,
+        password: data.password,
+      })
+    )
+  }
 
   return (
     <>
-      <StandardTextInput
+      <TextInputStandard
+        control={control}
         fullWidth={false}
+        name={'email'}
+        rules={{
+          required: ErrorMessages.required,
+          pattern: { value: EmailRegExp, message: ErrorMessages.emailInvalid },
+        }}
+        defaultValue={''}
         label={'Email'}
-        multiline={false}
-        rows={1}
         type={'email'}
-        value={email}
-        onChange={inputEmail}
         required={true}
       />
       <div className={'spacer-8'} />
-      <StandardTextInput
+      <TextInputStandard
+        control={control}
         fullWidth={false}
+        name={'password'}
+        rules={{
+          required: ErrorMessages.required,
+          minLength: { value: 6, message: ErrorMessages.shortPassword },
+        }}
+        defaultValue={''}
         label={'Password'}
-        multiline={false}
-        rows={1}
         type={'password'}
-        value={password}
-        onChange={inputPassword}
         required={true}
       />
       <div className={'spacer-16'} />
@@ -44,7 +60,7 @@ const SignInForm = (): JSX.Element => {
         color={'textPrimary'}
         variant={'body2'}
       />
-      <PlaneLargeButton label={'sign in'} onClick={() => dispatch(signIn({ email, password }))} />
+      <PlaneLargeButton label={'sign in'} onClick={handleSubmit(onSubmit)} />
       <div className={'spacer-16'} />
       <TextLargeButton label={'sign up'} onClick={() => dispatch(push(`/signup`))} color={'primary'} />
     </>

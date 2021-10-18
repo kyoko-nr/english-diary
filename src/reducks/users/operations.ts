@@ -12,11 +12,16 @@ import {
 import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
 import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction } from './actions'
-import { validateEmail, validateTextOnlyEnglish } from 'utils/validation'
+import { validateTextOnlyEnglish } from 'utils/validation'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
 
+/**
+ * Change the status of changeYM.
+ * @param date date
+ * @returns
+ */
 export const changeCurrentYM = (date: Date) => {
   return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
     const usersState = getState().users
@@ -57,10 +62,9 @@ export const listenAuthState = () => {
  */
 export const signIn = (params: signInParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
-    // TODO: validation
+    // Validation
     if (params.email === '' || params.password === '') {
-      alert('You need to fill up all forms')
-      return
+      dispatch(push('/error/001'))
     }
 
     return signInWithEmailAndPassword(auth, params.email, params.password)
@@ -78,8 +82,7 @@ export const signIn = (params: signInParams) => {
         }
       })
       .catch((error) => {
-        console.log(error)
-        dispatch(push('/error/002'))
+        dispatch(push('/error/001'))
       })
   }
 }
@@ -91,14 +94,12 @@ export const signIn = (params: signInParams) => {
  */
 export const signUp = (params: SignUpParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
-    // TODO: Validation
+    // Validation
     if (params.username === '' || params.email === '' || params.password === '' || params.passwordConfirm === '') {
-      alert('You need to fill up all forms')
-      return
+      dispatch(push('/error/002'))
     }
     if (params.password !== params.passwordConfirm) {
-      alert("Password doesn't match to password to confirm.")
-      return
+      dispatch(push('/error/002'))
     }
 
     return createUserWithEmailAndPassword(auth, params.email, params.password)
@@ -120,7 +121,6 @@ export const signUp = (params: SignUpParams) => {
         }
       })
       .catch((error) => {
-        console.log(error)
         dispatch(push('/error/002'))
       })
   }
@@ -146,19 +146,13 @@ export const signOutFrom = () => {
  */
 export const resetPassword = (email: string) => {
   return async (dispatch: Dispatch): Promise<void> => {
-    if (!email) {
-      alert('Unvalid email')
-      return
-    } else {
-      sendPasswordResetEmail(auth, email)
-        .then(() => {
-          alert('Password reset email was sent!')
-          dispatch(push('/signin'))
-        })
-        .catch(() => {
-          alert('Failed to send email')
-        })
-    }
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        dispatch(push('/signin/send'))
+      })
+      .catch(() => {
+        dispatch(push('/signin/send'))
+      })
   }
 }
 

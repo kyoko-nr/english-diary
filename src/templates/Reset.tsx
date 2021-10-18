@@ -1,39 +1,42 @@
-import { useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { Container } from '@material-ui/core'
-import { SimpleLink, PlaneLargeButton, StandardTextInput, Label } from 'components/UIKit/index'
-
 import { resetPassword } from 'reducks/users/operations'
+import { useForm } from 'react-hook-form'
+import { Container } from '@material-ui/core'
+import { SimpleLink, PlaneLargeButton, Label, TextInputStandard } from 'components/UIKit/index'
+import { EmailRegExp, ErrorMessages } from 'utils/validation'
 
 const Reset = (): JSX.Element => {
   const dispatch = useDispatch()
+  const { control, handleSubmit } = useForm<IFormInput>()
 
-  const [email, setEmail] = useState('')
+  interface IFormInput {
+    email: string
+  }
 
-  const inputEmail = useCallback(
-    (event) => {
-      setEmail(event.target.value)
-    },
-    [setEmail]
-  )
+  const onSubmit = (data: IFormInput) => {
+    dispatch(resetPassword(data.email))
+  }
 
   return (
     <div className={'full-window bg-yellow flex-column'}>
       <Container maxWidth="lg">
         <Label label={'Reset your password'} variant={'h4'} align={'center'} />
         <div className={'spacer-40'} />
-        <StandardTextInput
+        <TextInputStandard
+          control={control}
           fullWidth={false}
+          name={'email'}
+          rules={{
+            required: ErrorMessages.required,
+            pattern: { value: EmailRegExp, message: ErrorMessages.emailInvalid },
+          }}
+          defaultValue={''}
           label={'Email'}
-          multiline={false}
-          rows={1}
           type={'email'}
-          value={email}
-          onChange={inputEmail}
           required={true}
         />
-        <PlaneLargeButton label={'send email'} onClick={() => dispatch(resetPassword(email))} />
+        <PlaneLargeButton label={'send email'} onClick={handleSubmit(onSubmit)} />
         <div className={'spacer-16'} />
         <SimpleLink
           label={'Already have an account?'}

@@ -9,7 +9,7 @@ const Router = (): JSX.Element => {
       <Route exact path="/signin/reset" component={Reset}></Route>
       <Route exact path="/signup" component={Signup}></Route>
       <Route exact path="/error/:id" component={Error}></Route>
-      <Route exact path="/signin/send" component={EmailSend}></Route>
+      <Route exact path="/signin/sent" component={EmailSend}></Route>
       <Auth>
         <Route exact path="(/)?" component={Home}></Route>
         <Route exact path="/edit/:id" component={Home}></Route>

@@ -12,7 +12,6 @@ import {
 import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
 import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction } from './actions'
-import { validateTextOnlyEnglish } from 'utils/validation'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
@@ -62,11 +61,6 @@ export const listenAuthState = () => {
  */
 export const signIn = (params: signInParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
-    // Validation
-    if (params.email === '' || params.password === '') {
-      dispatch(push('/error/001'))
-    }
-
     return signInWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
@@ -77,8 +71,10 @@ export const signIn = (params: signInParams) => {
             dispatch(signInAction(usersState))
             dispatch(push('/'))
           } else {
-            console.log('no users state')
+            dispatch(push('/error/002'))
           }
+        } else {
+          dispatch(push('/error/002'))
         }
       })
       .catch((error) => {
@@ -94,14 +90,6 @@ export const signIn = (params: signInParams) => {
  */
 export const signUp = (params: SignUpParams) => {
   return async (dispatch: Dispatch): Promise<UserCredential | void> => {
-    // Validation
-    if (params.username === '' || params.email === '' || params.password === '' || params.passwordConfirm === '') {
-      dispatch(push('/error/002'))
-    }
-    if (params.password !== params.passwordConfirm) {
-      dispatch(push('/error/002'))
-    }
-
     return createUserWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
@@ -115,9 +103,12 @@ export const signUp = (params: SignUpParams) => {
             updatedAt: timestamp,
             usename: params.username,
           }
-
-          await setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData)
+          await setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData).catch((error) => {
+            dispatch(push('/error/001'))
+          })
           dispatch(push('/'))
+        } else {
+          dispatch(push('/error/002'))
         }
       })
       .catch((error) => {
@@ -132,10 +123,9 @@ export const signUp = (params: SignUpParams) => {
  */
 export const signOutFrom = () => {
   return async (dispatch: Dispatch): Promise<void> => {
-    signOut(auth).then(() => {
-      dispatch(signOutAction())
-      dispatch(push('/signin'))
-    })
+    await signOut(auth)
+    dispatch(signOutAction())
+    dispatch(push('/signin'))
   }
 }
 
@@ -148,10 +138,10 @@ export const resetPassword = (email: string) => {
   return async (dispatch: Dispatch): Promise<void> => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
-        dispatch(push('/signin/send'))
+        dispatch(push('/signin/sent'))
       })
       .catch(() => {
-        dispatch(push('/signin/send'))
+        dispatch(push('/signin/sent'))
       })
   }
 }
@@ -163,16 +153,6 @@ export const resetPassword = (email: string) => {
  */
 export const saveDiary = (diary: Diary) => {
   return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
-    // Validation
-    if (diary.content.length === 0 || diary.title.length === 0) {
-      alert('Title and Content are required.')
-      return
-    }
-    if (!validateTextOnlyEnglish(diary.title) || !validateTextOnlyEnglish(diary.content)) {
-      alert('Please write "English" diary!')
-      return
-    }
-
     const timestamp = Timestamp.now()
     const uid = getState().users.uid
     let id = ''
@@ -188,7 +168,9 @@ export const saveDiary = (diary: Diary) => {
           updatedAt: timestamp,
         },
         { merge: true }
-      )
+      ).catch((error) => {
+        dispatch(push('/error/001'))
+      })
     } else {
       // create
       const diaryRef = doc(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
@@ -200,6 +182,8 @@ export const saveDiary = (diary: Diary) => {
         content: diary.content,
         createdAt: timestamp,
         updatedAt: timestamp,
+      }).catch((error) => {
+        dispatch(push('/error/001'))
       })
     }
 
@@ -212,6 +196,7 @@ export const saveDiary = (diary: Diary) => {
     }
   }
 }
+
 /**
  * Delete a diary.
  * @param id diary id
@@ -239,7 +224,6 @@ export const deleteDiary = (id: string) => {
 const fetchUsersState = async (uid: string) => {
   const users = await getDoc(doc(db, DOC_NAME_USERS, uid))
   const usersData = users.data()
-
   if (usersData) {
     const diaries = await fetchDiaries(uid)
     return {

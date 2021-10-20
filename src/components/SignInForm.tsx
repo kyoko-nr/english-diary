@@ -62,7 +62,7 @@ const SignInForm = (): JSX.Element => {
       />
       <PlaneLargeButton label={'sign in'} onClick={handleSubmit(onSubmit)} />
       <div className={'spacer-16'} />
-      <TextLargeButton label={'sign up'} onClick={() => dispatch(push(`/signup`))} color={'primary'} />
+      <TextLargeButton label={'sign up'} onClick={() => dispatch(push('/signup'))} color={'primary'} />
     </>
   )
 }

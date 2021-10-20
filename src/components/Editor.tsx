@@ -1,8 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { TextInput, ContainedMidButton, OutlineMidButton, Label, FormatDate } from 'components/UIKit/index'
+import { useForm } from 'react-hook-form'
+import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
 import { Diary } from 'reducks/users/types'
 import { saveDiary } from 'reducks/users/operations'
+import { ContentRegExp, ErrorMessages } from 'utils/validation'
 
 type EditorProps = {
   diary?: Diary
@@ -10,105 +12,93 @@ type EditorProps = {
 
 const Editor = (props: EditorProps): JSX.Element => {
   const dispatch = useDispatch()
+  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>()
 
-  const [id, setId] = useState('')
-  const [date, setDate] = useState(new Date())
-  const [title, setTitle] = useState('')
-  const [titleErr, setTitleErr] = useState(false)
-  const [content, setContent] = useState('')
-  const [contentErr, setContentErr] = useState(false)
   const [counter, setCounter] = useState(0)
 
-  const inputTitle = useCallback(
-    (event) => {
-      const value = event.target.value
-      setTitle(value)
-      const isTitleError = value.length === 0
-      setTitleErr(isTitleError)
-    },
-    [setTitle, setTitleErr]
-  )
+  const id = props.diary ? props.diary.id : ''
+  const date = props.diary ? props.diary.date : new Date()
 
-  const inputContent = useCallback(
-    (event) => {
-      const value = event.target.value
-      setContent(value)
-      setCounter(countWords(value))
-      const isContentErr = value.length === 0
-      setContentErr(isContentErr)
-    },
-    [setContent, setCounter, setContentErr]
-  )
+  interface IFormInput {
+    title: string
+    content: string
+  }
 
-  const countWords = (value: string): number => {
-    const splited = value.split(/[\s]/)
+  const onSubmit = (data: IFormInput) => {
+    dispatch(
+      saveDiary({
+        id: id,
+        date: date,
+        title: data.title,
+        content: data.content,
+      })
+    )
+  }
+
+  const countWords = (): number => {
+    const splited = watch('content').split(/[\s]/)
     const count = splited.filter((w: string) => w !== '').length
     return count
   }
 
   const initFields = () => {
-    setId('')
-    setDate(new Date())
-    setTitle('')
-    setContent('')
+    setValue('title', '')
+    setValue('content', '')
     setCounter(0)
   }
 
   useEffect(() => {
     if (props.diary) {
-      setId(props.diary.id)
-      setDate(props.diary.date)
-      setTitle(props.diary.title)
-      setContent(props.diary.content)
-      setCounter(countWords(props.diary.content))
-    } else {
-      initFields()
+      setValue('title', props.diary.title)
+      setValue('content', props.diary.content)
+      setCounter(countWords())
     }
   }, [props.diary])
+
+  useEffect(() => {
+    setCounter(countWords())
+  }, [watch('content')])
 
   return (
     <div className={'content'}>
       <div className={'spacer-8'} />
       <FormatDate date={date} format={'date'} variant={'body1'} align={'left'} />
       <div className={'spacer-24'} />
-      <TextInput
+      <TextInputOutlined
+        name={'title'}
+        rules={{
+          required: ErrorMessages.required,
+          pattern: { value: ContentRegExp, message: ErrorMessages.onlyEnglish },
+        }}
+        required={true}
+        defaultValue={props.diary ? props.diary.title : ' '}
+        control={control}
         fullWidth={true}
         label={'Title'}
         multiline={false}
-        rows={1}
-        value={title}
-        type={'text'}
-        onChange={inputTitle}
-        variant={'outlined'}
-        required={true}
-        error={titleErr}
-        helperText={'Title is required!'}
+        rows={0}
       />
       <div className={'spacer-8'} />
       <Label label={`${counter} words`} variant={'caption'} align={'right'} />
       <div className={'spacer-8'} />
-      <TextInput
-        label={'Content'}
+      <TextInputOutlined
+        name={'content'}
+        rules={{
+          required: ErrorMessages.required,
+          pattern: { value: ContentRegExp, message: ErrorMessages.onlyEnglish },
+        }}
+        required={true}
+        defaultValue={props.diary ? props.diary.content : ''}
+        control={control}
         fullWidth={true}
+        label={'Content'}
         multiline={true}
         rows={16}
-        value={content}
-        type={'text'}
-        placeholder={'Describe your day here!'}
-        onChange={inputContent}
-        variant={'outlined'}
-        required={true}
-        error={contentErr}
-        helperText={'Content is required!'}
       />
       <div className={'spacer-16'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} onClick={initFields} />
-        <ContainedMidButton
-          color={'primary'}
-          onClick={() => dispatch(saveDiary({ id, date, title, content }))}
-          label={'save'}
-        />
+        <ContainedMidButton color={'primary'} onClick={handleSubmit(onSubmit)} label={'save'} />
       </div>
     </div>
   )

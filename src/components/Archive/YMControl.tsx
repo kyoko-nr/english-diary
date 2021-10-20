@@ -15,7 +15,7 @@ const useStyles = makeStyles(() =>
       justifyContent: 'space-between',
 
       '& .MuiTypography-root': {
-        lineHeight: 2,
+        lineHeight: 2.4,
       },
     },
   })

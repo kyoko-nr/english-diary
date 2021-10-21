@@ -1,9 +1,11 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { AppBar, Toolbar } from '@material-ui/core'
+import { AppBar, Divider, IconButton, Menu, MenuItem, Toolbar } from '@material-ui/core'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { signOutFrom } from 'reducks/users/operations'
 import { TextMidButton, Logo } from 'components/UIKit/index'
 import { makeStyles, createStyles } from '@material-ui/styles'
+import { useState } from 'react'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -21,8 +23,11 @@ const useStyles = makeStyles(() =>
       width: '100%',
       boxSizing: 'border-box',
     },
-    signOut: {
+    alignRight: {
       margin: '0 0 0 auto',
+    },
+    userIcon: {
+      padding: 8,
     },
   })
 )
@@ -30,15 +35,45 @@ const useStyles = makeStyles(() =>
 const Header = (): JSX.Element => {
   const dispatch = useDispatch()
   const classes = useStyles()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   return (
     <div className={classes.root}>
       <AppBar position="fixed" className={classes.menuBar}>
         <Toolbar className={classes.toolBar}>
           <Logo variant={'h5'} component={'div'} onClick={() => dispatch(push('/'))} isLink={true} />
-          <span className={classes.signOut}>
-            <TextMidButton label={'sign out'} onClick={() => dispatch(signOutFrom())} color={'default'} />
-          </span>
+          <div className={classes.alignRight}>
+            <IconButton onClick={handleMenu} color={'inherit'} className={classes.userIcon}>
+              <AccountCircleIcon fontSize={'large'} />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <Divider />
+              <MenuItem onClick={() => dispatch(signOutFrom())}>Log out</MenuItem>
+            </Menu>
+          </div>
         </Toolbar>
       </AppBar>
     </div>

@@ -143,3 +143,15 @@ npm install --save react-router-dom
 npm install --save-dev @types/react-router-dom
 
 ```
+
+# Firebase
+
+### firebase deploy
+```
+firebase deploy
+```
+
+### firebase deploy only rules
+```
+firebase deploy --only firestore:rules
+```

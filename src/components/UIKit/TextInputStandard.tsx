@@ -4,7 +4,6 @@ import { Controller, FieldValues, useController, FieldName, Control } from 'reac
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   name: FieldName<TFieldValues>
-  // rules?: Exclude<RegisterOptions, 'setValueAs'>
   required: boolean
   defaultValue: unknown
   control?: any
@@ -32,7 +31,6 @@ const TextInputStandard = (props: InputProps): JSX.Element => {
       name={props.name}
       control={props.control}
       defaultValue={props.defaultValue}
-      // rules={{ ...props.rules }}
       render={({ field }) => (
         <TextField
           {...field}

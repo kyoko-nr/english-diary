@@ -1,7 +1,7 @@
 import { Container } from '@material-ui/core'
 import { Logo } from 'components/UIKit/index'
-import { SignInForm } from 'components'
-import { Scene } from 'components/three'
+import { SigninForm } from 'components/Signin/index'
+import { Scene } from 'components/three/index'
 
 const signin = (): JSX.Element => {
   return (
@@ -9,7 +9,7 @@ const signin = (): JSX.Element => {
       <Container maxWidth="lg">
         <Logo variant={'h4'} component={'h1'} />
         <Scene />
-        <SignInForm />
+        <SigninForm />
       </Container>
     </div>
   )

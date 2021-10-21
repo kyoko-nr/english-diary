@@ -4,15 +4,25 @@ import { useForm } from 'react-hook-form'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
 import { Diary } from 'reducks/users/types'
 import { saveDiary } from 'reducks/users/operations'
-import { ContentRegExp, ErrorMessages } from 'utils/validation'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 type EditorProps = {
   diary?: Diary
 }
 
+const ContentRegExp = /^[a-zA-Z0-9!-/:-@¥[-`{-~\s]*$/
+const ContentErrMsg = "Please write 'English' diary!"
+const schema = yup.object().shape({
+  title: yup.string().required().matches(ContentRegExp, ContentErrMsg),
+  content: yup.string().required().matches(ContentRegExp, ContentErrMsg),
+})
+
 const Editor = (props: EditorProps): JSX.Element => {
   const dispatch = useDispatch()
-  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>()
+  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
+    resolver: yupResolver(schema),
+  })
 
   const [counter, setCounter] = useState(0)
 
@@ -66,12 +76,8 @@ const Editor = (props: EditorProps): JSX.Element => {
       <div className={'spacer-24'} />
       <TextInputOutlined
         name={'title'}
-        rules={{
-          required: ErrorMessages.required,
-          pattern: { value: ContentRegExp, message: ErrorMessages.onlyEnglish },
-        }}
         required={true}
-        defaultValue={props.diary ? props.diary.title : ' '}
+        defaultValue={props.diary ? props.diary.title : ''}
         control={control}
         fullWidth={true}
         label={'Title'}
@@ -83,10 +89,6 @@ const Editor = (props: EditorProps): JSX.Element => {
       <div className={'spacer-8'} />
       <TextInputOutlined
         name={'content'}
-        rules={{
-          required: ErrorMessages.required,
-          pattern: { value: ContentRegExp, message: ErrorMessages.onlyEnglish },
-        }}
         required={true}
         defaultValue={props.diary ? props.diary.content : ''}
         control={control}

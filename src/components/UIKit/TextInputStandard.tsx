@@ -1,10 +1,10 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
-import { Controller, FieldValues, useController, RegisterOptions, FieldName, Control } from 'react-hook-form'
+import { Controller, FieldValues, useController, FieldName, Control } from 'react-hook-form'
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   name: FieldName<TFieldValues>
-  rules?: Exclude<RegisterOptions, 'setValueAs'>
+  // rules?: Exclude<RegisterOptions, 'setValueAs'>
   required: boolean
   defaultValue: unknown
   control?: any
@@ -32,7 +32,7 @@ const TextInputStandard = (props: InputProps): JSX.Element => {
       name={props.name}
       control={props.control}
       defaultValue={props.defaultValue}
-      rules={{ ...props.rules }}
+      // rules={{ ...props.rules }}
       render={({ field }) => (
         <TextField
           {...field}

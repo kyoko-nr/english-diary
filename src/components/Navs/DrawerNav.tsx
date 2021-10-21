@@ -1,6 +1,6 @@
 import { Drawer } from '@material-ui/core'
 import { useState } from 'react'
-import { ArchiveList } from './Archive/index'
+import { ArchiveList } from 'components/Archive/index'
 
 const DrawerNav = (): JSX.Element => {
   const [mobileOpen, setMobileOpen] = useState(true)

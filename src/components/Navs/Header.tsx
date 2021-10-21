@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { AppBar, Toolbar } from '@material-ui/core'
 import { signOutFrom } from 'reducks/users/operations'
-import { TextMidButton, Logo } from './UIKit/index'
+import { TextMidButton, Logo } from 'components/UIKit/index'
 import { makeStyles, createStyles } from '@material-ui/styles'
 
 const useStyles = makeStyles(() =>

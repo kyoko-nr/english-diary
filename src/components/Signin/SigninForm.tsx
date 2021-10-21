@@ -3,11 +3,19 @@ import { push } from 'connected-react-router'
 import { signIn } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
 import { PlaneLargeButton, SimpleLink, TextLargeButton, TextInputStandard } from 'components/UIKit/index'
-import { EmailRegExp, ErrorMessages } from 'utils/validation'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
 
-const SignInForm = (): JSX.Element => {
+const schema = yup.object().shape({
+  email: yup.string().required().email(),
+  password: yup.string().required().min(6),
+})
+
+const SigninForm = (): JSX.Element => {
   const dispatch = useDispatch()
-  const { control, handleSubmit } = useForm<IFormInput>()
+  const { control, handleSubmit } = useForm<IFormInput>({
+    resolver: yupResolver(schema),
+  })
 
   interface IFormInput {
     email: string
@@ -29,10 +37,6 @@ const SignInForm = (): JSX.Element => {
         control={control}
         fullWidth={false}
         name={'email'}
-        rules={{
-          required: ErrorMessages.required,
-          pattern: { value: EmailRegExp, message: ErrorMessages.emailInvalid },
-        }}
         defaultValue={''}
         label={'Email'}
         type={'email'}
@@ -43,10 +47,6 @@ const SignInForm = (): JSX.Element => {
         control={control}
         fullWidth={false}
         name={'password'}
-        rules={{
-          required: ErrorMessages.required,
-          minLength: { value: 6, message: ErrorMessages.shortPassword },
-        }}
         defaultValue={''}
         label={'Password'}
         type={'password'}
@@ -67,4 +67,4 @@ const SignInForm = (): JSX.Element => {
   )
 }
 
-export default SignInForm
+export default SigninForm

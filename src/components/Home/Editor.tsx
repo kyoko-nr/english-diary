@@ -95,7 +95,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         fullWidth={true}
         label={'Content'}
         multiline={true}
-        rows={16}
+        rows={20}
       />
       <div className={'spacer-16'} />
       <div className={'button-wrapper'}>

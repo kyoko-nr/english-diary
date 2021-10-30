@@ -1,5 +1,5 @@
 import { Route, Switch } from 'react-router'
-import { Home, Signin, Post, Signup, Reset, Error, EmailSend } from 'templates/index'
+import { Home, Signin, Post, Signup, Reset, Error, EmailSend, MyPage } from 'templates/index'
 import Auth from './Auth'
 
 const Router = (): JSX.Element => {
@@ -14,6 +14,7 @@ const Router = (): JSX.Element => {
         <Route exact path="(/)?" component={Home}></Route>
         <Route exact path="/edit/:id" component={Home}></Route>
         <Route exact path="/post/:id" component={Post}></Route>
+        <Route exact path="/mypage" component={MyPage}></Route>
       </Auth>
     </Switch>
   )

@@ -69,7 +69,7 @@ const Header = (): JSX.Element => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={() => dispatch(push('/mypage'))}>My Page</MenuItem>
               <Divider />
               <MenuItem onClick={() => dispatch(signOutFrom())}>Log out</MenuItem>
             </Menu>

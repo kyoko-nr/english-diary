@@ -18,6 +18,10 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       borderRadius: 8,
+
+      '& > .MuiInputBase-root': {
+        lineHeight: '1.4em',
+      },
     },
   })
 )

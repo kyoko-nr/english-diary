@@ -10,6 +10,8 @@ const useStyles = makeStyles(() =>
     root: {
       display: 'block',
       whiteSpace: 'pre-wrap',
+      lineHeight: '1.6em',
+      fontSize: '1.1rem',
     },
   })
 )

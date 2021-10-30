@@ -41,11 +41,6 @@ const SignupForm = (): JSX.Element => {
     )
   }
 
-  const matchPassword = (val: string): boolean => {
-    const password = watch('password')
-    return val === password
-  }
-
   return (
     <>
       <Label label={'Sign up for your English Diary!'} variant={'h4'} align={'center'} />

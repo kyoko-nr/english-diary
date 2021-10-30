@@ -3,7 +3,7 @@ import { push } from 'connected-react-router'
 import { AppBar, Divider, IconButton, Menu, MenuItem, Toolbar } from '@material-ui/core'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import { signOutFrom } from 'reducks/users/operations'
-import { TextMidButton, Logo } from 'components/UIKit/index'
+import { Logo } from 'components/UIKit/index'
 import { makeStyles, createStyles } from '@material-ui/styles'
 import { useState } from 'react'
 

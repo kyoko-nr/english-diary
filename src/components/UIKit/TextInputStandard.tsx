@@ -16,7 +16,8 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: 400,
+      maxWidth: 400,
+      width: '80%',
     },
   })
 )

@@ -11,7 +11,7 @@ const scrollHeight = window.innerHeight - 160 - 48 // padding = 40 * 4, YMContro
 const useStyles = makeStyles(() =>
   createStyles({
     scrollBox: {
-      height: scrollHeight,
+      height: Math.max(scrollHeight, 320),
       overflowY: 'auto',
     },
   })
@@ -42,10 +42,13 @@ const ArchiveList = (): JSX.Element => {
       <YMControl date={currentYM} onClick={changeYM} />
       <div className={'spacer-8'} />
       <div className={classes.scrollBox}>
-        {diaries &&
+        {diaries && diaries.length > 0 ? (
           diaries.map((value: Diary) => {
             return <Archive diary={value} key={value.id} />
-          })}
+          })
+        ) : (
+          <div className={'txt-center'}>No diary</div>
+        )}
       </div>
     </div>
   )

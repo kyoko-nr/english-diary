@@ -20,9 +20,9 @@ const theme = createTheme({
       primary: '#4a4a4a',
     },
   },
-  typography: {
-    fontSize: 14,
-  },
+  // typography: {
+  //   fontSize: 14,
+  // },
 })
 
 function App(): JSX.Element {

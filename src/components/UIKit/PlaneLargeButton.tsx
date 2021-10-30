@@ -9,7 +9,7 @@ type PlaneLargeButtonProps = {
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: 264,
+      width: 240,
       height: 40,
       borderRadius: 20,
       fontSize: 16,

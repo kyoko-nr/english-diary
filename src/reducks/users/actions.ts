@@ -5,10 +5,8 @@ export const signInAction = (userState: Types.UserState): Types.UsersAction => {
   return {
     type: 'SIGN_IN',
     payload: {
+      ...userState,
       isSignedIn: true,
-      uid: userState.uid,
-      username: userState.username,
-      diaries: userState.diaries,
       currentYM: new Date(),
     },
   }
@@ -22,6 +20,7 @@ export const signOutAction = (): Types.UsersAction => {
       isSignedIn: false,
       uid: '',
       username: '',
+      email: '',
       diaries: [],
       currentYM: undefined,
     },

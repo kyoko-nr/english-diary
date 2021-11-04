@@ -14,7 +14,7 @@ const EmailSend = (): JSX.Element => {
         <TextLargeButton label={'sign in page'} onClick={() => dispatch(push('/signin'))} color={'primary'} />
         <div className={'spacer-16'} />
         <SimpleLink
-          label={"Haven't received an email?"}
+          label={"Haven't received an email? Sned it again!"}
           component={'button'}
           onClick={() => dispatch(push('/signin/reset'))}
           color={'textPrimary'}

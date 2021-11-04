@@ -1,6 +1,5 @@
-import { push } from 'connected-react-router'
-import { SignUpParams, signInParams, Diary } from './types'
 import { auth, db } from 'firebase/index'
+import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -8,10 +7,14 @@ import {
   UserCredential,
   signOut,
   sendPasswordResetEmail,
+  User,
 } from 'firebase/auth'
-import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import { Dispatch, Unsubscribe } from 'redux'
+import { push } from 'connected-react-router'
+import { SignUpParams, signInParams, Diary, UserState } from './types'
 import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction } from './actions'
+import { setErrorsAction } from 'reducks/errors/actions'
+import { Messages } from 'constants/ErrorMessages'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
@@ -39,14 +42,13 @@ export const changeCurrentYM = (date: Date) => {
 export const listenAuthState = () => {
   return async (dispatch: Dispatch): Promise<Unsubscribe> => {
     return onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const uid = user.uid
-        const usersState = await fetchUsersState(uid)
-        if (usersState) {
-          dispatch(signInAction(usersState))
-        } else {
-          dispatch(push('/error/001'))
-        }
+      if (!user) {
+        dispatch(push('/signin'))
+        return
+      }
+      const usersState = await fetchUsersState(user)
+      if (usersState) {
+        dispatch(signInAction(usersState))
       } else {
         dispatch(push('/signin'))
       }
@@ -64,21 +66,15 @@ export const signIn = (params: signInParams) => {
     return signInWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
-        if (user) {
-          const uid = user.uid
-          const usersState = await fetchUsersState(uid)
-          if (usersState) {
-            dispatch(signInAction(usersState))
-            dispatch(push('/'))
-          } else {
-            dispatch(push('/error/002'))
-          }
-        } else {
-          dispatch(push('/error/002'))
+        if (!user) {
+          dispatch(setErrorsAction([Messages.NO_USER_ERROR]))
         }
+        const usersState = await fetchUsersState(user)
+        dispatch(signInAction(usersState))
+        dispatch(push('/'))
       })
-      .catch((error) => {
-        dispatch(push('/error/001'))
+      .catch(() => {
+        dispatch(setErrorsAction([Messages.UNABLE_TO_SIGNIN_ERROR]))
       })
   }
 }
@@ -93,26 +89,33 @@ export const signUp = (params: SignUpParams) => {
     return createUserWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
-        if (user) {
-          const uid = user.uid
-          const timestamp = Timestamp.now()
-          const userInitialData = {
-            createdAt: timestamp,
-            email: params.email,
-            uid: uid,
-            updatedAt: timestamp,
-            usename: params.username,
-          }
-          await setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData).catch((error) => {
-            dispatch(push('/error/001'))
-          })
-          dispatch(push('/'))
-        } else {
-          dispatch(push('/error/002'))
+        if (!user) {
+          throw new Error(Messages.NO_USER_ERROR)
+          // dispatch(accountErrorAction([Messages.NO_USER_ERROR]))
+          // dispatch(push('/signin'))
+          // return
         }
+        const uid = user.uid
+        const timestamp = Timestamp.now()
+        const userInitialData = {
+          createdAt: timestamp,
+          email: params.email,
+          uid: uid,
+          updatedAt: timestamp,
+          username: params.username,
+        }
+        setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData)
+          .then(() => dispatch(push('/')))
+          .catch(() => {
+            throw new Error(Messages.NO_USER_ERROR)
+            // dispatch(accountErrorAction([Messages.NO_USER_ERROR]))
+            // dispatch(push('/signin'))
+          })
       })
-      .catch((error) => {
-        dispatch(push('/error/002'))
+      .catch(() => {
+        throw new Error(Messages.CREATE_ACCOUNT_ERROR)
+        // dispatch(accountErrorAction([Messages.CREATE_ACCOUNT_ERROR]))
+        // dispatch(push('/signin'))
       })
   }
 }
@@ -136,13 +139,8 @@ export const signOutFrom = () => {
  */
 export const resetPassword = (email: string) => {
   return async (dispatch: Dispatch): Promise<void> => {
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        dispatch(push('/signin/sent'))
-      })
-      .catch(() => {
-        dispatch(push('/signin/sent'))
-      })
+    await sendPasswordResetEmail(auth, email)
+    dispatch(push('/signin/sent'))
   }
 }
 
@@ -168,8 +166,9 @@ export const saveDiary = (diary: Diary) => {
           updatedAt: timestamp,
         },
         { merge: true }
-      ).catch((error) => {
-        dispatch(push('/error/001'))
+      ).catch(() => {
+        throw new Error(Messages.UNABLE_TO_SAVE_DIARY)
+        // dispatch(push('/error/001'))
       })
     } else {
       // create
@@ -182,18 +181,15 @@ export const saveDiary = (diary: Diary) => {
         content: diary.content,
         createdAt: timestamp,
         updatedAt: timestamp,
-      }).catch((error) => {
-        dispatch(push('/error/001'))
+      }).catch(() => {
+        throw new Error(Messages.UNABLE_TO_SAVE_DIARY)
+        // dispatch(push('/error/001'))
       })
     }
 
     const usersState = await fetchUsersState(uid)
-    if (usersState) {
-      dispatch(updateDirayAction(usersState))
-      dispatch(push(`/post/${id}`))
-    } else {
-      dispatch(push('/error/001'))
-    }
+    dispatch(updateDirayAction(usersState))
+    dispatch(push(`/post/${id}`))
   }
 }
 
@@ -207,33 +203,33 @@ export const deleteDiary = (id: string) => {
     const uid = getState().users.uid
     await deleteDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id))
     const usersState = await fetchUsersState(uid)
-    if (usersState) {
-      dispatch(updateDirayAction(usersState))
-      dispatch(push('/'))
-    } else {
-      dispatch(push('/error/001'))
-    }
+    dispatch(updateDirayAction(usersState))
+    dispatch(push('/'))
   }
 }
 
 /**
  * Fetch users state
- * @param uid uid
+ * @param user Authenticated user
  * @returns users state
  */
-const fetchUsersState = async (uid: string) => {
-  const users = await getDoc(doc(db, DOC_NAME_USERS, uid))
+const fetchUsersState = async (user: User) => {
+  const users = await getDoc(doc(db, DOC_NAME_USERS, user.uid))
   const usersData = users.data()
-  if (usersData) {
-    const diaries = await fetchDiaries(uid)
-    return {
-      username: usersData.username,
-      uid: usersData.uid,
-      isSignedIn: true,
-      diaries: diaries,
-      currentYM: new Date(),
-    }
+  if (!usersData) {
+    throw new Error(Messages.NO_USER_ERROR)
   }
+  // if (usersData) {
+  const diaries = await fetchDiaries(user.uid)
+  const usersState: UserState = {
+    username: usersData.username,
+    uid: user.uid,
+    email: user.email || '',
+    isSignedIn: true,
+    diaries: diaries,
+    currentYM: new Date(),
+  }
+  return usersState
 }
 
 /**

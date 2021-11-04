@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { signIn } from 'reducks/users/operations'
+import { clearErrors } from 'reducks/errors/operations'
 import { useForm } from 'react-hook-form'
 import { PlaneLargeButton, SimpleLink, TextLargeButton, TextInputStandard } from 'components/UIKit/index'
 import * as yup from 'yup'
@@ -23,12 +24,8 @@ const SigninForm = (): JSX.Element => {
   }
 
   const onSubmit = (data: IFormInput) => {
-    dispatch(
-      signIn({
-        email: data.email,
-        password: data.password,
-      })
-    )
+    dispatch(clearErrors())
+    dispatch(signIn({ email: data.email, password: data.password }))
   }
 
   return (

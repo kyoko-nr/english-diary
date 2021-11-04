@@ -2,6 +2,7 @@ export type UserState = {
   isSignedIn: boolean
   uid: string
   username: string
+  email: string | undefined
   diaries: Diary[]
   currentYM: Date | undefined
 }

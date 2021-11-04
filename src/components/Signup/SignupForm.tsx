@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 
 const SignupForm = (): JSX.Element => {
   const dispatch = useDispatch()
-  const { control, handleSubmit, watch } = useForm<IFormInput>({
+  const { control, handleSubmit } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   })
 

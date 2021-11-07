@@ -1,13 +1,11 @@
-import { Container } from '@material-ui/core'
+import { BaseFrame } from 'components/Base/index'
 import { SignupForm } from 'components/Signup/index'
 
 const Signup = (): JSX.Element => {
   return (
-    <div className={'full-window bg-yellow flex-column'}>
-      <Container maxWidth="lg">
-        <SignupForm />
-      </Container>
-    </div>
+    <BaseFrame>
+      <SignupForm />
+    </BaseFrame>
   )
 }
 

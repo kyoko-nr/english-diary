@@ -1,13 +1,11 @@
-import { Container } from '@material-ui/core'
+import { BaseFrame } from 'components/Base/index'
 import { ResetForm } from 'components/Reset/index'
 
 const Reset = (): JSX.Element => {
   return (
-    <div className={'full-window bg-yellow flex-column'}>
-      <Container maxWidth="lg">
-        <ResetForm />
-      </Container>
-    </div>
+    <BaseFrame>
+      <ResetForm />
+    </BaseFrame>
   )
 }
 

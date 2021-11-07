@@ -139,7 +139,11 @@ export const signOutFrom = () => {
  */
 export const resetPassword = (email: string) => {
   return async (dispatch: Dispatch): Promise<void> => {
-    await sendPasswordResetEmail(auth, email)
+    try {
+      await sendPasswordResetEmail(auth, email)
+    } catch (error) {
+      // Do nothing.
+    }
     dispatch(push('/signin/sent'))
   }
 }
@@ -152,14 +156,14 @@ export const resetPassword = (email: string) => {
 export const saveDiary = (diary: Diary) => {
   return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
     const timestamp = Timestamp.now()
-    const uid = getState().users.uid
+    const user = getState().users
     let id = ''
 
     if (diary.id) {
       // update
       id = diary.id
       await setDoc(
-        doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id),
+        doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id),
         {
           title: diary.title,
           content: diary.content,
@@ -172,9 +176,9 @@ export const saveDiary = (diary: Diary) => {
       })
     } else {
       // create
-      const diaryRef = doc(collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES))
+      const diaryRef = doc(collection(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES))
       id = diaryRef.id
-      await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), {
+      await setDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id), {
         id: id,
         date: Timestamp.fromDate(diary.date),
         title: diary.title,
@@ -187,7 +191,7 @@ export const saveDiary = (diary: Diary) => {
       })
     }
 
-    const usersState = await fetchUsersState(uid)
+    const usersState = await fetchUsersState(user)
     dispatch(updateDirayAction(usersState))
     dispatch(push(`/post/${id}`))
   }
@@ -200,9 +204,9 @@ export const saveDiary = (diary: Diary) => {
  */
 export const deleteDiary = (id: string) => {
   return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
-    const uid = getState().users.uid
-    await deleteDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id))
-    const usersState = await fetchUsersState(uid)
+    const user = getState().users
+    await deleteDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id))
+    const usersState = await fetchUsersState(user)
     dispatch(updateDirayAction(usersState))
     dispatch(push('/'))
   }
@@ -219,7 +223,6 @@ const fetchUsersState = async (user: User) => {
   if (!usersData) {
     throw new Error(Messages.NO_USER_ERROR)
   }
-  // if (usersData) {
   const diaries = await fetchDiaries(user.uid)
   const usersState: UserState = {
     username: usersData.username,

@@ -1,20 +1,34 @@
-import { Route, Switch } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { Route, RouteComponentProps, Switch } from 'react-router'
+import { clearErrors } from 'reducks/errors/operations'
 import { Home, Signin, Post, Signup, Reset, Error, EmailSend, MyPage } from 'templates/index'
 import Auth from './Auth'
+
+type AppRouteProps = {
+  exact: boolean
+  path: string
+  component: React.ComponentType<RouteComponentProps<never>> | React.ComponentType
+}
+
+const AppRoute = (props: AppRouteProps): JSX.Element => {
+  const dispatch = useDispatch()
+  dispatch(clearErrors())
+
+  return <Route exact={props.exact} path={props.path} component={props.component} />
+}
 
 const Router = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path="/signin" component={Signin}></Route>
-      <Route exact path="/signin/reset" component={Reset}></Route>
-      <Route exact path="/signup" component={Signup}></Route>
-      <Route exact path="/error/:id" component={Error}></Route>
-      <Route exact path="/signin/sent" component={EmailSend}></Route>
+      <AppRoute exact path="/signin" component={Signin}></AppRoute>
+      <AppRoute exact path="/signin/reset" component={Reset}></AppRoute>
+      <AppRoute exact path="/signup" component={Signup}></AppRoute>
+      <AppRoute exact path="/signin/sent" component={EmailSend}></AppRoute>
       <Auth>
-        <Route exact path="(/)?" component={Home}></Route>
-        <Route exact path="/edit/:id" component={Home}></Route>
-        <Route exact path="/post/:id" component={Post}></Route>
-        <Route exact path="/mypage" component={MyPage}></Route>
+        <AppRoute exact path="(/)?" component={Home}></AppRoute>
+        <AppRoute exact path="/edit/:id" component={Home}></AppRoute>
+        <AppRoute exact path="/post/:id" component={Post}></AppRoute>
+        <AppRoute exact path="/mypage" component={MyPage}></AppRoute>
       </Auth>
     </Switch>
   )

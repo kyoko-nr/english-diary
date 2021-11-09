@@ -1,12 +1,39 @@
-import { createStore as reduxCreateStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore as reduxCreateStore, combineReducers, applyMiddleware, AnyAction, Store, EmptyObject } from 'redux'
 import { UsersReducer } from 'reducks/users/reducers'
 import { ErrorsReducer } from 'reducks/errors/reducers'
-import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { connectRouter, routerMiddleware, RouterState } from 'connected-react-router'
 import * as History from 'history'
 import thunk from 'redux-thunk'
+import { Diary, UsersAction } from 'reducks/users/types'
+import { User } from '@firebase/auth'
+import { ErrorsAction } from 'reducks/errors/types'
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default function createStore(history: History.History) {
+export interface AppState {
+  users: UsersInfo
+  errors: ErrorsInfo
+}
+
+interface UsersInfo extends User {
+  isSignedIn: boolean
+  uid: string
+  username: string
+  email: string
+  diaries: Array<Diary>
+  currentYM: Date
+}
+
+interface ErrorsInfo {
+  errorMsgs: Array<string>
+}
+
+export default function createStore(history: History.History): Store<
+  EmptyObject & {
+    router: RouterState<unknown>
+    users: UsersInfo
+    errors: ErrorsInfo
+  },
+  AnyAction | UsersAction | ErrorsAction
+> {
   return reduxCreateStore(
     combineReducers({
       router: connectRouter(history),

@@ -1,3 +1,5 @@
+import { Timestamp } from '@firebase/firestore'
+
 export type UserState = {
   isSignedIn: boolean
   uid: string
@@ -12,6 +14,15 @@ export type Diary = {
   date: Date
   title: string
   content: string
+}
+
+export type DiaryToSave = {
+  id?: string
+  date?: Timestamp
+  title: string
+  content: string
+  createdAt?: Timestamp
+  updatedAt?: Timestamp
 }
 
 export type UsersAction = {

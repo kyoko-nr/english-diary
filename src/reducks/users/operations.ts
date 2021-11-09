@@ -11,10 +11,11 @@ import {
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
-import { SignUpParams, signInParams, Diary, UserState } from './types'
+import { SignUpParams, signInParams, Diary, UserState, DiaryToSave } from './types'
 import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction } from './actions'
 import { setErrorsAction } from 'reducks/errors/actions'
 import { Messages } from 'constants/ErrorMessages'
+import { AppState } from 'reducks/store/store'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
@@ -25,7 +26,7 @@ const DOC_NAME_DIARIES = 'diaries'
  * @returns
  */
 export const changeCurrentYM = (date: Date) => {
-  return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
+  return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const usersState = getState().users
     const newState = {
       ...usersState,
@@ -66,12 +67,13 @@ export const signIn = (params: signInParams) => {
     return signInWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
-        if (!user) {
-          dispatch(setErrorsAction([Messages.NO_USER_ERROR]))
+        try {
+          const usersState = await fetchUsersState(user)
+          dispatch(signInAction(usersState))
+          dispatch(push('/'))
+        } catch (error) {
+          throw new Error(Messages.NO_USER_ERROR)
         }
-        const usersState = await fetchUsersState(user)
-        dispatch(signInAction(usersState))
-        dispatch(push('/'))
       })
       .catch(() => {
         dispatch(setErrorsAction([Messages.UNABLE_TO_SIGNIN_ERROR]))
@@ -89,33 +91,23 @@ export const signUp = (params: SignUpParams) => {
     return createUserWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
-        if (!user) {
-          throw new Error(Messages.NO_USER_ERROR)
-          // dispatch(accountErrorAction([Messages.NO_USER_ERROR]))
-          // dispatch(push('/signin'))
-          // return
-        }
-        const uid = user.uid
         const timestamp = Timestamp.now()
         const userInitialData = {
           createdAt: timestamp,
           email: params.email,
-          uid: uid,
+          uid: user.uid,
           updatedAt: timestamp,
           username: params.username,
         }
-        setDoc(doc(db, DOC_NAME_USERS, uid), userInitialData)
-          .then(() => dispatch(push('/')))
-          .catch(() => {
-            throw new Error(Messages.NO_USER_ERROR)
-            // dispatch(accountErrorAction([Messages.NO_USER_ERROR]))
-            // dispatch(push('/signin'))
-          })
+        try {
+          await setDoc(doc(db, DOC_NAME_USERS, user.uid), userInitialData)
+          dispatch(push('/'))
+        } catch (error) {
+          throw new Error(Messages.CREATE_ACCOUNT_ERROR)
+        }
       })
       .catch(() => {
         throw new Error(Messages.CREATE_ACCOUNT_ERROR)
-        // dispatch(accountErrorAction([Messages.CREATE_ACCOUNT_ERROR]))
-        // dispatch(push('/signin'))
       })
   }
 }
@@ -154,46 +146,53 @@ export const resetPassword = (email: string) => {
  * @returns
  */
 export const saveDiary = (diary: Diary) => {
-  return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
+  return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const timestamp = Timestamp.now()
     const user = getState().users
     let id = ''
+    let diaryToSave: DiaryToSave
 
     if (diary.id) {
       // update
       id = diary.id
-      await setDoc(
-        doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id),
-        {
-          title: diary.title,
-          content: diary.content,
-          updatedAt: timestamp,
-        },
-        { merge: true }
-      ).catch(() => {
-        throw new Error(Messages.UNABLE_TO_SAVE_DIARY)
-        // dispatch(push('/error/001'))
-      })
+      diaryToSave = {
+        title: diary.title,
+        content: diary.content,
+        updatedAt: timestamp,
+      }
     } else {
       // create
       const diaryRef = doc(collection(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES))
       id = diaryRef.id
-      await setDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id), {
+      diaryToSave = {
         id: id,
         date: Timestamp.fromDate(diary.date),
         title: diary.title,
         content: diary.content,
         createdAt: timestamp,
         updatedAt: timestamp,
-      }).catch(() => {
-        throw new Error(Messages.UNABLE_TO_SAVE_DIARY)
-        // dispatch(push('/error/001'))
-      })
+      }
     }
+
+    await setDiary(user.uid, id, diaryToSave)
 
     const usersState = await fetchUsersState(user)
     dispatch(updateDirayAction(usersState))
     dispatch(push(`/post/${id}`))
+  }
+}
+
+/**
+ * Set diary to DB.
+ * @param uid user id
+ * @param id diary id
+ * @param diary diary to save
+ */
+const setDiary = async (uid: string, id: string, diary: DiaryToSave): Promise<void> => {
+  try {
+    await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), diary, { merge: true })
+  } catch (error) {
+    throw new Error(Messages.UNABLE_TO_SAVE_DIARY)
   }
 }
 
@@ -203,7 +202,7 @@ export const saveDiary = (diary: Diary) => {
  * @returns
  */
 export const deleteDiary = (id: string) => {
-  return async (dispatch: Dispatch, getState: () => any): Promise<void> => {
+  return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const user = getState().users
     await deleteDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id))
     const usersState = await fetchUsersState(user)

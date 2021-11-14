@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router'
 import { clearErrors } from 'reducks/errors/operations'
-import { Home, Signin, Post, Signup, Reset, Error, EmailSend, MyPage } from 'templates/index'
+import { Home, Signin, Post, Signup, Reset, Error, EmailSend, MyPage, DeleteAccountConfirm } from 'templates/index'
 import Auth from './Auth'
 
 type AppRouteProps = {
@@ -29,6 +29,7 @@ const Router = (): JSX.Element => {
         <AppRoute exact path="/edit/:id" component={Home}></AppRoute>
         <AppRoute exact path="/post/:id" component={Post}></AppRoute>
         <AppRoute exact path="/mypage" component={MyPage}></AppRoute>
+        <AppRoute exact path="/mypage/delete" component={DeleteAccountConfirm}></AppRoute>
       </Auth>
     </Switch>
   )

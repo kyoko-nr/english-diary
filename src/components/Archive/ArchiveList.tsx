@@ -38,7 +38,7 @@ const ArchiveList = (): JSX.Element => {
   const classes = useStyles()
 
   return (
-    <div className={'content'}>
+    <div className={'archivelist-container'}>
       <YMControl date={currentYM} onClick={changeYM} />
       <div className={'spacer-8'} />
       <div className={classes.scrollBox}>

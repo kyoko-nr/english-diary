@@ -24,8 +24,8 @@ const Home = (props: HomeProps): JSX.Element => {
   }, [props.match.params.id])
 
   return (
-    <AppFrame>
-      <Grid container spacing={1} className={'content'}>
+    <AppFrame maxWidth={'lg'}>
+      <Grid container spacing={1}>
         <Grid item xs={12} md={8}>
           {diaryToEdit ? <Editor diary={diaryToEdit} /> : <Editor />}
         </Grid>
@@ -34,19 +34,6 @@ const Home = (props: HomeProps): JSX.Element => {
         </Grid>
       </Grid>
     </AppFrame>
-    // <>
-    //   <Header />
-    //   <Container maxWidth="lg">
-    //     <Grid container spacing={1} className={'content'}>
-    //       <Grid item xs={12} md={8}>
-    //         {diaryToEdit ? <Editor diary={diaryToEdit} /> : <Editor />}
-    //       </Grid>
-    //       <Grid item xs={12} md={4}>
-    //         <ArchiveList />
-    //       </Grid>
-    //     </Grid>
-    //   </Container>
-    // </>
   )
 }
 

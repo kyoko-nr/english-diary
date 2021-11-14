@@ -8,6 +8,8 @@ import {
   signOut,
   sendPasswordResetEmail,
   User,
+  updateEmail,
+  deleteUser,
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
@@ -54,6 +56,50 @@ export const listenAuthState = () => {
         dispatch(push('/signin'))
       }
     })
+  }
+}
+
+/**
+ * Update user information.
+ * @param email email
+ * @param username username
+ * @returns
+ */
+export const updateUserInfo = (email?: string, username?: string) => {
+  return async (dispatch: Dispatch): Promise<void> => {
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+      dispatch(setErrorsAction([Messages.NO_CURRENT_LOGIN]))
+      dispatch(push('/signin'))
+      return
+    }
+
+    // Update email
+    if (email) {
+      await updateEmail(currentUser, email)
+    }
+    // Update username
+    if (username) {
+      await setDoc(doc(db, DOC_NAME_USERS, currentUser.uid), { username: username }, { merge: true })
+    }
+    dispatch(push('/mypage'))
+  }
+}
+
+/**
+ * Delete user account.
+ * @returns
+ */
+export const deleteAccount = () => {
+  return async (dispatch: Dispatch): Promise<void> => {
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+      dispatch(setErrorsAction([Messages.NO_CURRENT_LOGIN]))
+      dispatch(push('/signin'))
+      return
+    }
+    await deleteUser(currentUser)
+    dispatch(push('/signin'))
   }
 }
 

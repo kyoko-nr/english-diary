@@ -1,13 +1,14 @@
 body {
   font-size: 12px;
 }
-.content {
-  padding: 40px 8px;
-}
 #canvas-container > .canvas {
   height: 120px;
   width: 100%;
 }
 h4.MuiTypography-h4 {
   font-size: 1.6rem;
+}
+.archivelist-container {
+  padding: 0 8px;
+  margin-top: 60px;
 }

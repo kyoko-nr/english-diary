@@ -19,10 +19,11 @@ const theme = createTheme({
     text: {
       primary: '#4a4a4a',
     },
+    error: {
+      main: '#dc143c',
+      dark: '#66091c',
+    },
   },
-  // typography: {
-  //   fontSize: 14,
-  // },
 })
 
 function App(): JSX.Element {

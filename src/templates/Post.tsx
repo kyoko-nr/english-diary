@@ -3,11 +3,11 @@ import { RouteComponentProps } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
 import { Diary } from 'reducks/users/types'
-import { Grid, Container } from '@material-ui/core'
-import { Header } from 'components/Navs/index'
+import { Grid } from '@material-ui/core'
 import { Viewer } from 'components/Post/index'
 import { ArchiveList } from 'components/Archive/index'
 import { deleteDiary } from 'reducks/users/operations'
+import { AppFrame } from 'components/Base/index'
 
 type PostProps = RouteComponentProps<{
   id: string
@@ -35,19 +35,16 @@ const Post = (props: PostProps): JSX.Element => {
   }, [props.match.params.id])
 
   return (
-    <>
-      <Header />
-      <Container maxWidth="lg">
-        <Grid container spacing={1} className={'content'}>
-          <Grid item xs={12} md={8}>
-            {diaryToShow ? <Viewer diary={diaryToShow} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <ArchiveList />
-          </Grid>
+    <AppFrame maxWidth={'lg'}>
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={8}>
+          {diaryToShow ? <Viewer diary={diaryToShow} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
         </Grid>
-      </Container>
-    </>
+        <Grid item xs={12} md={4}>
+          <ArchiveList />
+        </Grid>
+      </Grid>
+    </AppFrame>
   )
 }
 

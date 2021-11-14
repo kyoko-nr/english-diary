@@ -17,7 +17,7 @@ const Error = (props: ErrorProps): JSX.Element => {
   }
 
   return (
-    <div className={'full-window bg-yellow flex-column'}>
+    <div className={'full-window bg-yellow flex flex-column'}>
       <Container maxWidth="lg">
         <Label label={error ? error.title : 'Unknow Error'} variant={'h4'} align={'center'} />
         <div className={'spacer-40'} />

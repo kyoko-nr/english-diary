@@ -23,6 +23,12 @@ export const UsersReducer = (state = initialState.users, action: Types.UsersActi
         ...state,
         currentYM: action.payload.currentYM,
       }
+    case Actions.UPDATE_PROFILE:
+      return {
+        ...state,
+        email: action.payload.email,
+        username: action.payload.username,
+      }
     default:
       return state
   }

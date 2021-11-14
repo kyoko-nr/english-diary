@@ -70,8 +70,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   }, [watch('content')])
 
   return (
-    <div className={'content'}>
-      <div className={'spacer-8'} />
+    <>
       <FormatDate date={date} format={'date'} variant={'body1'} align={'left'} />
       <div className={'spacer-24'} />
       <TextInputOutlined
@@ -99,10 +98,10 @@ const Editor = (props: EditorProps): JSX.Element => {
       />
       <div className={'spacer-16'} />
       <div className={'button-wrapper'}>
-        <OutlineMidButton label={'clear'} onClick={initFields} />
+        <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />
         <ContainedMidButton color={'primary'} onClick={handleSubmit(onSubmit)} label={'save'} />
       </div>
-    </div>
+    </>
   )
 }
 

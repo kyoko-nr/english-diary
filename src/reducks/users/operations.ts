@@ -10,11 +10,13 @@ import {
   User,
   updateEmail,
   deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
 import { SignUpParams, signInParams, Diary, UserState, DiaryToSave } from './types'
-import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction } from './actions'
+import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction, updateAccountAction } from './actions'
 import { setErrorsAction } from 'reducks/errors/actions'
 import { Messages } from 'constants/ErrorMessages'
 import { AppState } from 'reducks/store/store'
@@ -60,13 +62,14 @@ export const listenAuthState = () => {
 }
 
 /**
- * Update user information.
+ * Update user account information.
  * @param email email
  * @param username username
+ * @param password password
  * @returns
  */
-export const updateUserInfo = (email?: string, username?: string) => {
-  return async (dispatch: Dispatch): Promise<void> => {
+export const updateUserAccount = (email: string, username: string, password?: string) => {
+  return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const currentUser = auth.currentUser
     if (!currentUser) {
       dispatch(setErrorsAction([Messages.NO_CURRENT_LOGIN]))
@@ -74,14 +77,29 @@ export const updateUserInfo = (email?: string, username?: string) => {
       return
     }
 
-    // Update email
-    if (email) {
-      await updateEmail(currentUser, email)
+    const usersState = getState().users
+    if (password && usersState.email !== email) {
+      const credential = EmailAuthProvider.credential(email, password)
+      try {
+        await reauthenticateWithCredential(currentUser, credential)
+        await updateEmail(currentUser, email)
+      } catch {
+        dispatch(setErrorsAction([Messages.EMAIL_PASSWORD_WRONG]))
+        dispatch(push('/mypage/edit'))
+        return
+      }
     }
-    // Update username
-    if (username) {
+
+    if (usersState.username !== username) {
       await setDoc(doc(db, DOC_NAME_USERS, currentUser.uid), { username: username }, { merge: true })
     }
+
+    const newState = {
+      ...usersState,
+      email: email,
+      username: username,
+    }
+    dispatch(updateAccountAction(newState))
     dispatch(push('/mypage'))
   }
 }

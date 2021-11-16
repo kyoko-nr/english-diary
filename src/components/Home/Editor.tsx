@@ -14,8 +14,8 @@ type EditorProps = {
 const ContentRegExp = /^[a-zA-Z0-9!-/:-@¥[-`{-~\s]*$/
 const ContentErrMsg = "Please write 'English' diary!"
 const schema = yup.object().shape({
-  title: yup.string().required().matches(ContentRegExp, ContentErrMsg),
-  content: yup.string().required().matches(ContentRegExp, ContentErrMsg),
+  title: yup.string().label('Title').required().matches(ContentRegExp, ContentErrMsg),
+  content: yup.string().label('Content').required().matches(ContentRegExp, ContentErrMsg),
 })
 
 const Editor = (props: EditorProps): JSX.Element => {
@@ -82,6 +82,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         label={'Title'}
         multiline={false}
         rows={0}
+        type={'text'}
       />
       <div className={'spacer-8'} />
       <Label label={`${counter} words`} variant={'caption'} align={'right'} />
@@ -95,6 +96,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         label={'Content'}
         multiline={true}
         rows={20}
+        type={'text'}
       />
       <div className={'spacer-16'} />
       <div className={'button-wrapper'}>

@@ -23,7 +23,7 @@ export const UsersReducer = (state = initialState.users, action: Types.UsersActi
         ...state,
         currentYM: action.payload.currentYM,
       }
-    case Actions.UPDATE_PROFILE:
+    case Actions.UPDATE_USER_ACCOUNT:
       return {
         ...state,
         email: action.payload.email,

@@ -7,7 +7,7 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const schema = yup.object().shape({
-  email: yup.string().required().email(),
+  email: yup.string().label('Email').required().email(),
 })
 
 const ResetForm = (): JSX.Element => {

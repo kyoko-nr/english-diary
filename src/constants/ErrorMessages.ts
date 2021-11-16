@@ -4,4 +4,5 @@ export const Messages = {
   UNABLE_TO_SIGNIN_ERROR: 'Unable to sign in. Please try again.',
   UNABLE_TO_SAVE_DIARY: 'Unable to save diary. Please try again.',
   NO_CURRENT_LOGIN: 'Please login again.',
+  EMAIL_PASSWORD_WRONG: 'Email or password is wrong.',
 }

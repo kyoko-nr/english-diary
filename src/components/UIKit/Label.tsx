@@ -4,6 +4,7 @@ type LabelProps = {
   label: string
   variant: 'h4' | 'h5' | 'body1' | 'body2' | 'caption'
   align: 'center' | 'right' | 'left'
+  color?: 'error'
 }
 
 const useStyles = makeStyles(() =>
@@ -18,7 +19,12 @@ const Label = (props: LabelProps): JSX.Element => {
   const classes = useStyles()
 
   return (
-    <Typography className={classes.root} variant={props.variant} align={props.align}>
+    <Typography
+      className={classes.root}
+      variant={props.variant}
+      align={props.align}
+      color={props.color ? props.color : 'textPrimary'}
+    >
       {props.label}
     </Typography>
   )

@@ -12,6 +12,7 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   label: string
   multiline: boolean
   rows: number
+  type: 'text' | 'email' | 'password'
 }
 
 const useStyles = makeStyles(() =>
@@ -48,7 +49,7 @@ const TextInputOutlined = (props: InputProps): JSX.Element => {
           multiline={props.multiline}
           rows={props.rows}
           required={props.required}
-          type={'text'}
+          type={props.type}
         />
       )}
     />

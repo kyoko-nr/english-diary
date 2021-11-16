@@ -7,11 +7,12 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const schema = yup.object().shape({
-  username: yup.string().required(),
-  email: yup.string().required().email(),
-  password: yup.string().required().min(6),
+  username: yup.string().label('User name').required(),
+  email: yup.string().label('Email').required().email(),
+  password: yup.string().label('Password').required().min(6),
   passwordConfirm: yup
     .string()
+    .label('Password confirm')
     .oneOf([yup.ref('password')], "passwords don't match")
     .required()
     .min(6),

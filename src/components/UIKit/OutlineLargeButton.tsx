@@ -4,7 +4,7 @@ import { makeStyles, createStyles } from '@material-ui/styles'
 type OutlineLargeButtonProps = {
   label: string
   onClick: () => void
-  color: 'primary' | 'secondary' | 'error'
+  color: 'primary' | 'secondary' | 'error' | 'inherit'
 }
 
 const useStyles = makeStyles(() =>

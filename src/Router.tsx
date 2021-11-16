@@ -18,6 +18,9 @@ const AppRoute = (props: AppRouteProps): JSX.Element => {
 }
 
 const Router = (): JSX.Element => {
+  const dispatch = useDispatch()
+  dispatch(clearErrors())
+
   return (
     <Switch>
       <AppRoute exact path="/signin" component={Signin}></AppRoute>
@@ -29,6 +32,7 @@ const Router = (): JSX.Element => {
         <AppRoute exact path="/edit/:id" component={Home}></AppRoute>
         <AppRoute exact path="/post/:id" component={Post}></AppRoute>
         <AppRoute exact path="/mypage" component={MyPage}></AppRoute>
+        <AppRoute exact path="/mypage/edit" component={MyPage}></AppRoute>
         <AppRoute exact path="/mypage/delete" component={DeleteAccountConfirm}></AppRoute>
       </Auth>
     </Switch>

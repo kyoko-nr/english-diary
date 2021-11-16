@@ -7,8 +7,8 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 const schema = yup.object().shape({
-  email: yup.string().required().email(),
-  password: yup.string().required().min(6),
+  email: yup.string().label('Email').required().email(),
+  password: yup.string().label('Password').required().min(6),
 })
 
 const SigninForm = (): JSX.Element => {

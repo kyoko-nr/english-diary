@@ -47,10 +47,10 @@ export const changeCurrentYMAction = (userState: Types.UserState): Types.UsersAc
   }
 }
 
-export const UPDATE_PROFILE = 'UPDATE_PROFILE'
-export const updateProfileAction = (userState: Types.UserState): Types.UsersAction => {
+export const UPDATE_USER_ACCOUNT = 'UPDATE_USER_ACCOUNT'
+export const updateAccountAction = (userState: Types.UserState): Types.UsersAction => {
   return {
-    type: 'UPDATE_PROFILE',
+    type: 'UPDATE_USER_ACCOUNT',
     payload: {
       ...userState,
     },

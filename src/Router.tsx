@@ -1,7 +1,8 @@
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router'
 import { clearErrors } from 'reducks/errors/operations'
-import { Home, Signin, Post, Signup, Reset, Error, EmailSend, MyPage, DeleteAccountConfirm } from 'templates/index'
+import { Home, Signin, Post, Signup, Reset, EmailSend, MyPage, DeleteAccountConfirm } from 'templates/index'
 import Auth from './Auth'
 
 type AppRouteProps = {
@@ -12,15 +13,15 @@ type AppRouteProps = {
 
 const AppRoute = (props: AppRouteProps): JSX.Element => {
   const dispatch = useDispatch()
-  dispatch(clearErrors())
+
+  useEffect(() => {
+    dispatch(clearErrors())
+  }, [])
 
   return <Route exact={props.exact} path={props.path} component={props.component} />
 }
 
 const Router = (): JSX.Element => {
-  const dispatch = useDispatch()
-  dispatch(clearErrors())
-
   return (
     <Switch>
       <AppRoute exact path="/signin" component={Signin}></AppRoute>

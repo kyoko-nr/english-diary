@@ -131,16 +131,29 @@ export const signIn = (params: signInParams) => {
     return signInWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
-        try {
-          const usersState = await fetchUsersState(user)
-          dispatch(signInAction(usersState))
-          dispatch(push('/'))
-        } catch (error) {
-          throw new Error(Messages.NO_USER_ERROR)
-        }
+        const usersState = await fetchUsersState(user)
+        dispatch(signInAction(usersState))
+        dispatch(push('/'))
       })
-      .catch(() => {
-        dispatch(setErrorsAction([Messages.UNABLE_TO_SIGNIN_ERROR]))
+      .catch((error) => {
+        console.log(error)
+        switch (error.code) {
+          case 'auth/invalid-email':
+          case 'auth/wrong-password':
+            dispatch(setErrorsAction([Messages.EMAIL_PASSWORD_WRONG]))
+            break
+          case 'auth/user-disabled':
+            dispatch(setErrorsAction([Messages.UNKNOWN_UER_ERROR]))
+            break
+          case 'auth/user-not-found':
+            dispatch(setErrorsAction([Messages.USER_NOT_FOUND]))
+            break
+          case 'auth/too-many-requests':
+            dispatch(setErrorsAction([Messages.MANY_FAILED_LOGIN]))
+            break
+          default:
+            throw new Error(error)
+        }
       })
   }
 }
@@ -163,15 +176,11 @@ export const signUp = (params: SignUpParams) => {
           updatedAt: timestamp,
           username: params.username,
         }
-        try {
-          await setDoc(doc(db, DOC_NAME_USERS, user.uid), userInitialData)
-          dispatch(push('/'))
-        } catch (error) {
-          throw new Error(Messages.CREATE_ACCOUNT_ERROR)
-        }
+        await setDoc(doc(db, DOC_NAME_USERS, user.uid), userInitialData)
+        dispatch(push('/'))
       })
       .catch(() => {
-        throw new Error(Messages.CREATE_ACCOUNT_ERROR)
+        dispatch(setErrorsAction([Messages.CREATE_ACCOUNT_ERROR]))
       })
   }
 }
@@ -238,25 +247,11 @@ export const saveDiary = (diary: Diary) => {
       }
     }
 
-    await setDiary(user.uid, id, diaryToSave)
+    await setDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id), diaryToSave, { merge: true })
 
     const usersState = await fetchUsersState(user)
     dispatch(updateDirayAction(usersState))
     dispatch(push(`/post/${id}`))
-  }
-}
-
-/**
- * Set diary to DB.
- * @param uid user id
- * @param id diary id
- * @param diary diary to save
- */
-const setDiary = async (uid: string, id: string, diary: DiaryToSave): Promise<void> => {
-  try {
-    await setDoc(doc(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, id), diary, { merge: true })
-  } catch (error) {
-    throw new Error(Messages.UNABLE_TO_SAVE_DIARY)
   }
 }
 
@@ -284,7 +279,7 @@ const fetchUsersState = async (user: User) => {
   const users = await getDoc(doc(db, DOC_NAME_USERS, user.uid))
   const usersData = users.data()
   if (!usersData) {
-    throw new Error(Messages.NO_USER_ERROR)
+    throw new Error(Messages.UNKNOWN_UER_ERROR)
   }
   const diaries = await fetchDiaries(user.uid)
   const usersState: UserState = {

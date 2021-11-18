@@ -1,13 +1,13 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
-import { Controller, FieldValues, useController, FieldName, Control } from 'react-hook-form'
+import { Controller, FieldValues, useController, FieldName } from 'react-hook-form'
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   name: FieldName<TFieldValues>
   required: boolean
   defaultValue: unknown
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: any
-  // control?: Control<T, Record<string, unknown>> | undefined
   fullWidth: boolean
   label: string
   multiline: boolean

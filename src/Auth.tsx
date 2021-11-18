@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { listenAuthState } from 'reducks/users/operations'
 import { getIsSignedIn } from 'reducks/users/selectors'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const Auth = ({ children }: any) => {
+const Auth = ({ children }: any): JSX.Element => {
   const dispatch = useDispatch()
   const selector = useSelector((state) => state)
   const isSignedIn = getIsSignedIn(selector)

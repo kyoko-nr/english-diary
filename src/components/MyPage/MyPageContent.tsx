@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { OutlineMidButton, Label, OutlineLargeButton } from 'components/UIKit/index'
+import { Label, OutlineLargeButton } from 'components/UIKit/index'
 
 type MyPageContentProps = {
   username: string

@@ -52,7 +52,8 @@
     "eject": "react-scripts eject",
     "lint-fix": "eslint --fix './src/**/*.{js,jsx,ts,tsx}' && prettier --write './src/**/*.{js,jsx,ts,tsx}'",
     "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "testserve": "node server.js"
   },
   "eslintConfig": {
     "extends": [

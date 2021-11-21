@@ -155,5 +155,3 @@ firebase deploy
 ```
 firebase deploy --only firestore:rules
 ```
-
-test

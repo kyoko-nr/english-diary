@@ -16,12 +16,13 @@ const AppRoute = (props: AppRouteProps): JSX.Element => {
 
   useEffect(() => {
     dispatch(clearErrors())
-  }, [])
+  }, [props])
 
   return <Route exact={props.exact} path={props.path} component={props.component} />
 }
 
 const Router = (): JSX.Element => {
+  console.log('Router')
   return (
     <Switch>
       <AppRoute exact path="/signin" component={Signin}></AppRoute>

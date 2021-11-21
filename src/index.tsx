@@ -7,6 +7,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ConnectedRouter } from 'connected-react-router'
 import * as History from 'history'
+import { ErrorBoundary } from 'templates/index'
 
 const history = History.createBrowserHistory()
 export const store = createStore(history)
@@ -14,7 +15,9 @@ export const store = createStore(history)
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

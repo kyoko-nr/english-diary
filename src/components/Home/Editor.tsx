@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useForm } from 'react-hook-form'
+import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
-import { Diary } from 'reducks/users/types'
+import { Diary, Word } from 'reducks/users/types'
 import { saveDiary } from 'reducks/users/operations'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -32,6 +33,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   interface IFormInput {
     title: string
     content: string
+    words: Word[]
   }
 
   const onSubmit = (data: IFormInput) => {
@@ -41,6 +43,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         date: date,
         title: data.title,
         content: data.content,
+        words: data.words,
       })
     )
   }
@@ -54,6 +57,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   const initFields = () => {
     setValue('title', '')
     setValue('content', '')
+    setValue('words', [])
     setCounter(0)
   }
 
@@ -61,6 +65,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     if (props.diary) {
       setValue('title', props.diary.title)
       setValue('content', props.diary.content)
+      setValue('words', props.diary.words)
       setCounter(countWords())
     }
   }, [props.diary])
@@ -99,6 +104,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         type={'text'}
       />
       <div className={'spacer-16'} />
+      <NewWordList newWords={props.diary ? props.diary.words : []} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />
         <ContainedMidButton color={'primary'} onClick={handleSubmit(onSubmit)} label={'save'} />

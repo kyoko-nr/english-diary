@@ -14,6 +14,7 @@ export type Diary = {
   date: Date
   title: string
   content: string
+  words: Word[]
 }
 
 export type DiaryToSave = {
@@ -23,6 +24,19 @@ export type DiaryToSave = {
   content: string
   createdAt?: Timestamp
   updatedAt?: Timestamp
+}
+
+export type Word = {
+  id: string
+  name: string
+  meanings: Addible[]
+  synonyms: Addible[]
+  examples: Addible[]
+}
+
+export type Addible = {
+  id: string
+  value: string
 }
 
 export type UsersAction = {

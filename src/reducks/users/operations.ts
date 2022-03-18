@@ -313,6 +313,7 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
       date: data.date.toDate(),
       title: data.title,
       content: data.content,
+      words: data.words,
     })
   })
   return diaries

@@ -4,7 +4,7 @@ import { ErrorsReducer } from 'reducks/errors/reducers'
 import { connectRouter, routerMiddleware, RouterState } from 'connected-react-router'
 import * as History from 'history'
 import thunk from 'redux-thunk'
-import { Diary, UsersAction } from 'reducks/users/types'
+import { Diary, UsersAction, Word } from 'reducks/users/types'
 import { User } from '@firebase/auth'
 import { ErrorsAction } from 'reducks/errors/types'
 
@@ -20,6 +20,7 @@ interface UsersInfo extends User {
   email: string
   diaries: Array<Diary>
   currentYM: Date
+  words: Word[]
 }
 
 interface ErrorsInfo {

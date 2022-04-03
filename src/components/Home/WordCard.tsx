@@ -1,9 +1,17 @@
-import { Typography, Card, CardContent, CardActions, Button } from '@mui/material'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
+import { Card, CardContent, CardActions, Button } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { TextInputStandard, AddibleContent } from 'components/UIKit/index'
+import { Addible } from 'reducks/users/types'
 
-const WordCard = (): JSX.Element => {
+type WordCardProps = {
+  id: string
+  name: string
+  meanings: Addible[]
+  synonyms: Addible[]
+  examples: Addible[]
+}
+
+const WordCard = (props: WordCardProps): JSX.Element => {
   const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
     // resolver: yupResolver(schema),
   })
@@ -16,7 +24,7 @@ const WordCard = (): JSX.Element => {
 
   return (
     <Card sx={{ color: '#4a4a4a' }}>
-      <CardContent>
+      <CardContent sx={{ padding: '8px 16px' }}>
         <TextInputStandard
           name={'name'}
           required={true}
@@ -24,17 +32,17 @@ const WordCard = (): JSX.Element => {
           control={control}
           fullWidth={true}
           label={'New word'}
+          noError={true}
           type={'text'}
         />
-        <AddibleContent title="Meanings" />
-        <AddibleContent title="Synonyms" />
-        <AddibleContent title="Examples" />
+        <AddibleContent title="Meanings" fullWidth={true} />
+        <AddibleContent title="Synonyms" fullWidth={false} />
+        <AddibleContent title="Examples" fullWidth={true} />
       </CardContent>
       <CardActions>
-        <Button>Delete</Button>
+        <Button color="error">delete this word</Button>
       </CardActions>
     </Card>
-    // <div className="spacer-24"></div>
   )
 }
 

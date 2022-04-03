@@ -14,7 +14,7 @@ export type Diary = {
   date: Date
   title: string
   content: string
-  words: Word[]
+  words: Word[] | undefined
 }
 
 export type DiaryToSave = {
@@ -29,9 +29,9 @@ export type DiaryToSave = {
 export type Word = {
   id: string
   name: string
-  meanings: Addible[]
-  synonyms: Addible[]
-  examples: Addible[]
+  meanings: Addible[] | undefined
+  synonyms: Addible[] | undefined
+  examples: Addible[] | undefined
 }
 
 export type Addible = {

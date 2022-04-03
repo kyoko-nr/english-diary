@@ -14,3 +14,5 @@ export const getUsername = createSelector([usersSelector], (state) => state.user
 export const getDiaries = createSelector([usersSelector], (state) => state.diaries)
 
 export const getCurrentYM = createSelector([usersSelector], (state) => state.currentYM)
+
+export const getWords = createSelector([usersSelector], (state) => state.words)

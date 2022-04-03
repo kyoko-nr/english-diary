@@ -65,7 +65,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     if (props.diary) {
       setValue('title', props.diary.title)
       setValue('content', props.diary.content)
-      setValue('words', props.diary.words)
+      // setValue('words', props.diary.words)
       setCounter(countWords())
     }
   }, [props.diary])
@@ -100,11 +100,11 @@ const Editor = (props: EditorProps): JSX.Element => {
         fullWidth={true}
         label={'Content'}
         multiline={true}
-        rows={20}
+        rows={16}
         type={'text'}
       />
-      <div className={'spacer-16'} />
-      <NewWordList newWords={props.diary ? props.diary.words : []} />
+      {/* <NewWordList newWords={props.diary ? props.diary.words : []} /> */}
+      <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />
         <ContainedMidButton color={'primary'} onClick={handleSubmit(onSubmit)} label={'save'} />

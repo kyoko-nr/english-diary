@@ -46,3 +46,13 @@ body {
 .archivelist-container {
   padding-left: 8px;
 }
+.synonyms .each{
+  position: relative;
+
+  &:not(:last-child)::before {
+    content: '/';
+    position: absolute;
+    right: -4px;
+  }
+}
+

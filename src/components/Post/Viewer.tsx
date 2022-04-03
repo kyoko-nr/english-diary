@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { Diary } from 'reducks/users/types'
 import { ContainedMidButton, Label, OutlineMidButton, FormatDate, ContentBody } from 'components/UIKit/index'
+import { NewWordListView } from 'components/Post/index'
 
 type ViewerProps = {
   diary: Diary
@@ -22,6 +23,8 @@ const Viewer = (props: ViewerProps): JSX.Element => {
       <Label label={`${count} words`} variant={'caption'} align={'right'} />
       <div className={'spacer-8'} />
       <ContentBody content={props.diary.content} align={'left'} />
+      <div className={'spacer-32'} />
+      <NewWordListView words={props.diary.words} />
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'delete'} color={'error'} onClick={() => props.onDelete(props.diary.id)} />

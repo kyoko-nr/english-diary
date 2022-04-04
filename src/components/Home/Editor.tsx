@@ -67,6 +67,7 @@ const Editor = (props: EditorProps): JSX.Element => {
       setValue('content', props.diary.content)
       // setValue('words', props.diary.words)
       setCounter(countWords())
+      console.log('editor useEffect props.diary', props.diary)
     }
   }, [props.diary])
 
@@ -103,7 +104,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         rows={16}
         type={'text'}
       />
-      {/* <NewWordList newWords={props.diary ? props.diary.words : []} /> */}
+      <NewWordList newWords={props.diary && props.diary.words && props.diary.words} />
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />

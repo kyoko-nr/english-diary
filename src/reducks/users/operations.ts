@@ -317,7 +317,7 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const diaryCollRef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES)
   const q = query(diaryCollRef, orderBy('date', 'desc'), orderBy('createdAt', 'desc'))
   const snapShot = await getDocs(q)
-  snapShot.forEach(async (diary) => {
+  for await (const diary of snapShot.docs) {
     const data = diary.data()
     const words = await fetchWords(diaryCollRef, data.id)
 
@@ -328,7 +328,7 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
       content: data.content,
       words: words,
     })
-  })
+  }
   return diaries
 }
 
@@ -336,11 +336,12 @@ const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diary
   const wordsCollRef = collection(diaryCollRef, diaryId, DOC_NAME_WORDS)
   const snapShot = await getDocs(wordsCollRef)
   const words: Word[] = []
-  snapShot.forEach(async (doc) => {
+
+  for await (const doc of snapShot.docs) {
     if (doc.exists()) {
       const data = doc.data()
       const word: Word = { id: data.id, name: data.name, meanings: undefined, examples: undefined, synonyms: undefined }
-      WORDS_FEATURES.forEach(async (key) => {
+      for await (const key of WORDS_FEATURES) {
         const feature = await fetchWordFeature(wordsCollRef, data.id, key)
         switch (key) {
           case 'examples':
@@ -355,10 +356,10 @@ const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diary
           default:
             break
         }
-      })
+      }
       words.push(word)
     }
-  })
+  }
   return words
 }
 

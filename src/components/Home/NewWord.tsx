@@ -3,15 +3,15 @@ import { useForm } from 'react-hook-form'
 import { TextInputStandard, AddibleContent } from 'components/UIKit/index'
 import { Addible } from 'reducks/users/types'
 
-type WordCardProps = {
+type NewWordProps = {
   id: string
   name: string
-  meanings: Addible[]
-  synonyms: Addible[]
-  examples: Addible[]
+  meanings: Addible[] | undefined
+  synonyms: Addible[] | undefined
+  examples: Addible[] | undefined
 }
 
-const WordCard = (props: WordCardProps): JSX.Element => {
+const NewWord = (props: NewWordProps): JSX.Element => {
   const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
     // resolver: yupResolver(schema),
   })
@@ -46,4 +46,4 @@ const WordCard = (props: WordCardProps): JSX.Element => {
   )
 }
 
-export default WordCard
+export default NewWord

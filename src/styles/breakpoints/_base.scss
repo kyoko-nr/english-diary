@@ -58,4 +58,17 @@ body {
     right: -4px;
   }
 }
+.wordchip-wrapper {
+  text-overflow: 'ellipsis';
+  overflow: 'hidden';
+  white-space: 'nowrap';
+
+  & .wordchip {
+    color: $cGrey;
+
+    &:not(:first-child) {
+      margin-left: 4px;
+    }
+  }
+}
 

@@ -14,7 +14,7 @@ export type Diary = {
   date: Date
   title: string
   content: string
-  words: Word[] | undefined
+  words: Word[]
 }
 
 export type DiaryToSave = {

@@ -104,7 +104,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         rows={16}
         type={'text'}
       />
-      <NewWordList newWords={props.diary && props.diary.words && props.diary.words} />
+      {props.diary ? <NewWordList newWords={props.diary.words} diaryId={props.diary.id} /> : <></>}
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />

@@ -1,28 +1,24 @@
-import Button from '@material-ui/core/Button'
-import { makeStyles, createStyles } from '@material-ui/styles'
+import { Button } from '@mui/material'
 
 type TextMidButtonProps = {
   label: string
   onClick: () => void
-  color: 'primary' | 'default'
+  color: 'primary' | 'error'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      width: 112,
-      height: 40,
-      borderRadius: 20,
-      fontSize: 16,
-    },
-  })
-)
-
 const TextMidButton = (props: TextMidButtonProps): JSX.Element => {
-  const classes = useStyles()
-
   return (
-    <Button className={classes.root} onClick={props.onClick} variant={'text'} color={props.color}>
+    <Button
+      onClick={props.onClick}
+      variant={'text'}
+      color={props.color}
+      sx={{
+        width: '112',
+        height: '40',
+        borderRadius: '20',
+        fontSize: '16',
+      }}
+    >
       {props.label}
     </Button>
   )

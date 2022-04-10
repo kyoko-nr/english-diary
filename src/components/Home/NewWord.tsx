@@ -1,14 +1,15 @@
-import { Card, CardContent, CardActions, Button } from '@mui/material'
+import { Card, CardContent, CardActions } from '@mui/material'
 import { useForm } from 'react-hook-form'
-import { TextInputStandard, AddibleContent } from 'components/UIKit/index'
+import { TextInputStandard, AddibleContent, TextMidButton } from 'components/UIKit/index'
 import { Addible } from 'reducks/users/types'
 
 type NewWordProps = {
   id: string
   name: string
-  meanings: Addible[] | undefined
-  synonyms: Addible[] | undefined
-  examples: Addible[] | undefined
+  meanings: Addible[]
+  synonyms: Addible[]
+  examples: Addible[]
+  diaryId: string
 }
 
 const NewWord = (props: NewWordProps): JSX.Element => {
@@ -23,24 +24,42 @@ const NewWord = (props: NewWordProps): JSX.Element => {
   }
 
   return (
-    <Card sx={{ color: '#4a4a4a' }}>
+    <Card className="wordcard" sx={{ color: '#4a4a4a', marginBottom: '16px' }}>
       <CardContent sx={{ padding: '8px 16px' }}>
         <TextInputStandard
           name={'name'}
           required={true}
-          defaultValue={''}
+          defaultValue={props.name}
           control={control}
           fullWidth={true}
           label={'New word'}
           noError={true}
           type={'text'}
         />
-        <AddibleContent title="Meanings" fullWidth={true} />
-        <AddibleContent title="Synonyms" fullWidth={false} />
-        <AddibleContent title="Examples" fullWidth={true} />
+        <AddibleContent
+          diaryId={props.diaryId}
+          wordId={props.id}
+          title="meanings"
+          contents={props.meanings}
+          fullWidth={true}
+        />
+        <AddibleContent
+          diaryId={props.diaryId}
+          wordId={props.id}
+          title="synonyms"
+          contents={props.synonyms}
+          fullWidth={false}
+        />
+        <AddibleContent
+          diaryId={props.diaryId}
+          wordId={props.id}
+          title="examples"
+          contents={props.examples}
+          fullWidth={true}
+        />
       </CardContent>
       <CardActions>
-        <Button color="error">delete this word</Button>
+        <TextMidButton label="delete this word" color="error" onClick={() => console.log('delete this word')} />
       </CardActions>
     </Card>
   )

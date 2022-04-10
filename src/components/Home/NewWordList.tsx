@@ -1,19 +1,31 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { getWords } from 'reducks/users/selectors'
+import { useSelector } from 'react-redux'
+import { getWordId } from 'reducks/users/operations'
+import { getUserId } from 'reducks/users/selectors'
 import { NewWord } from 'components/Home'
 import { TextLargeButton } from 'components/UIKit/index'
+
 import { Word } from 'reducks/users/types'
 
 type NewWordListProps = {
-  newWords?: Word[]
+  newWords: Word[]
+  diaryId: string
 }
 
 const NewWordList = (props: NewWordListProps): JSX.Element => {
+  const selector = useSelector((state) => state)
   const [words, setWords] = useState<Word[]>()
 
-  const createBlankWord = (): Word[] => {
-    return [{ id: '', name: '', meanings: [], synonyms: [], examples: [] }]
+  const addWord = (): void => {
+    const uid = getUserId(selector)
+    const id = getWordId(uid, props.diaryId)
+    const newWord = { id: id, name: '', meanings: [], synonyms: [], examples: [] }
+    let newWords: Word[] = []
+    if (words) {
+      newWords = [...words]
+    }
+    newWords.push(newWord)
+    setWords(newWords)
   }
 
   // const words = test.length > 0 ? [...test] : createBlankWord()
@@ -26,7 +38,6 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
   // }
 
   useEffect(() => {
-    console.log('new word list props.newWords', props.newWords)
     setWords(props.newWords)
   }, [])
 
@@ -37,6 +48,7 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
           return (
             <NewWord
               id={value.id}
+              diaryId={props.diaryId}
               name={value.name}
               meanings={value.meanings}
               synonyms={value.synonyms}
@@ -47,7 +59,7 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
         })}
       <div className="spacer-16" />
       <div className="button-wrapper">
-        <TextLargeButton label={'add new word'} color="primary" onClick={() => console.log('add word')} />
+        <TextLargeButton label={'add new word'} color="primary" onClick={addWord} />
       </div>
     </>
   )

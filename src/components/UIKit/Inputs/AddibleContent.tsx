@@ -1,34 +1,38 @@
 import { useEffect, useState } from 'react'
-import { Typography, Box } from '@mui/material'
+import { useSelector } from 'react-redux'
+import { Box } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import { TextInputDeletable } from 'components/UIKit/index'
+import { TextInputDeletable, Label } from 'components/UIKit/index'
+import { getWordFeatureId } from 'reducks/users/operations'
+import { getUserId } from 'reducks/users/selectors'
 import { Addible } from 'reducks/users/types'
 
 type AddibleContentProps = {
-  title: string
+  title: 'meanings' | 'examples' | 'synonyms'
   fullWidth: boolean
+  contents: Addible[]
+  diaryId: string
+  wordId: string
 }
 
 const AddibleContent = (props: AddibleContentProps): JSX.Element => {
+  const selector = useSelector((state) => state)
   const [contents, setContents] = useState<Addible[]>()
 
   const addInput = () => {
-    let newContents = []
+    const uid = getUserId(selector)
+    const id = getWordFeatureId(uid, props.diaryId, props.wordId, props.title)
+    const newContent = { id: id, value: '' }
+    let newContents: Addible[] = []
     if (contents) {
       newContents = [...contents]
-      newContents.push({ id: '1222', value: '' })
-    } else {
-      newContents.push({ id: '1222', value: '' })
     }
+    newContents.push(newContent)
     setContents(newContents)
   }
 
   useEffect(() => {
-    const val = [
-      { id: '123', value: 'aaa' },
-      { id: '1456', value: 'ccc' },
-    ]
-    setContents(val)
+    setContents(props.contents)
   }, [])
 
   const deleteInput = (id: string) => {
@@ -41,10 +45,14 @@ const AddibleContent = (props: AddibleContentProps): JSX.Element => {
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '16px' }}>
-        <Typography variant={'body1'} sx={{ marginRight: '16px', textTransform: 'uppercase' }}>
-          {props.title}
-        </Typography>
-        <AddCircleIcon cursor="pointer" color="inherit" fontSize="small" onClick={() => addInput()} />
+        <Label label={props.title} variant="body1" align="left" uppercase={true} bold={true} />
+        <AddCircleIcon
+          cursor="pointer"
+          color="inherit"
+          fontSize="small"
+          onClick={() => addInput()}
+          sx={{ marginLeft: '8px' }}
+        />
       </Box>
       {contents &&
         contents.map((val) => {

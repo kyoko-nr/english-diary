@@ -340,23 +340,26 @@ const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diary
   for await (const doc of snapShot.docs) {
     if (doc.exists()) {
       const data = doc.data()
-      const word: Word = { id: data.id, name: data.name, meanings: undefined, examples: undefined, synonyms: undefined }
+      let meanings: Addible[] = []
+      let examples: Addible[] = []
+      let synonyms: Addible[] = []
       for await (const key of WORDS_FEATURES) {
         const feature = await fetchWordFeature(wordsCollRef, data.id, key)
         switch (key) {
           case 'examples':
-            word['examples'] = feature
+            examples = feature
             break
           case 'meanings':
-            word['meanings'] = feature
+            meanings = feature
             break
           case 'synonyms':
-            word['synonyms'] = feature
+            synonyms = feature
             break
           default:
             break
         }
       }
+      const word: Word = { id: data.id, name: data.name, meanings: meanings, examples: examples, synonyms: synonyms }
       words.push(word)
     }
   }
@@ -379,4 +382,29 @@ const fetchWordFeature = async (
     }
   })
   return features
+}
+
+/**
+ * Get ID of word feature.
+ * @returns new ID
+ */
+export const getWordFeatureId = (
+  uid: string,
+  diaryId: string,
+  wordId: string,
+  featurePath: 'meanings' | 'examples' | 'synonyms'
+): string => {
+  const fef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS, wordId, featurePath)
+  const id = doc(fef).id
+  return id
+}
+
+/**
+ * Get ID of word.
+ * @returns new ID
+ */
+export const getWordId = (uid: string, diaryId: string): string => {
+  const fef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS)
+  const id = doc(fef).id
+  return id
 }

@@ -11,7 +11,7 @@ const NewWordView = (props: NewWordViewProps): JSX.Element => {
   return (
     <Card className="wordcard" sx={{ color: '#4a4a4a', marginBottom: '16px' }}>
       <CardContent>
-        <Label label={props.word.name} variant="h6" align="left" color={'primary'} />
+        <Label label={props.word.title} variant="h6" align="left" color={'primary'} />
         <div className="spacer-8" />
         {props.word.meanings && props.word.meanings.length > 0 && (
           <div className="meanings">

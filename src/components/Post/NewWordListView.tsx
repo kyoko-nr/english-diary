@@ -9,7 +9,7 @@ const NewWordListView = (props: NewWordListViewProps): JSX.Element => {
   return (
     <>
       {props.words.map((value) => {
-        return <NewWordView word={value} key={value.id} />
+        return <NewWordView word={value} key={value.wordId} />
       })}
     </>
   )

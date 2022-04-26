@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
 import { Diary, Word } from 'reducks/users/types'
@@ -21,14 +21,9 @@ const schema = yup.object().shape({
 
 const Editor = (props: EditorProps): JSX.Element => {
   const dispatch = useDispatch()
-  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
+  const { register, control, handleSubmit, watch, setValue } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   })
-
-  const [counter, setCounter] = useState(0)
-
-  const id = props.diary ? props.diary.id : ''
-  const date = props.diary ? props.diary.date : new Date()
 
   interface IFormInput {
     title: string
@@ -36,16 +31,27 @@ const Editor = (props: EditorProps): JSX.Element => {
     words: Word[]
   }
 
+  const { fields, append, remove, update, insert } = useFieldArray({
+    name: 'words',
+    control,
+  })
+
+  const [counter, setCounter] = useState(0)
+
+  const id = props.diary ? props.diary.id : ''
+  const date = props.diary ? props.diary.date : new Date()
+
   const onSubmit = (data: IFormInput) => {
-    dispatch(
-      saveDiary({
-        id: id,
-        date: date,
-        title: data.title,
-        content: data.content,
-        words: data.words,
-      })
-    )
+    console.log('onSubmit', data)
+    // dispatch(
+    //   saveDiary({
+    //     id: id,
+    //     date: date,
+    //     title: data.title,
+    //     content: data.content,
+    //     words: data.words,
+    //   })
+    // )
   }
 
   const countWords = (): number => {
@@ -65,9 +71,8 @@ const Editor = (props: EditorProps): JSX.Element => {
     if (props.diary) {
       setValue('title', props.diary.title)
       setValue('content', props.diary.content)
-      // setValue('words', props.diary.words)
+      setValue('words', props.diary.words)
       setCounter(countWords())
-      console.log('editor useEffect props.diary', props.diary)
     }
   }, [props.diary])
 
@@ -104,7 +109,19 @@ const Editor = (props: EditorProps): JSX.Element => {
         rows={16}
         type={'text'}
       />
-      {props.diary ? <NewWordList newWords={props.diary.words} diaryId={props.diary.id} /> : <></>}
+      {props.diary ? (
+        <NewWordList
+          diaryId={props.diary.id}
+          control={control}
+          // register={register}
+          fields={fields}
+          append={append}
+          remove={remove}
+          update={update}
+        />
+      ) : (
+        <></>
+      )}
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />

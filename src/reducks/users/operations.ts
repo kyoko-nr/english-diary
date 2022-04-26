@@ -344,7 +344,7 @@ const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diary
       let examples: Addible[] = []
       let synonyms: Addible[] = []
       for await (const key of WORDS_FEATURES) {
-        const feature = await fetchWordFeature(wordsCollRef, data.id, key)
+        const feature = await fetchWordFeature(wordsCollRef, data.wordId, key)
         switch (key) {
           case 'examples':
             examples = feature
@@ -359,7 +359,13 @@ const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diary
             break
         }
       }
-      const word: Word = { id: data.id, name: data.name, meanings: meanings, examples: examples, synonyms: synonyms }
+      const word: Word = {
+        wordId: data.wordId,
+        title: data.title,
+        meanings: meanings,
+        examples: examples,
+        synonyms: synonyms,
+      }
       words.push(word)
     }
   }

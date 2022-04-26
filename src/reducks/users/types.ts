@@ -27,8 +27,8 @@ export type DiaryToSave = {
 }
 
 export type Word = {
-  id: string
-  name: string
+  wordId: string
+  title: string
   meanings: Addible[]
   synonyms: Addible[]
   examples: Addible[]
@@ -55,3 +55,5 @@ export type signInParams = {
   email: string
   password: string
 }
+
+export type Feature = 'meanings' | 'examples' | 'synonyms'

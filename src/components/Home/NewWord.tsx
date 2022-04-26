@@ -1,65 +1,125 @@
+import { useSelector } from 'react-redux'
 import { Card, CardContent, CardActions } from '@mui/material'
-import { useForm } from 'react-hook-form'
-import { TextInputStandard, AddibleContent, TextMidButton } from 'components/UIKit/index'
-import { Addible } from 'reducks/users/types'
+import { TextInputStandard, AddibleContent, TextMidButton, EnglishPartsSelect } from 'components/UIKit/index'
+import { Feature, Word } from 'reducks/users/types'
+import { getWordFeatureId } from 'reducks/users/operations'
+import { getUserId } from 'reducks/users/selectors'
 
 type NewWordProps = {
-  id: string
-  name: string
-  meanings: Addible[]
-  synonyms: Addible[]
-  examples: Addible[]
+  word: Word
   diaryId: string
+  name: string
+  control: any
+  deleteWord: (index: string) => void
+  index: string
+  update: any
 }
 
 const NewWord = (props: NewWordProps): JSX.Element => {
-  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
-    // resolver: yupResolver(schema),
-  })
-  interface IFormInput {
-    name: string
-    // meanings: Addble
-    // synonyms: Addble
-    // examples: Addble
+  const selector = useSelector((state) => state)
+
+  const addInput = (feature: Feature) => {
+    const uid = getUserId(selector)
+    const id = getWordFeatureId(uid, props.diaryId, props.word.wordId, feature)
+    const input = { id: id, value: '' }
+    const word: Word = {
+      wordId: props.word.wordId,
+      title: props.word.title,
+      meanings: [...props.word.meanings],
+      synonyms: [...props.word.synonyms],
+      examples: [...props.word.examples],
+    }
+    switch (feature) {
+      case 'meanings':
+        word.meanings.push(input)
+        break
+      case 'examples':
+        word.examples.push(input)
+        break
+      case 'synonyms':
+        word.synonyms.push(input)
+        break
+    }
+    console.log('add input', word)
+    props.update(props.index, word)
+  }
+
+  const deleteInput = (feature: Feature, id: string) => {
+    const word: Word = {
+      wordId: props.word.wordId,
+      title: props.word.title,
+      meanings: [...props.word.meanings],
+      synonyms: [...props.word.synonyms],
+      examples: [...props.word.examples],
+    }
+    switch (feature) {
+      case 'meanings':
+        word.meanings = word.meanings.filter((m) => m.id !== id)
+        break
+      case 'examples':
+        word.examples = word.examples.filter((m) => m.id !== id)
+        break
+      case 'synonyms':
+        word.synonyms = word.synonyms.filter((m) => m.id !== id)
+        break
+    }
+    console.log('delete input', word)
+    props.update(props.index, word)
   }
 
   return (
     <Card className="wordcard" sx={{ color: '#4a4a4a', marginBottom: '16px' }}>
       <CardContent sx={{ padding: '8px 16px' }}>
         <TextInputStandard
-          name={'name'}
+          name={`${props.name}.title`}
           required={true}
-          defaultValue={props.name}
-          control={control}
+          defaultValue={props.word.title}
+          control={props.control}
           fullWidth={true}
           label={'New word'}
           noError={true}
           type={'text'}
         />
+        <EnglishPartsSelect />
         <AddibleContent
           diaryId={props.diaryId}
-          wordId={props.id}
-          title="meanings"
-          contents={props.meanings}
+          wordId={props.word.wordId}
+          feature="meanings"
+          contents={props.word.meanings}
           fullWidth={true}
+          name={`${props.name}.meanings`}
+          control={props.control}
+          index={props.index}
+          addInput={addInput}
+          deleteInput={deleteInput}
         />
         <AddibleContent
           diaryId={props.diaryId}
-          wordId={props.id}
-          title="synonyms"
-          contents={props.synonyms}
+          wordId={props.word.wordId}
+          feature="synonyms"
+          contents={props.word.synonyms}
           fullWidth={false}
+          name={`${props.name}.synonyms`}
+          control={props.control}
+          index={props.index}
+          addInput={addInput}
+          deleteInput={deleteInput}
         />
         <AddibleContent
           diaryId={props.diaryId}
-          wordId={props.id}
-          title="examples"
-          contents={props.examples}
+          wordId={props.word.wordId}
+          feature="examples"
+          contents={props.word.examples}
           fullWidth={true}
+          name={`${props.name}.examples`}
+          control={props.control}
+          index={props.index}
+          addInput={addInput}
+          deleteInput={deleteInput}
         />
       </CardContent>
       <CardActions>
-        <TextMidButton label="delete this word" color="error" onClick={() => console.log('delete this word')} />
+        <TextMidButton label="delete this word" color="error" onClick={() => props.deleteWord(props.index)} />
       </CardActions>
     </Card>
   )

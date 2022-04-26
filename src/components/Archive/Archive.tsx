@@ -57,7 +57,7 @@ const Archive = (props: ArchiveProps): JSX.Element => {
               <div className="spacer-8" />
               <div className="wordchip-wrapper">
                 {props.diary.words.map((word) => {
-                  return <WordChip label={word.name} key={word.id} />
+                  return <WordChip label={word.title} key={word.wordId} />
                 })}
               </div>
             </>

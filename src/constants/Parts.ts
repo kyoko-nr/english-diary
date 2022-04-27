@@ -6,4 +6,5 @@ export const Parts = [
   { key: '5', value: 'Conjunction' },
   { key: '6', value: 'Preposition' },
   { key: '7', value: 'Articles' },
+  { key: '8', value: 'Prenoun' },
 ]

@@ -1,8 +1,13 @@
 body {
   font-size: 14px;
-}
-#root {
-  color: $cGrey;
+
+  & #root {
+    color: $cGrey;
+
+    & .wordchip, input, li, .MuiButton-containedSecondary {
+      color: $cGrey;
+    }
+  }
 }
 .content {
   padding: 96px 8px 40px 8px;
@@ -46,9 +51,6 @@ body {
 .archivelist-container {
   padding-left: 8px;
 }
-.wordcard {
-  border: 1px solid $cPaleBlue;
-}
 .synonyms .each{
   position: relative;
 
@@ -63,15 +65,10 @@ body {
   overflow: 'hidden';
   white-space: 'nowrap';
 
-  & .wordchip {
-    color: $cGrey;
-
-    &:not(:first-child) {
-      margin-left: 4px;
-    }
+  & .wordchip:not(:first-child) {
+    margin-left: 4px;
   }
 }
 .grey-text {
   color: $cGrey;
 }
-

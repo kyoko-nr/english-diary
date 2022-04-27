@@ -377,6 +377,7 @@ const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diary
         meanings: meanings,
         examples: examples,
         synonyms: synonyms,
+        pos: data.pos,
       }
       words.push(word)
     }

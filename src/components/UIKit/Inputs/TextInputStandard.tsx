@@ -9,7 +9,6 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: any
   fullWidth: boolean
-  limitMaxWidth?: false
   label: string
   noError?: boolean
   type: 'text' | 'email' | 'password'

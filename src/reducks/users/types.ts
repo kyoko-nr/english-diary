@@ -31,6 +31,7 @@ export type Word = {
   meanings: Addible[]
   synonyms: Addible[]
   examples: Addible[]
+  pos: string
 }
 
 export type Addible = {

@@ -47,6 +47,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   const date = props.diary ? props.diary.date : new Date()
 
   const onSubmit = (data: IFormInput) => {
+    console.log('on submit', data)
     dispatch(
       saveDiary({
         id: diaryId,
@@ -83,7 +84,7 @@ const Editor = (props: EditorProps): JSX.Element => {
       setDiaryId(did)
       const wordId = getWordId(uid, did)
       const words = []
-      words.push({ wordId: wordId, title: '', meanings: [], synonyms: [], examples: [] })
+      words.push({ wordId: wordId, title: '', meanings: [], synonyms: [], examples: [], pos: '' })
       setValue('words', words)
     }
   }, [props.diary])

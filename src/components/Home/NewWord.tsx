@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { Card, CardContent, CardActions } from '@mui/material'
+import { Card, CardContent, CardActions, Box } from '@mui/material'
 import { TextInputStandard, AddibleContent, TextMidButton, EnglishPartsSelect } from 'components/UIKit/index'
 import { Feature, Word } from 'reducks/users/types'
 import { getWordFeatureId } from 'reducks/users/operations'
@@ -28,6 +28,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
       meanings: [...props.word.meanings],
       synonyms: [...props.word.synonyms],
       examples: [...props.word.examples],
+      pos: props.word.pos,
     }
     switch (feature) {
       case 'meanings':
@@ -50,6 +51,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
       meanings: [...props.word.meanings],
       synonyms: [...props.word.synonyms],
       examples: [...props.word.examples],
+      pos: props.word.pos,
     }
     switch (feature) {
       case 'meanings':
@@ -66,19 +68,21 @@ const NewWord = (props: NewWordProps): JSX.Element => {
   }
 
   return (
-    <Card className="wordcard" sx={{ color: '#4a4a4a', marginBottom: '16px' }}>
-      <CardContent sx={{ padding: '8px 16px' }}>
-        <TextInputStandard
-          name={`${props.name}.title`}
-          required={true}
-          defaultValue={props.word.title}
-          control={props.control}
-          fullWidth={true}
-          label={'New word'}
-          noError={true}
-          type={'text'}
-        />
-        <EnglishPartsSelect />
+    <Card sx={{ color: '#4a4a4a', marginBottom: '16px' }} variant="outlined">
+      <CardContent sx={{ padding: '8px 16px', boxShadow: 'none' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <TextInputStandard
+            name={`${props.name}.title`}
+            required={true}
+            defaultValue={props.word.title}
+            control={props.control}
+            fullWidth={true}
+            label={'New word'}
+            noError={true}
+            type={'text'}
+          />
+          <EnglishPartsSelect name={`${props.name}.pos`} control={props.control} />
+        </Box>
         <AddibleContent
           diaryId={props.diaryId}
           wordId={props.word.wordId}

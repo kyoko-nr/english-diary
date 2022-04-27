@@ -5,14 +5,15 @@ import { getUserId } from 'reducks/users/selectors'
 import { NewWord } from 'components/Home'
 import { TextLargeButton } from 'components/UIKit/index'
 import { Word } from 'reducks/users/types'
+import { FieldArrayMethodProps } from 'react-hook-form'
 
 type NewWordListProps = {
   diaryId: string
   control: any
   fields: any
-  append: any
-  remove: any
-  update: any
+  append: (value: Partial<Word> | Partial<Word>[], options?: FieldArrayMethodProps | undefined) => void
+  remove: (index?: number | number[] | undefined) => void
+  update: (index: number, value: Partial<Word>) => void
 }
 
 const NewWordList = (props: NewWordListProps): JSX.Element => {
@@ -25,9 +26,7 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
     props.append(newWord)
   }
 
-  const deleteWord = (index: string): void => {
-    props.remove(index)
-  }
+  const deleteWord = (index: string): void => props.remove(parseInt(index))
 
   return (
     <>

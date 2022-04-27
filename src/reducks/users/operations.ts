@@ -11,6 +11,7 @@ import {
   query,
   CollectionReference,
   DocumentData,
+  DocumentReference,
 } from 'firebase/firestore'
 import {
   createUserWithEmailAndPassword,
@@ -27,7 +28,7 @@ import {
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
-import { SignUpParams, signInParams, Diary, UserState, DiaryToSave, Word, Addible } from './types'
+import { SignUpParams, signInParams, Diary, UserState, DiaryToSave, Word, Addible, Feature } from './types'
 import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction, updateAccountAction } from './actions'
 import { setErrorsAction } from 'reducks/errors/actions'
 import { Messages } from 'constants/ErrorMessages'
@@ -236,36 +237,47 @@ export const saveDiary = (diary: Diary) => {
   return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const timestamp = Timestamp.now()
     const user = getState().users
-    let id = ''
-    let diaryToSave: DiaryToSave
 
-    if (diary.id) {
-      // update
-      id = diary.id
-      diaryToSave = {
-        title: diary.title,
-        content: diary.content,
-        updatedAt: timestamp,
-      }
-    } else {
-      // create
-      const diaryRef = doc(collection(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES))
-      id = diaryRef.id
-      diaryToSave = {
-        id: id,
-        date: Timestamp.fromDate(diary.date),
-        title: diary.title,
-        content: diary.content,
-        createdAt: timestamp,
-        updatedAt: timestamp,
-      }
+    const diaryToSave: DiaryToSave = {
+      id: diary.id,
+      date: Timestamp.fromDate(diary.date),
+      title: diary.title,
+      content: diary.content,
+      updatedAt: timestamp,
     }
 
-    await setDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id), diaryToSave, { merge: true })
+    const diaryRef = doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, diary.id)
+    await setDoc(diaryRef, diaryToSave, { merge: true })
+
+    for await (const word of diary.words) {
+      const wordRef = doc(diaryRef, DOC_NAME_WORDS, word.wordId)
+      await setDoc(wordRef, word, { merge: true })
+
+      await saveFeature(word.examples, wordRef, 'examples')
+      await saveFeature(word.meanings, wordRef, 'meanings')
+      await saveFeature(word.synonyms, wordRef, 'synonyms')
+    }
 
     const usersState = await fetchUsersState(user)
     dispatch(updateDirayAction(usersState))
-    dispatch(push(`/post/${id}`))
+    dispatch(push(`/post/${diary.id}`))
+  }
+}
+
+/**
+ * Save features.
+ * @param features
+ * @param ref
+ * @param featureName
+ */
+const saveFeature = async (
+  features: Addible[],
+  ref: DocumentReference<DocumentData>,
+  featureName: Feature
+): Promise<void> => {
+  for await (const fe of features) {
+    const featureRef = doc(ref, featureName, fe.id)
+    await setDoc(featureRef, fe)
   }
 }
 
@@ -315,7 +327,7 @@ const fetchUsersState = async (user: User) => {
 const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const diaries: Diary[] = []
   const diaryCollRef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES)
-  const q = query(diaryCollRef, orderBy('date', 'desc'), orderBy('createdAt', 'desc'))
+  const q = query(diaryCollRef, orderBy('date', 'desc'), orderBy('title', 'desc'))
   const snapShot = await getDocs(q)
   for await (const diary of snapShot.docs) {
     const data = diary.data()
@@ -391,6 +403,17 @@ const fetchWordFeature = async (
 }
 
 /**
+ * Get Id of diary
+ * @param uid uid
+ * @returns new diary id
+ */
+export const getDiaryId = (uid: string): string => {
+  const ref = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES)
+  const id = doc(ref).id
+  return id
+}
+
+/**
  * Get ID of word feature.
  * @returns new ID
  */
@@ -400,8 +423,8 @@ export const getWordFeatureId = (
   wordId: string,
   featurePath: 'meanings' | 'examples' | 'synonyms'
 ): string => {
-  const fef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS, wordId, featurePath)
-  const id = doc(fef).id
+  const ref = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS, wordId, featurePath)
+  const id = doc(ref).id
   return id
 }
 
@@ -410,7 +433,7 @@ export const getWordFeatureId = (
  * @returns new ID
  */
 export const getWordId = (uid: string, diaryId: string): string => {
-  const fef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS)
-  const id = doc(fef).id
+  const ref = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS)
+  const id = doc(ref).id
   return id
 }

@@ -12,7 +12,7 @@ type NewWordProps = {
   control: any
   deleteWord: (index: string) => void
   index: string
-  update: any
+  update: (index: number, value: Partial<Word>) => void
 }
 
 const NewWord = (props: NewWordProps): JSX.Element => {
@@ -40,8 +40,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
         word.synonyms.push(input)
         break
     }
-    console.log('add input', word)
-    props.update(props.index, word)
+    props.update(parseInt(props.index), word)
   }
 
   const deleteInput = (feature: Feature, id: string) => {
@@ -63,8 +62,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
         word.synonyms = word.synonyms.filter((m) => m.id !== id)
         break
     }
-    console.log('delete input', word)
-    props.update(props.index, word)
+    props.update(parseInt(props.index), word)
   }
 
   return (

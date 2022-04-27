@@ -18,12 +18,11 @@ export type Diary = {
 }
 
 export type DiaryToSave = {
-  id?: string
-  date?: Timestamp
+  id: string
+  date: Timestamp
   title: string
   content: string
-  createdAt?: Timestamp
-  updatedAt?: Timestamp
+  updatedAt: Timestamp
 }
 
 export type Word = {

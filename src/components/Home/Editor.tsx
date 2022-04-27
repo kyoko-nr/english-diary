@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getWordId, getDiaryId } from 'reducks/users/operations'
+import { getUserId } from 'reducks/users/selectors'
 import { useDispatch } from 'react-redux'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
@@ -20,8 +23,9 @@ const schema = yup.object().shape({
 })
 
 const Editor = (props: EditorProps): JSX.Element => {
+  const selector = useSelector((state) => state)
   const dispatch = useDispatch()
-  const { register, control, handleSubmit, watch, setValue } = useForm<IFormInput>({
+  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   })
 
@@ -31,27 +35,27 @@ const Editor = (props: EditorProps): JSX.Element => {
     words: Word[]
   }
 
-  const { fields, append, remove, update, insert } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     name: 'words',
     control,
   })
 
   const [counter, setCounter] = useState(0)
+  const [diaryId, setDiaryId] = useState('')
 
-  const id = props.diary ? props.diary.id : ''
+  const uid = getUserId(selector)
   const date = props.diary ? props.diary.date : new Date()
 
   const onSubmit = (data: IFormInput) => {
-    console.log('onSubmit', data)
-    // dispatch(
-    //   saveDiary({
-    //     id: id,
-    //     date: date,
-    //     title: data.title,
-    //     content: data.content,
-    //     words: data.words,
-    //   })
-    // )
+    dispatch(
+      saveDiary({
+        id: diaryId,
+        date: date,
+        title: data.title,
+        content: data.content,
+        words: data.words,
+      })
+    )
   }
 
   const countWords = (): number => {
@@ -73,6 +77,14 @@ const Editor = (props: EditorProps): JSX.Element => {
       setValue('content', props.diary.content)
       setValue('words', props.diary.words)
       setCounter(countWords())
+      setDiaryId(props.diary.id)
+    } else {
+      const did = getDiaryId(uid)
+      setDiaryId(did)
+      const wordId = getWordId(uid, did)
+      const words = []
+      words.push({ wordId: wordId, title: '', meanings: [], synonyms: [], examples: [] })
+      setValue('words', words)
     }
   }, [props.diary])
 
@@ -109,19 +121,14 @@ const Editor = (props: EditorProps): JSX.Element => {
         rows={16}
         type={'text'}
       />
-      {props.diary ? (
-        <NewWordList
-          diaryId={props.diary.id}
-          control={control}
-          // register={register}
-          fields={fields}
-          append={append}
-          remove={remove}
-          update={update}
-        />
-      ) : (
-        <></>
-      )}
+      <NewWordList
+        diaryId={diaryId}
+        control={control}
+        fields={fields}
+        append={append}
+        remove={remove}
+        update={update}
+      />
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />

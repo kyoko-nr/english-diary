@@ -12,7 +12,6 @@ type SimpleLinkProps = {
 const SimpleLink = (props: SimpleLinkProps): JSX.Element => {
   return (
     <Link
-      className="grey-text"
       component={props.component}
       onClick={props.onClick}
       color={props.color}

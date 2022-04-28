@@ -15,7 +15,7 @@ const Header = (): JSX.Element => {
   const handleClose = () => setAnchorEl(null)
 
   return (
-    <AppBar position="fixed" className="flex-center" sx={{ backgroundColor: '#FFDB46' }}>
+    <AppBar color="secondary" position="fixed" className="flex-center">
       <Toolbar
         sx={{
           maxWidth: 1280,

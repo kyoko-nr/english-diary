@@ -9,13 +9,12 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   control?: any
   fullWidth: boolean
   label: string
-  noError?: boolean
   type: 'text' | 'email' | 'password'
 }
 
 const TextInputStandard = (props: InputProps): JSX.Element => {
   const { fieldState } = useController(props)
-  const message = fieldState.error ? fieldState.error.message : props.noError ? '' : ' '
+  const message = props.required ? (fieldState.error ? fieldState.error.message : ' ') : ''
 
   return (
     <Controller

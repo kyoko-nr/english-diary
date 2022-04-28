@@ -14,6 +14,7 @@ type NewWordListProps = {
   append: (value: Partial<Word> | Partial<Word>[], options?: FieldArrayMethodProps | undefined) => void
   remove: (index?: number | number[] | undefined) => void
   update: (index: number, value: Partial<Word>) => void
+  deleteWord: (index: string, wordId: string) => void
 }
 
 const NewWordList = (props: NewWordListProps): JSX.Element => {
@@ -22,11 +23,9 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
   const addWord = (): void => {
     const uid = getUserId(selector)
     const id = getWordId(uid, props.diaryId)
-    const newWord = { id: id, title: '', meanings: [], synonyms: [], examples: [] }
+    const newWord: Word = { wordId: id, title: '', meanings: [], synonyms: [], examples: [], pos: '' }
     props.append(newWord)
   }
-
-  const deleteWord = (index: string): void => props.remove(parseInt(index))
 
   return (
     <>
@@ -38,7 +37,7 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
             key={value.wordId}
             name={`words.${index}`}
             control={props.control}
-            deleteWord={deleteWord}
+            deleteWord={props.deleteWord}
             index={index}
             update={props.update}
           />

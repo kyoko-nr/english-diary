@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { Label } from 'components/UIKit/index'
 import { Addible, Feature } from 'reducks/users/types'
 
@@ -13,15 +13,17 @@ const WordFeature = (props: WordFeatureProps): JSX.Element => {
     <>
       {props.feature && props.feature.length > 0 && (
         <div className={props.featureName}>
-          <Label label={props.featureName} variant="body2" align="left" uppercase={true} bold={true} />
+          <Label label={props.featureName} variant="body1" align="left" capitalize={true} bold={true} />
           {props.feature.map((fe) => {
             return (
               <Box
                 key={fe.id}
                 className="each"
-                sx={{ padding: '4px', display: props.fullWidth ? 'block' : 'inline-block' }}
+                sx={{ padding: '2px 8px', display: props.fullWidth ? 'block' : 'inline-block' }}
               >
-                {fe.value}
+                <Typography sx={{ textIndent: 1 }} variant="body1">
+                  {fe.value}
+                </Typography>
               </Box>
             )
           })}

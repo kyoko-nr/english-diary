@@ -1,6 +1,5 @@
 import { Box } from '@mui/material'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
-import { TextInputDeletable, Label } from 'components/UIKit/index'
+import { TextInputDeletable, Label, AddIconButton } from 'components/UIKit/index'
 import { Addible, Feature } from 'reducks/users/types'
 
 type AddibleContentProps = {
@@ -20,15 +19,9 @@ type AddibleContentProps = {
 const AddibleContent = (props: AddibleContentProps): JSX.Element => {
   return (
     <>
-      <Box sx={{ marginTop: '16px' }} className="flex-center">
-        <Label label={props.feature} variant="body1" align="left" uppercase={true} bold={true} />
-        <AddCircleIcon
-          cursor="pointer"
-          color="inherit"
-          fontSize="small"
-          onClick={() => props.addInput(props.feature)}
-          sx={{ marginLeft: '8px' }}
-        />
+      <Box className="flex-center">
+        <Label label={props.feature} variant="body1" align="left" capitalize={true} bold={true} />
+        <AddIconButton feature={props.feature} onClick={props.addInput} />
       </Box>
       {props.contents &&
         props.contents.map((val, index) => {

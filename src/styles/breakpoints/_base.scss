@@ -72,7 +72,8 @@ body {
   &:not(:last-child)::before {
     content: '/';
     position: absolute;
-    right: -4px;
+    right: -8px;
+    padding: 4px;
   }
 }
 .wordchip-wrapper {

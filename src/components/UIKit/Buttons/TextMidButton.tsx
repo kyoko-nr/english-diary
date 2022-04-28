@@ -13,10 +13,10 @@ const TextMidButton = (props: TextMidButtonProps): JSX.Element => {
       variant={'text'}
       color={props.color}
       sx={{
-        width: '112',
-        height: '40',
-        borderRadius: '20',
-        fontSize: '16',
+        width: 164,
+        height: 32,
+        borderRadius: 20,
+        fontSize: 14,
       }}
     >
       {props.label}

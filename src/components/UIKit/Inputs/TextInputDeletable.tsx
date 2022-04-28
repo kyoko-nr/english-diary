@@ -1,5 +1,5 @@
 import { TextField, Box } from '@mui/material'
-import ClearIcon from '@mui/icons-material/Clear'
+import { RemoveIconButton } from 'components/UIKit/index'
 import { Controller, FieldValues, FieldName } from 'react-hook-form'
 import { Feature } from 'reducks/users/types'
 
@@ -25,12 +25,7 @@ const TextInputDeletable = (props: InputProps): JSX.Element => {
             <TextField {...field} variant="standard" required={false} fullWidth={props.fullWidth} />
           )}
         />
-        <ClearIcon
-          cursor="pointer"
-          fontSize="small"
-          color="error"
-          onClick={() => props.onDelete(props.feature, props.id)}
-        />
+        <RemoveIconButton feature={props.feature} id={props.id} onClick={props.onDelete} />
       </Box>
     </Box>
   )

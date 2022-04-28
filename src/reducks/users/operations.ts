@@ -151,7 +151,6 @@ export const signIn = (params: signInParams) => {
         dispatch(push('/'))
       })
       .catch((error) => {
-        console.log(error)
         switch (error.code) {
           case 'auth/invalid-email':
           case 'auth/wrong-password':
@@ -231,9 +230,10 @@ export const resetPassword = (email: string) => {
 /**
  * Save diary.
  * @param diary diary
+ * @param deletedWordIds wordIds
  * @returns
  */
-export const saveDiary = (diary: Diary) => {
+export const saveDiary = (diary: Diary, deletedWordIds: string[]) => {
   return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const timestamp = Timestamp.now()
     const user = getState().users
@@ -249,9 +249,18 @@ export const saveDiary = (diary: Diary) => {
     const diaryRef = doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, diary.id)
     await setDoc(diaryRef, diaryToSave, { merge: true })
 
+    for await (const wordId of deletedWordIds) {
+      await deleteDoc(doc(diaryRef, DOC_NAME_WORDS, wordId))
+    }
+
     for await (const word of diary.words) {
       const wordRef = doc(diaryRef, DOC_NAME_WORDS, word.wordId)
-      await setDoc(wordRef, word, { merge: true })
+      const wordToSave = {
+        title: word.title,
+        wordId: word.wordId,
+        pos: word.pos ? word.pos : '',
+      }
+      await setDoc(wordRef, wordToSave, { merge: true })
 
       await saveFeature(word.examples, wordRef, 'examples')
       await saveFeature(word.meanings, wordRef, 'meanings')
@@ -276,8 +285,10 @@ const saveFeature = async (
   featureName: Feature
 ): Promise<void> => {
   for await (const fe of features) {
-    const featureRef = doc(ref, featureName, fe.id)
-    await setDoc(featureRef, fe)
+    if (fe.value.trim().length > 0) {
+      const featureRef = doc(ref, featureName, fe.id)
+      await setDoc(featureRef, fe)
+    }
   }
 }
 

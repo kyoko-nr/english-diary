@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getWordId, getDiaryId } from 'reducks/users/operations'
+import { getDiaryId } from 'reducks/users/operations'
 import { getUserId } from 'reducks/users/selectors'
 import { useDispatch } from 'react-redux'
 import { useForm, useFieldArray } from 'react-hook-form'
@@ -20,6 +20,11 @@ const ContentErrMsg = "Please write 'English' diary!"
 const schema = yup.object().shape({
   title: yup.string().label('Title').required().matches(ContentRegExp, ContentErrMsg),
   content: yup.string().label('Content').required().matches(ContentRegExp, ContentErrMsg),
+  words: yup.array(
+    yup.object({
+      title: yup.string().label('New word').required().trim(),
+    })
+  ),
 })
 
 const Editor = (props: EditorProps): JSX.Element => {
@@ -42,20 +47,23 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   const [counter, setCounter] = useState(0)
   const [diaryId, setDiaryId] = useState('')
+  const [deletedWordIds, setDeletedWordIds] = useState<string[]>([])
 
   const uid = getUserId(selector)
   const date = props.diary ? props.diary.date : new Date()
 
   const onSubmit = (data: IFormInput) => {
-    console.log('on submit', data)
     dispatch(
-      saveDiary({
-        id: diaryId,
-        date: date,
-        title: data.title,
-        content: data.content,
-        words: data.words,
-      })
+      saveDiary(
+        {
+          id: diaryId,
+          date: date,
+          title: data.title,
+          content: data.content,
+          words: data.words,
+        },
+        deletedWordIds
+      )
     )
   }
 
@@ -72,6 +80,13 @@ const Editor = (props: EditorProps): JSX.Element => {
     setCounter(0)
   }
 
+  const deleteWord = (index: string, wordId: string): void => {
+    remove(parseInt(index))
+    const deleted = [...deletedWordIds]
+    deleted.push(wordId)
+    setDeletedWordIds(deleted)
+  }
+
   useEffect(() => {
     if (props.diary) {
       setValue('title', props.diary.title)
@@ -82,9 +97,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     } else {
       const did = getDiaryId(uid)
       setDiaryId(did)
-      const wordId = getWordId(uid, did)
-      const words = []
-      words.push({ wordId: wordId, title: '', meanings: [], synonyms: [], examples: [], pos: '' })
+      const words: Word[] = []
       setValue('words', words)
     }
   }, [props.diary])
@@ -122,6 +135,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         rows={16}
         type={'text'}
       />
+      <div className={'spacer-8'} />
       <NewWordList
         diaryId={diaryId}
         control={control}
@@ -129,6 +143,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         append={append}
         remove={remove}
         update={update}
+        deleteWord={deleteWord}
       />
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>

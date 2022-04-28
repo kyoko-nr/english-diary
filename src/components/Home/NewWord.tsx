@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, CardContent, CardActions, Box } from '@mui/material'
 import { TextInputStandard, AddibleContent, TextMidButton, EnglishPartsSelect } from 'components/UIKit/index'
@@ -11,20 +12,21 @@ type NewWordProps = {
   name: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
-  deleteWord: (index: string) => void
+  deleteWord: (index: string, wordId: string) => void
   index: string
   update: (index: number, value: Partial<Word>) => void
 }
 
 const NewWord = (props: NewWordProps): JSX.Element => {
   const selector = useSelector((state) => state)
+  const [wordId, setWordId] = useState('')
 
   const addInput = (feature: Feature) => {
     const uid = getUserId(selector)
-    const id = getWordFeatureId(uid, props.diaryId, props.word.wordId, feature)
+    const id = getWordFeatureId(uid, props.diaryId, wordId, feature)
     const input = { id: id, value: '' }
     const word: Word = {
-      wordId: props.word.wordId,
+      wordId: wordId,
       title: props.word.title,
       meanings: [...props.word.meanings],
       synonyms: [...props.word.synonyms],
@@ -68,10 +70,14 @@ const NewWord = (props: NewWordProps): JSX.Element => {
     props.update(parseInt(props.index), word)
   }
 
+  useEffect(() => {
+    setWordId(props.word.wordId)
+  }, [props.word])
+
   return (
-    <Card sx={{ color: '#4a4a4a', marginBottom: '16px' }} variant="outlined">
+    <Card sx={{ marginBottom: '16px' }} variant="outlined">
       <CardContent sx={{ padding: '8px 16px', boxShadow: 'none' }}>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'start' }}>
           <TextInputStandard
             name={`${props.name}.title`}
             required={true}
@@ -79,7 +85,6 @@ const NewWord = (props: NewWordProps): JSX.Element => {
             control={props.control}
             fullWidth={true}
             label={'New word'}
-            noError={true}
             type={'text'}
           />
           <EnglishPartsSelect name={`${props.name}.pos`} control={props.control} />
@@ -96,6 +101,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
           addInput={addInput}
           deleteInput={deleteInput}
         />
+        <div className="spacer-8" />
         <AddibleContent
           diaryId={props.diaryId}
           wordId={props.word.wordId}
@@ -108,6 +114,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
           addInput={addInput}
           deleteInput={deleteInput}
         />
+        <div className="spacer-8" />
         <AddibleContent
           diaryId={props.diaryId}
           wordId={props.word.wordId}
@@ -121,8 +128,12 @@ const NewWord = (props: NewWordProps): JSX.Element => {
           deleteInput={deleteInput}
         />
       </CardContent>
-      <CardActions>
-        <TextMidButton label="delete this word" color="error" onClick={() => props.deleteWord(props.index)} />
+      <CardActions className="button-wrapper">
+        <TextMidButton
+          label="delete this word"
+          color="error"
+          onClick={() => props.deleteWord(props.index, props.word.wordId)}
+        />
       </CardActions>
     </Card>
   )

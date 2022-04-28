@@ -16,7 +16,7 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
 
 const TextInputOutlined = (props: InputProps): JSX.Element => {
   const { fieldState } = useController(props)
-  const message = fieldState.error ? fieldState.error.message : ' '
+  const message = props.required ? (fieldState.error ? fieldState.error.message : ' ') : ''
 
   return (
     <Controller

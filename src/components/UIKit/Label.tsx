@@ -6,6 +6,7 @@ type LabelProps = {
   align: 'center' | 'right' | 'left'
   color?: 'error' | 'primary'
   uppercase?: boolean
+  capitalize?: boolean
   bold?: boolean
   overflowElipses?: boolean
 }
@@ -18,7 +19,7 @@ const Label = (props: LabelProps): JSX.Element => {
       color={props.color ? props.color : 'text'}
       sx={{
         display: 'block',
-        textTransform: props.uppercase ? 'uppercase' : 'none',
+        textTransform: props.uppercase ? 'uppercase' : props.capitalize ? 'capitalize' : 'none',
       }}
       fontWeight={props.bold ? '500' : '400'}
       textOverflow={props.overflowElipses ? 'ellipsis' : 'none'}

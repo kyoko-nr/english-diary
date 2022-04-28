@@ -1,5 +1,5 @@
 import Router from 'Router'
-import { createTheme, ThemeProvider } from '@material-ui/core'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 import 'styles/App.scss'
 
 const theme = createTheme({

@@ -9,7 +9,7 @@ type NewWordViewProps = {
 
 const NewWordView = (props: NewWordViewProps): JSX.Element => {
   return (
-    <Card variant="outlined" sx={{ color: '#4a4a4a', marginBottom: '16px' }}>
+    <Card variant="outlined" sx={{ marginBottom: '16px' }}>
       <CardContent>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Label label={props.word.title} variant="h6" align="left" color="primary" />

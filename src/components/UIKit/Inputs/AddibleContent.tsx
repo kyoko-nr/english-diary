@@ -10,6 +10,7 @@ type AddibleContentProps = {
   diaryId: string
   wordId: string
   name: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
   index: string
   addInput: (feature: Feature) => void
@@ -19,7 +20,7 @@ type AddibleContentProps = {
 const AddibleContent = (props: AddibleContentProps): JSX.Element => {
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '16px' }}>
+      <Box sx={{ marginTop: '16px' }} className="flex-center">
         <Label label={props.feature} variant="body1" align="left" uppercase={true} bold={true} />
         <AddCircleIcon
           cursor="pointer"

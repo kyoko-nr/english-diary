@@ -4,8 +4,13 @@ body {
   & #root {
     color: $cGrey;
 
-    & .wordchip, input, li, .MuiButton-containedSecondary {
+    & .wordchip, input, li, .MuiButton-containedSecondary, .grey-text, .MuiOutlinedInput-root {
       color: $cGrey;
+    }
+
+    & .main-logo {
+      color: $cGrey;
+      font-family: Pacifico, cursive;
     }
   }
 }
@@ -26,7 +31,7 @@ body {
 
   &-column {
     & .MuiContainer-root {
-      display: flex;
+      @extend .flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -34,8 +39,18 @@ body {
   }
 
   &-between {
-    display: flex;
+    @extend .flex;
     justify-content: space-between;
+
+    &-center {
+      @extend .flex-between;
+      align-items: center;
+    }
+  }
+
+  &-center {
+    @extend .flex;
+    align-items: center;
   }
 }
 .button-wrapper {
@@ -68,7 +83,4 @@ body {
   & .wordchip:not(:first-child) {
     margin-left: 4px;
   }
-}
-.grey-text {
-  color: $cGrey;
 }

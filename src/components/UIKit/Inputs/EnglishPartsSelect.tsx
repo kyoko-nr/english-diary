@@ -3,6 +3,7 @@ import { Controller } from 'react-hook-form'
 import { Parts } from 'constants/Parts'
 
 type PartsSelectProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
   name: string
 }

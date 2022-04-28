@@ -9,6 +9,7 @@ type NewWordProps = {
   word: Word
   diaryId: string
   name: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
   deleteWord: (index: string) => void
   index: string

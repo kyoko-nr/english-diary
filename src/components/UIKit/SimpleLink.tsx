@@ -1,4 +1,4 @@
-import { createStyles, Link, makeStyles } from '@material-ui/core'
+import { Link } from '@mui/material'
 
 type SimpleLinkProps = {
   label: string
@@ -9,25 +9,15 @@ type SimpleLinkProps = {
   variant: 'body1' | 'body2'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      textTransform: 'uppercase',
-    },
-  })
-)
-
 const SimpleLink = (props: SimpleLinkProps): JSX.Element => {
-  const classes = useStyles()
-  const uppercase = props.upperCase
-
   return (
     <Link
+      className="grey-text"
       component={props.component}
       onClick={props.onClick}
       color={props.color}
-      className={uppercase ? classes.root : ''}
       variant={props.variant}
+      sx={{ textTransform: props.upperCase ? 'uppercase' : 'none' }}
     >
       {props.label}
     </Link>

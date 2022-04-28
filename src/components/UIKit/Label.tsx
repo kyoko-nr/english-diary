@@ -7,6 +7,7 @@ type LabelProps = {
   color?: 'error' | 'primary'
   uppercase?: boolean
   bold?: boolean
+  overflowElipses?: boolean
 }
 
 const Label = (props: LabelProps): JSX.Element => {
@@ -15,8 +16,14 @@ const Label = (props: LabelProps): JSX.Element => {
       variant={props.variant}
       align={props.align}
       color={props.color ? props.color : 'text'}
-      sx={{ display: 'block', textTransform: props.uppercase ? 'uppercase' : 'none' }}
+      sx={{
+        display: 'block',
+        textTransform: props.uppercase ? 'uppercase' : 'none',
+      }}
       fontWeight={props.bold ? '500' : '400'}
+      textOverflow={props.overflowElipses ? 'ellipsis' : 'none'}
+      overflow={props.overflowElipses ? 'hidden' : 'auto'}
+      whiteSpace={props.overflowElipses ? 'nowrap' : 'normal'}
     >
       {props.label}
     </Typography>

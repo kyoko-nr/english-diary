@@ -17,7 +17,7 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
 const TextInputDeletable = (props: InputProps): JSX.Element => {
   return (
     <Box sx={{ display: props.fullWidth ? 'block' : 'inline-block' }}>
-      <Box sx={{ marginLeft: '8px', display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ marginLeft: '8px' }} className="flex-center">
         <Controller
           name={`${props.name}.value`}
           control={props.control}

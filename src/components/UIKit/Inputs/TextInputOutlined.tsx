@@ -1,5 +1,4 @@
-import { createStyles, makeStyles } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
+import { TextField } from '@mui/material'
 import { Controller, FieldValues, useController, FieldName } from 'react-hook-form'
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
@@ -15,20 +14,7 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   type: 'text' | 'email' | 'password'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      borderRadius: 8,
-
-      '& > .MuiInputBase-root': {
-        lineHeight: '1.4em',
-      },
-    },
-  })
-)
-
 const TextInputOutlined = (props: InputProps): JSX.Element => {
-  const classes = useStyles()
   const { fieldState } = useController(props)
   const message = fieldState.error ? fieldState.error.message : ' '
 
@@ -41,7 +27,6 @@ const TextInputOutlined = (props: InputProps): JSX.Element => {
         <TextField
           {...field}
           variant={'outlined'}
-          className={classes.root}
           helperText={message}
           fullWidth={props.fullWidth}
           error={fieldState.invalid}
@@ -50,6 +35,7 @@ const TextInputOutlined = (props: InputProps): JSX.Element => {
           rows={props.rows}
           required={props.required}
           type={props.type}
+          sx={{ borderRadius: 8, lineHeight: '1.4em' }}
         />
       )}
     />

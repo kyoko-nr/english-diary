@@ -1,5 +1,4 @@
-import Button from '@material-ui/core/Button'
-import { makeStyles, createStyles } from '@material-ui/styles'
+import { Button } from '@mui/material'
 
 type TextLargeButtonProps = {
   label: string
@@ -7,22 +6,19 @@ type TextLargeButtonProps = {
   color: 'primary'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      width: 240,
-      height: 40,
-      borderRadius: 20,
-      fontSize: 16,
-    },
-  })
-)
-
 const TextLargeButton = (props: TextLargeButtonProps): JSX.Element => {
-  const classes = useStyles()
-
   return (
-    <Button className={classes.root} onClick={props.onClick} variant={'text'} color={props.color}>
+    <Button
+      onClick={props.onClick}
+      variant="text"
+      color={props.color}
+      sx={{
+        width: 240,
+        height: 40,
+        borderRadius: 20,
+        fontSize: 16,
+      }}
+    >
       {props.label}
     </Button>
   )

@@ -1,5 +1,4 @@
 import Button from '@mui/material/Button'
-import { makeStyles, createStyles } from '@material-ui/styles'
 
 type OutlineLargeButtonProps = {
   label: string
@@ -7,24 +6,19 @@ type OutlineLargeButtonProps = {
   color: 'primary' | 'secondary' | 'error' | 'inherit'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      '&.MuiButton-root': {
+const OutlineLargeButton = (props: OutlineLargeButtonProps): JSX.Element => {
+  return (
+    <Button
+      onClick={props.onClick}
+      variant={'outlined'}
+      color={props.color}
+      sx={{
         width: 240,
         height: 40,
         borderRadius: 20,
         fontSize: 16,
-      },
-    },
-  })
-)
-
-const OutlineLargeButton = (props: OutlineLargeButtonProps): JSX.Element => {
-  const classes = useStyles()
-
-  return (
-    <Button className={classes.root} onClick={props.onClick} variant={'outlined'} color={props.color}>
+      }}
+    >
       {props.label}
     </Button>
   )

@@ -357,7 +357,8 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
 
 const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diaryId: string): Promise<Word[]> => {
   const wordsCollRef = collection(diaryCollRef, diaryId, DOC_NAME_WORDS)
-  const snapShot = await getDocs(wordsCollRef)
+  const q = query(wordsCollRef, orderBy('title', 'asc'))
+  const snapShot = await getDocs(q)
   const words: Word[] = []
 
   for await (const doc of snapShot.docs) {

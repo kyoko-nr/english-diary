@@ -1,5 +1,4 @@
-import { createStyles, makeStyles } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
+import { TextField } from '@mui/material'
 import { Controller, FieldValues, useController, FieldName } from 'react-hook-form'
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
@@ -10,27 +9,12 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   control?: any
   fullWidth: boolean
   label: string
-  multiline: boolean
-  rows: number
   type: 'text' | 'email' | 'password'
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      borderRadius: 8,
-
-      '& > .MuiInputBase-root': {
-        lineHeight: '1.4em',
-      },
-    },
-  })
-)
-
-const TextInputOutlined = (props: InputProps): JSX.Element => {
-  const classes = useStyles()
+const TextInputStandard = (props: InputProps): JSX.Element => {
   const { fieldState } = useController(props)
-  const message = fieldState.error ? fieldState.error.message : ' '
+  const message = props.required ? (fieldState.error ? fieldState.error.message : ' ') : ''
 
   return (
     <Controller
@@ -40,20 +24,18 @@ const TextInputOutlined = (props: InputProps): JSX.Element => {
       render={({ field }) => (
         <TextField
           {...field}
-          variant={'outlined'}
-          className={classes.root}
+          variant={'standard'}
           helperText={message}
           fullWidth={props.fullWidth}
           error={fieldState.invalid}
           label={props.label}
-          multiline={props.multiline}
-          rows={props.rows}
           required={props.required}
           type={props.type}
+          sx={{ maxWidth: 400, width: '80%' }}
         />
       )}
     />
   )
 }
 
-export default TextInputOutlined
+export default TextInputStandard

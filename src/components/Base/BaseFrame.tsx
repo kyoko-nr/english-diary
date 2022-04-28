@@ -1,4 +1,4 @@
-import { Container } from '@material-ui/core'
+import { Container } from '@mui/material'
 import { ErrorPopup } from 'components/Base/index'
 import { ReactNode } from 'react'
 

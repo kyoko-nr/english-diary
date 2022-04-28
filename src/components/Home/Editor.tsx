@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { getDiaryId } from 'reducks/users/operations'
+import { getUserId } from 'reducks/users/selectors'
 import { useDispatch } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
+import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
-import { Diary } from 'reducks/users/types'
+import { Diary, Word } from 'reducks/users/types'
 import { saveDiary } from 'reducks/users/operations'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -16,32 +20,50 @@ const ContentErrMsg = "Please write 'English' diary!"
 const schema = yup.object().shape({
   title: yup.string().label('Title').required().matches(ContentRegExp, ContentErrMsg),
   content: yup.string().label('Content').required().matches(ContentRegExp, ContentErrMsg),
+  words: yup.array(
+    yup.object({
+      title: yup.string().label('New word').required().trim(),
+    })
+  ),
 })
 
 const Editor = (props: EditorProps): JSX.Element => {
+  const selector = useSelector((state) => state)
   const dispatch = useDispatch()
   const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
     resolver: yupResolver(schema),
   })
 
-  const [counter, setCounter] = useState(0)
-
-  const id = props.diary ? props.diary.id : ''
-  const date = props.diary ? props.diary.date : new Date()
-
   interface IFormInput {
     title: string
     content: string
+    words: Word[]
   }
+
+  const { fields, append, remove, update } = useFieldArray({
+    name: 'words',
+    control,
+  })
+
+  const [counter, setCounter] = useState(0)
+  const [diaryId, setDiaryId] = useState('')
+  const [deletedWordIds, setDeletedWordIds] = useState<string[]>([])
+
+  const uid = getUserId(selector)
+  const date = props.diary ? props.diary.date : new Date()
 
   const onSubmit = (data: IFormInput) => {
     dispatch(
-      saveDiary({
-        id: id,
-        date: date,
-        title: data.title,
-        content: data.content,
-      })
+      saveDiary(
+        {
+          id: diaryId,
+          date: date,
+          title: data.title,
+          content: data.content,
+          words: data.words,
+        },
+        deletedWordIds
+      )
     )
   }
 
@@ -54,14 +76,29 @@ const Editor = (props: EditorProps): JSX.Element => {
   const initFields = () => {
     setValue('title', '')
     setValue('content', '')
+    setValue('words', [])
     setCounter(0)
+  }
+
+  const deleteWord = (index: string, wordId: string): void => {
+    remove(parseInt(index))
+    const deleted = [...deletedWordIds]
+    deleted.push(wordId)
+    setDeletedWordIds(deleted)
   }
 
   useEffect(() => {
     if (props.diary) {
       setValue('title', props.diary.title)
       setValue('content', props.diary.content)
+      setValue('words', props.diary.words)
       setCounter(countWords())
+      setDiaryId(props.diary.id)
+    } else {
+      const did = getDiaryId(uid)
+      setDiaryId(did)
+      const words: Word[] = []
+      setValue('words', words)
     }
   }, [props.diary])
 
@@ -95,10 +132,20 @@ const Editor = (props: EditorProps): JSX.Element => {
         fullWidth={true}
         label={'Content'}
         multiline={true}
-        rows={20}
+        rows={16}
         type={'text'}
       />
-      <div className={'spacer-16'} />
+      <div className={'spacer-8'} />
+      <NewWordList
+        diaryId={diaryId}
+        control={control}
+        fields={fields}
+        append={append}
+        remove={remove}
+        update={update}
+        deleteWord={deleteWord}
+      />
+      <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />
         <ContainedMidButton color={'primary'} onClick={handleSubmit(onSubmit)} label={'save'} />

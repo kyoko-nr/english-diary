@@ -1,5 +1,4 @@
-import Typography from '@material-ui/core/Typography'
-import { createStyles, makeStyles } from '@material-ui/styles'
+import Typography from '@mui/material/Typography'
 
 type LogoProps = {
   variant: 'h4' | 'h5'
@@ -8,28 +7,14 @@ type LogoProps = {
   isLink?: boolean
 }
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      fontFamily: 'Pacifico, cursive',
-      color: '#4a4a4a',
-    },
-    link: {
-      cursor: 'pointer',
-    },
-  })
-)
-
 const Logo = (props: LogoProps): JSX.Element => {
-  const classes = useStyles()
-  const isLink = props.isLink
-
   return (
     <Typography
-      className={isLink ? `${classes.link} ${classes.root}` : classes.root}
+      className="main-logo"
       variant={props.variant}
       component={props.component}
       onClick={props.onClick}
+      sx={{ cursor: props.isLink ? 'pointer' : 'default' }}
     >
       English Diary
     </Typography>

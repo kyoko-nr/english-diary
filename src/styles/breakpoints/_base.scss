@@ -1,8 +1,18 @@
 body {
   font-size: 14px;
-}
-#root {
-  color: $cGrey;
+
+  & #root {
+    color: $cGrey;
+
+    & .MuiButton-containedSecondary, .grey-text {
+      color: $cGrey;
+    }
+
+    & .main-logo {
+      color: $cGrey;
+      font-family: Pacifico, cursive;
+    }
+  }
 }
 .content {
   padding: 96px 8px 40px 8px;
@@ -21,7 +31,7 @@ body {
 
   &-column {
     & .MuiContainer-root {
-      display: flex;
+      @extend .flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -29,8 +39,18 @@ body {
   }
 
   &-between {
-    display: flex;
+    @extend .flex;
     justify-content: space-between;
+
+    &-center {
+      @extend .flex-between;
+      align-items: center;
+    }
+  }
+
+  &-center {
+    @extend .flex;
+    align-items: center;
   }
 }
 .button-wrapper {
@@ -45,4 +65,23 @@ body {
 }
 .archivelist-container {
   padding-left: 8px;
+}
+.synonyms .each{
+  position: relative;
+
+  &:not(:last-child)::before {
+    content: '/';
+    position: absolute;
+    right: -8px;
+    padding: 4px;
+  }
+}
+.wordchip-wrapper {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  & .wordchip:not(:first-child) {
+    margin-left: 4px;
+  }
 }

@@ -1,6 +1,6 @@
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
-import { IconButton } from '@material-ui/core'
+import { IconButton } from '@mui/material'
 
 type ArrowIconButtonProps = {
   type: 'forward' | 'back'

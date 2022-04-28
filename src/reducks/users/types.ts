@@ -14,15 +14,29 @@ export type Diary = {
   date: Date
   title: string
   content: string
+  words: Word[]
 }
 
 export type DiaryToSave = {
-  id?: string
-  date?: Timestamp
+  id: string
+  date: Timestamp
   title: string
   content: string
-  createdAt?: Timestamp
-  updatedAt?: Timestamp
+  updatedAt: Timestamp
+}
+
+export type Word = {
+  wordId: string
+  title: string
+  meanings: Addible[]
+  synonyms: Addible[]
+  examples: Addible[]
+  pos: string
+}
+
+export type Addible = {
+  id: string
+  value: string
 }
 
 export type UsersAction = {
@@ -41,3 +55,5 @@ export type signInParams = {
   email: string
   password: string
 }
+
+export type Feature = 'meanings' | 'examples' | 'synonyms'

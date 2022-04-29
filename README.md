@@ -1,5 +1,5 @@
 # アプリはここで公開しています
-https://english-diary-1c6dd.web.app/signin
+~~https://english-diary-1c6dd.web.app/signin~~
 
 # Getting Started with Create React App
 

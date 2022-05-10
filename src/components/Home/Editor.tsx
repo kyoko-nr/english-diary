@@ -132,7 +132,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         fullWidth={true}
         label={'Content'}
         multiline={true}
-        rows={16}
+        rows={12}
         type={'text'}
       />
       <div className={'spacer-8'} />

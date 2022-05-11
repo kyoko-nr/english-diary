@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
+import { signUp, changeLoadingState } from 'reducks/users/operations'
+import { clearErrors } from 'reducks/errors/operations'
 import { push } from 'connected-react-router'
-import { signUp } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
 import { PlaneLargeButton, Label, SimpleLink, TextInputStandard } from 'components/UIKit/index'
 import * as yup from 'yup'
@@ -32,6 +33,8 @@ const SignupForm = (): JSX.Element => {
   }
 
   const onSubmit = (data: IFormInput) => {
+    dispatch(clearErrors())
+    dispatch(changeLoadingState(true))
     dispatch(
       signUp({
         username: data.username,

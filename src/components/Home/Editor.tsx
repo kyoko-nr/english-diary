@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { getDiaryId } from 'reducks/users/operations'
+import { useSelector, useDispatch } from 'react-redux'
+import { getDiaryId, saveDiary, changeLoadingState } from 'reducks/users/operations'
 import { getUserId } from 'reducks/users/selectors'
-import { useDispatch } from 'react-redux'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
 import { Diary, Word } from 'reducks/users/types'
-import { saveDiary } from 'reducks/users/operations'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -53,6 +51,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   const date = props.diary ? props.diary.date : new Date()
 
   const onSubmit = (data: IFormInput) => {
+    dispatch(changeLoadingState(true))
     dispatch(
       saveDiary(
         {
@@ -132,7 +131,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         fullWidth={true}
         label={'Content'}
         multiline={true}
-        rows={16}
+        rows={12}
         type={'text'}
       />
       <div className={'spacer-8'} />

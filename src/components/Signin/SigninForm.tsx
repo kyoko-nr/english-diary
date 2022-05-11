@@ -1,4 +1,6 @@
 import { useDispatch } from 'react-redux'
+import { changeLoadingState } from 'reducks/users/operations'
+import { clearErrors } from 'reducks/errors/operations'
 import { push } from 'connected-react-router'
 import { signIn } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
@@ -23,6 +25,8 @@ const SigninForm = (): JSX.Element => {
   }
 
   const onSubmit = (data: IFormInput) => {
+    dispatch(clearErrors())
+    dispatch(changeLoadingState(true))
     dispatch(signIn({ email: data.email, password: data.password }))
   }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { updateUserAccount } from 'reducks/users/operations'
+import { updateUserAccount, changeLoadingState } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
 import { OutlineMidButton, ContainedMidButton, TextInputOutlined, Label } from 'components/UIKit/index'
 import * as yup from 'yup'
@@ -40,6 +40,7 @@ const MyPageEditForm = (props: MyPageEditFormProps): JSX.Element => {
   }
 
   const onSubmit = (data: IFormInput) => {
+    dispatch(changeLoadingState(true))
     dispatch(updateUserAccount(data.email, data.username, data.password))
   }
 

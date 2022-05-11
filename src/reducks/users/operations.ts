@@ -29,7 +29,14 @@ import {
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
 import { SignUpParams, signInParams, Diary, UserState, DiaryToSave, Word, Addible, Feature } from './types'
-import { signInAction, signOutAction, updateDirayAction, changeCurrentYMAction, updateAccountAction } from './actions'
+import {
+  signInAction,
+  signOutAction,
+  updateDirayAction,
+  changeCurrentYMAction,
+  updateAccountAction,
+  updateLoadingState,
+} from './actions'
 import { setErrorsAction } from 'reducks/errors/actions'
 import { Messages } from 'constants/ErrorMessages'
 import { AppState } from 'reducks/store/store'
@@ -66,13 +73,25 @@ export const listenAuthState = () => {
         dispatch(push('/signin'))
         return
       }
-      const usersState = await fetchUsersState(user)
+      const usersState = await fetchUsersState(user, false)
       if (usersState) {
         dispatch(signInAction(usersState))
       } else {
         dispatch(push('/signin'))
       }
     })
+  }
+}
+
+/**
+ * Change loading state to false to end loading animation.
+ * @returns
+ */
+export const changeLoadingState = (loading: boolean) => {
+  return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
+    const usersState = getState().users
+    usersState.loading = loading
+    dispatch(updateLoadingState(usersState))
   }
 }
 
@@ -146,7 +165,7 @@ export const signIn = (params: signInParams) => {
     return signInWithEmailAndPassword(auth, params.email, params.password)
       .then(async (result) => {
         const user = result.user
-        const usersState = await fetchUsersState(user)
+        const usersState = await fetchUsersState(user, true)
         dispatch(signInAction(usersState))
         dispatch(push('/'))
       })
@@ -267,7 +286,7 @@ export const saveDiary = (diary: Diary, deletedWordIds: string[]) => {
       await saveFeature(word.synonyms, wordRef, 'synonyms')
     }
 
-    const usersState = await fetchUsersState(user)
+    const usersState = await fetchUsersState(user, user.loading)
     dispatch(updateDirayAction(usersState))
     dispatch(push(`/post/${diary.id}`))
   }
@@ -301,7 +320,7 @@ export const deleteDiary = (id: string) => {
   return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const user = getState().users
     await deleteDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id))
-    const usersState = await fetchUsersState(user)
+    const usersState = await fetchUsersState(user, user.loading)
     dispatch(updateDirayAction(usersState))
     dispatch(push('/'))
   }
@@ -312,7 +331,7 @@ export const deleteDiary = (id: string) => {
  * @param user Authenticated user
  * @returns users state
  */
-const fetchUsersState = async (user: User) => {
+const fetchUsersState = async (user: User, loading: boolean) => {
   const users = await getDoc(doc(db, DOC_NAME_USERS, user.uid))
   const usersData = users.data()
   if (!usersData) {
@@ -326,6 +345,7 @@ const fetchUsersState = async (user: User) => {
     isSignedIn: true,
     diaries: diaries,
     currentYM: new Date(),
+    loading: loading,
   }
   return usersState
 }

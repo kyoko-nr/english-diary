@@ -1,10 +1,11 @@
+import { useEffect } from 'react'
+import { useLocation } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUsername, getEmail } from 'reducks/users/selectors'
+import { changeLoadingState } from 'reducks/users/operations'
+import { clearErrors } from 'reducks/errors/operations'
 import { AppFrame } from 'components/Base/index'
 import { MyPageContent, MyPageEditForm } from 'components/MyPage/index'
-import { useLocation } from 'react-router'
-import { useEffect } from 'react'
-import { clearErrors } from 'reducks/errors/operations'
 
 const MyPage = (): JSX.Element => {
   const dispatch = useDispatch()
@@ -16,6 +17,7 @@ const MyPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(clearErrors())
+    dispatch(changeLoadingState(false))
   }, [])
 
   return (

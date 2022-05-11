@@ -19,9 +19,12 @@ const WordFeature = (props: WordFeatureProps): JSX.Element => {
               <Box
                 key={fe.id}
                 className="each"
-                sx={{ padding: '2px 8px', display: props.fullWidth ? 'block' : 'inline-block' }}
+                sx={{
+                  padding: props.fullWidth ? '4px 0px' : '0px 8px',
+                  display: props.fullWidth ? 'block' : 'inline-block',
+                }}
               >
-                <Typography sx={{ textIndent: 1 }} variant="body1">
+                <Typography sx={{ textIndent: props.fullWidth ? 8 : 0, lineHeight: 1.2 }} variant="body1">
                   {fe.value}
                 </Typography>
               </Box>

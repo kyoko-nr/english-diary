@@ -21,6 +21,7 @@ interface UsersInfo extends User {
   diaries: Array<Diary>
   currentYM: Date
   words: Word[]
+  loading: boolean
 }
 
 interface ErrorsInfo {

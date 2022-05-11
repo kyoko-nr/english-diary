@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { resetPassword } from 'reducks/users/operations'
+import { resetPassword, changeLoadingState } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
 import { SimpleLink, PlaneLargeButton, Label, TextInputStandard } from 'components/UIKit/index'
 import * as yup from 'yup'
@@ -21,6 +21,7 @@ const ResetForm = (): JSX.Element => {
   }
 
   const onSubmit = (data: IFormInput) => {
+    dispatch(changeLoadingState(true))
     dispatch(resetPassword(data.email))
   }
 

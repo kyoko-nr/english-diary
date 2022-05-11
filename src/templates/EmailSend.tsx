@@ -1,10 +1,16 @@
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { changeLoadingState } from 'reducks/users/operations'
 import { push } from 'connected-react-router'
 import { BaseFrame } from 'components/Base/index'
 import { SimpleLink, TextLargeButton, Label } from 'components/UIKit/index'
 
 const EmailSend = (): JSX.Element => {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(changeLoadingState(false))
+  }, [])
 
   return (
     <BaseFrame>

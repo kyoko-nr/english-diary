@@ -29,6 +29,11 @@ export const UsersReducer = (state = initialState.users, action: Types.UsersActi
         email: action.payload.email,
         username: action.payload.username,
       }
+    case Actions.UPDATE_LOADING_STATE:
+      return {
+        ...state,
+        loading: action.payload.loading,
+      }
     default:
       return state
   }

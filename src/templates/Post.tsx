@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
+import { changeLoadingState } from 'reducks/users/operations'
 import { Diary } from 'reducks/users/types'
 import { Grid } from '@material-ui/core'
 import { Viewer } from 'components/Post/index'
@@ -21,6 +22,7 @@ const Post = (props: PostProps): JSX.Element => {
   const deleteDiaryButton = useCallback(
     (id: string): void => {
       if (confirm('Are you sure to delete this diary?')) {
+        dispatch(changeLoadingState(true))
         dispatch(deleteDiary(id))
       }
     },
@@ -32,6 +34,8 @@ const Post = (props: PostProps): JSX.Element => {
     const diaries = getDiaries(selector)
     const diary = diaries.filter((diary: Diary) => diary.id === id)
     setDiaryToShow(diary[0])
+    window.scrollTo(0, 0)
+    dispatch(changeLoadingState(false))
   }, [props.match.params.id])
 
   return (

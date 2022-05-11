@@ -23,6 +23,7 @@ export const signOutAction = (): Types.UsersAction => {
       email: '',
       diaries: [],
       currentYM: undefined,
+      loading: true,
     },
   }
 }
@@ -53,6 +54,17 @@ export const updateAccountAction = (userState: Types.UserState): Types.UsersActi
     type: 'UPDATE_USER_ACCOUNT',
     payload: {
       ...userState,
+    },
+  }
+}
+
+export const UPDATE_LOADING_STATE = 'UPDATE_LOADING_STATE'
+export const updateLoadingState = (userState: Types.UserState): Types.UsersAction => {
+  return {
+    type: 'UPDATE_LOADING_STATE',
+    payload: {
+      ...userState,
+      loading: userState.loading,
     },
   }
 }

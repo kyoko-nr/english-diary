@@ -13,6 +13,7 @@ const Viewer = (props: ViewerProps): JSX.Element => {
   const dispatch = useDispatch()
   const splited = props.diary.content.split(/[\s]/)
   const count = splited.filter((w: string) => w !== '').length
+  const contentLines = props.diary.content.split(/\n/)
 
   return (
     <>
@@ -22,7 +23,9 @@ const Viewer = (props: ViewerProps): JSX.Element => {
       <div className={'spacer-24'} />
       <Label label={`${count} words`} variant={'caption'} align={'right'} />
       <div className={'spacer-8'} />
-      <ContentBody content={props.diary.content} align={'left'} />
+      {contentLines.map((line, idx) => (
+        <ContentBody content={line} key={idx} />
+      ))}
       <div className={'spacer-32'} />
       <NewWordListView words={props.diary.words} />
       <div className={'spacer-32'} />

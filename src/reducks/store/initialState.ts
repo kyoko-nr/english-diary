@@ -6,6 +6,7 @@ const initialState = {
     email: '',
     diaries: [],
     currentYM: undefined,
+    loading: false,
   },
   errors: {
     errorMsgs: [],

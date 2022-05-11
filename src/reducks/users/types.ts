@@ -7,6 +7,7 @@ export type UserState = {
   email: string | undefined
   diaries: Diary[]
   currentYM: Date | undefined
+  loading: boolean
 }
 
 export type Diary = {

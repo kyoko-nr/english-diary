@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getDiaries } from 'reducks/users/selectors'
+import { changeLoadingState } from 'reducks/users/operations'
 import { Diary } from 'reducks/users/types'
 import { Grid } from '@material-ui/core'
 import { Editor } from 'components/Home/index'
@@ -14,6 +15,7 @@ type HomeProps = RouteComponentProps<{
 
 const Home = (props: HomeProps): JSX.Element => {
   const selector = useSelector((state) => state)
+  const dispatch = useDispatch()
   const [diaryToEdit, setDiaryToEdit] = useState<Diary>()
 
   useEffect(() => {
@@ -21,6 +23,7 @@ const Home = (props: HomeProps): JSX.Element => {
     const diaries = getDiaries(selector)
     const diary = diaries.filter((diary: Diary) => diary.id === id)
     setDiaryToEdit(diary[0])
+    dispatch(changeLoadingState(false))
   }, [props.match.params.id])
 
   return (

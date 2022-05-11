@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { Diary } from 'reducks/users/types'
@@ -15,10 +14,6 @@ const Viewer = (props: ViewerProps): JSX.Element => {
   const splited = props.diary.content.split(/[\s]/)
   const count = splited.filter((w: string) => w !== '').length
   const contentLines = props.diary.content.split(/\n/)
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [props.diary])
 
   return (
     <>

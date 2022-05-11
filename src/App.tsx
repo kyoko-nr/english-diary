@@ -1,5 +1,6 @@
 import Router from 'Router'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import Spinner from 'templates/Spinner'
 import 'styles/App.scss'
 
 const theme = createTheme({
@@ -29,6 +30,7 @@ const theme = createTheme({
 function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
+      <Spinner />
       <Router />
     </ThemeProvider>
   )

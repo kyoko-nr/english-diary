@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, CardContent, CardActions, Box } from '@mui/material'
-import { TextInputStandard, AddibleContent, TextMidButton, EnglishPartsSelect } from 'components/UIKit/index'
-import { Feature, Word } from 'reducks/users/types'
+import { TextInputStandard, AddibleContent, TextMidButton, PosSelect } from 'components/UIKit/index'
+import { Feature, Word } from 'types/types'
 import { getWordFeatureId } from 'reducks/users/operations'
 import { getUserId } from 'reducks/users/selectors'
 
@@ -87,7 +87,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
             label={'New word'}
             type={'text'}
           />
-          <EnglishPartsSelect name={`${props.name}.pos`} control={props.control} />
+          <PosSelect name={`${props.name}.pos`} control={props.control} />
         </Box>
         <AddibleContent
           diaryId={props.diaryId}

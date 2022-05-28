@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import { Label } from 'components/UIKit/index'
-import { Addible, Feature } from 'reducks/users/types'
+import { Addible, Feature } from 'types/types'
 
 type WordFeatureProps = {
   feature: Addible[]

@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { Card, CardActionArea, CardContent } from '@mui/material'
 import { push } from 'connected-react-router'
-import { Diary } from 'reducks/users/types'
+import { Diary } from 'types/types'
 import { FormatDate, WordChip, Label } from '../UIKit/index'
 
 type ArchiveProps = {

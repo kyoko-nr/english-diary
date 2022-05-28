@@ -24,6 +24,7 @@ export const signOutAction = (): Types.UsersAction => {
       diaries: [],
       currentYM: undefined,
       loading: true,
+      words: [],
     },
   }
 }

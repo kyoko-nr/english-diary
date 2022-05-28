@@ -28,7 +28,9 @@ import {
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
-import { SignUpParams, signInParams, Diary, UserState, DiaryToSave, Word, Addible, Feature } from './types'
+import { SignUpParams, signInParams, UserState, DiaryToSave } from './types'
+
+import { Diary, Word, Addible, Feature } from 'types/types'
 import {
   signInAction,
   signOutAction,
@@ -338,6 +340,8 @@ const fetchUsersState = async (user: User, loading: boolean) => {
     throw new Error(Messages.UNKNOWN_UER_ERROR)
   }
   const diaries = await fetchDiaries(user.uid)
+  const words: Word[] = []
+  diaries.forEach((diary) => diary.words.forEach((word) => words.push(word)))
   const usersState: UserState = {
     username: usersData.username,
     uid: user.uid,
@@ -346,6 +350,7 @@ const fetchUsersState = async (user: User, loading: boolean) => {
     diaries: diaries,
     currentYM: new Date(),
     loading: loading,
+    words: words,
   }
   return usersState
 }

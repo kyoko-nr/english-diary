@@ -5,7 +5,7 @@ import { getUserId } from 'reducks/users/selectors'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
-import { Diary, Word } from 'reducks/users/types'
+import { Diary, Word } from 'types/types'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 

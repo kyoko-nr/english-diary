@@ -1,7 +1,7 @@
 import { TextField, Box } from '@mui/material'
 import { RemoveIconButton } from 'components/UIKit/index'
 import { Controller, FieldValues, FieldName } from 'react-hook-form'
-import { Feature } from 'reducks/users/types'
+import { Feature } from 'types/types'
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   feature: Feature

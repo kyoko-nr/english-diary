@@ -1,6 +1,6 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import { IconButton } from '@mui/material'
-import { Feature } from 'reducks/users/types'
+import { Feature } from 'types/types'
 
 type AddIconButtonProps = {
   feature: Feature

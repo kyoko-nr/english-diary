@@ -1,6 +1,6 @@
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline'
 import { IconButton } from '@mui/material'
-import { Feature } from 'reducks/users/types'
+import { Feature } from 'types/types'
 
 type RemoveIconButtonProps = {
   feature: Feature

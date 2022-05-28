@@ -44,6 +44,7 @@ const Header = (): JSX.Element => {
             onClose={handleClose}
           >
             <MenuItem onClick={() => dispatch(push('/mypage'))}>My Page</MenuItem>
+            <MenuItem onClick={() => dispatch(push('/mydictionary'))}>My Dictionary</MenuItem>
             <Divider />
             <MenuItem onClick={() => dispatch(signOutFrom())}>Log out</MenuItem>
           </Menu>

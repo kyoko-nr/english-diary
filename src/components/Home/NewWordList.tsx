@@ -4,7 +4,7 @@ import { getWordId } from 'reducks/users/operations'
 import { getUserId } from 'reducks/users/selectors'
 import { NewWord } from 'components/Home'
 import { TextLargeButton } from 'components/UIKit/index'
-import { Word } from 'reducks/users/types'
+import { Word } from 'types/types'
 import { FieldArrayMethodProps } from 'react-hook-form'
 
 type NewWordListProps = {

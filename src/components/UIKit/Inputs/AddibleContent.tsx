@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import { TextInputDeletable, Label, AddIconButton } from 'components/UIKit/index'
-import { Addible, Feature } from 'reducks/users/types'
+import { Addible, Feature } from 'types/types'
 
 type AddibleContentProps = {
   feature: Feature

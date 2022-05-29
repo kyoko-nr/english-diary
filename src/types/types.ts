@@ -26,3 +26,10 @@ export type Option = {
   key: string
   value: string
 }
+
+export type SortType = 'Alphabetical' | 'Parts of speech' | 'Newer' | 'Older'
+
+export type SortOption = {
+  key: string
+  sort: SortType
+}

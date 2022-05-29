@@ -1,6 +1,6 @@
-import { Option } from 'types/types'
+import { Option, SortOption } from 'types/types'
 
-export const PosOptions: Option[] = [
+export const PosOptions: Readonly<Option[]> = [
   { key: '1', value: 'Noun' },
   { key: '2', value: 'Verb' },
   { key: '3', value: 'Adjective' },
@@ -12,9 +12,74 @@ export const PosOptions: Option[] = [
   { key: '9', value: 'Idiom' },
 ]
 
-export const OrderOptions: Option[] = [
-  { key: '1', value: 'Alphabetical' },
-  { key: '2', value: 'Parts of speech' },
-  { key: '3', value: 'Newer' },
-  { key: '4', value: 'Older' },
+export const AlphabetOptions: Readonly<Option[]> = [
+  { key: '1', value: 'a' },
+  { key: '2', value: 'b' },
+  { key: '3', value: 'c' },
+  { key: '4', value: 'd' },
+  { key: '5', value: 'e' },
+  { key: '6', value: 'f' },
+  { key: '7', value: 'g' },
+  { key: '8', value: 'h' },
+  { key: '9', value: 'i' },
+  { key: '10', value: 'j' },
+  { key: '11', value: 'k' },
+  { key: '12', value: 'l' },
+  { key: '13', value: 'm' },
+  { key: '14', value: 'n' },
+  { key: '15', value: 'o' },
+  { key: '16', value: 'p' },
+  { key: '17', value: 'q' },
+  { key: '18', value: 'r' },
+  { key: '19', value: 's' },
+  { key: '20', value: 't' },
+  { key: '21', value: 'u' },
+  { key: '22', value: 'v' },
+  { key: '23', value: 'w' },
+  { key: '24', value: 'x' },
+  { key: '25', value: 'y' },
+  { key: '26', value: 'z' },
+]
+
+export const Alphabets: Readonly<string[]> = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z',
+]
+
+// export const FilterOptions: Readonly<FilterOption[]> = [
+//   { key: '1', filter: 'Alphabetical', options: AlphabetOptions },
+//   { key: '2', filter: 'Parts of speech', options: PosOptions },
+//   { key: '3', filter: 'Newer', options: undefined },
+//   { key: '4', filter: 'Older', options: undefined },
+// ]
+
+export const SortOptions: Readonly<SortOption[]> = [
+  { key: '1', sort: 'Alphabetical' },
+  { key: '2', sort: 'Parts of speech' },
+  { key: '3', sort: 'Newer' },
+  { key: '4', sort: 'Older' },
 ]

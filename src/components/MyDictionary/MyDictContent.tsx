@@ -1,39 +1,38 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { getWords } from 'reducks/users/selectors'
-import { push } from 'connected-react-router'
-import { Label, OutlineLargeButton } from 'components/UIKit/index'
+import { DictIndex } from 'components/MyDictionary/index'
 import { WordCards } from 'components/UIKit/index'
-import { Word, Option } from 'types/types'
-import { OrderOptions } from 'constants/Parts'
-import { BrandingWatermarkTwoTone } from '@mui/icons-material'
+import { Word, Option, SortType } from 'types/types'
 
 type MyDictContentProps = {
-  order: string
+  sortType: SortType
+  defaultFilterWord: Option
 }
 
 const MyDictContent = (props: MyDictContentProps): JSX.Element => {
-  const dispatch = useDispatch()
   const selector = useSelector((state) => state)
 
   const [words, setWords] = useState<Array<Word>>()
+  const [wordsToShow, setWordsToShow] = useState<Array<Word>>()
 
-  const sortWords = (order: string) => {
+  const filterWords = (sortType: SortType, filter: Option): void => {
+    console.log('filter words')
     if (!words) return
-    let sorted: Word[] = []
-    const value = OrderOptions.filter((option) => option.key === order)[0].value
-    switch (value) {
+
+    let filtered: Word[] = []
+    switch (sortType) {
       case 'Alphabetical':
-        sorted = words.sort((a, b) => alphabeticalSort(a, b))
+        filtered = words.filter((word) => word.title.startsWith(filter.value))
         break
       case 'Parts of speech':
-        sorted = words.sort((a, b) => partsSort(a, b))
+        filtered = words.filter((word) => word.pos === filter.key)
         break
       default:
-        sorted = [...words]
+        filtered = [...words]
+        break
     }
-    console.log('sort words', sorted)
-    setWords(sorted)
+    setWordsToShow(filtered.sort((a, b) => alphabeticalSort(a, b)))
   }
 
   const alphabeticalSort = (a: Word, b: Word): number => {
@@ -42,22 +41,22 @@ const MyDictContent = (props: MyDictContentProps): JSX.Element => {
     return 0
   }
 
-  const partsSort = (a: Word, b: Word): number => {
-    if (Number.parseInt(a.pos) > Number.parseInt(b.pos)) return 1
-    if (Number.parseInt(a.pos) < Number.parseInt(b.pos)) return -1
-    return 0
-  }
-
   useEffect(() => {
     const wordList = getWords(selector)
     setWords(wordList)
-  })
+    filterWords(props.sortType, props.defaultFilterWord)
+  }, [])
 
-  useEffect(() => {
-    sortWords(props.order)
-  }, [props.order])
+  // useEffect(() => {
+  //   filterWords(props.filter, props.defaultFilterWord)
+  // }, [props.filter])
 
-  return <>{words ? <WordCards words={words} /> : <div>No Words</div>}</>
+  return (
+    <>
+      <DictIndex sortType={props.sortType} onClick={filterWords} />
+      {wordsToShow ? <WordCards words={wordsToShow} /> : <div>No Words</div>}
+    </>
+  )
 }
 
 export default MyDictContent

@@ -1,43 +1,40 @@
 import { useEffect, useState } from 'react'
 import { Box } from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { getDiaries, getCurrentYM } from 'reducks/users/selectors'
-import { changeCurrentYM } from 'reducks/users/operations'
-import { Word } from 'types/types'
+import { PosOptions, AlphabetOptions } from 'constants/Parts'
+import { SortType, Option } from 'types/types'
 
-const scrollHeight = window.innerHeight - 160 // padding = 40 * 4
+type DictIndexProps = {
+  sortType: SortType
+  onClick: (sortType: SortType, filter: Option) => void
+}
 
-const DictIndex = (): JSX.Element => {
-  const selector = useSelector((state) => state)
-  const dispatch = useDispatch()
-
-  const [words, setWords] = useState<Array<Word>>()
-  const [order, setOrder] = useState()
-  // const [currentYM, setCurrentYM] = useState(getCurrentYM(selector))
+const DictIndex = (props: DictIndexProps): JSX.Element => {
+  const [index, setIndex] = useState<Readonly<Option[]>>()
 
   useEffect(() => {
-    // const all: Array<Diary> = getDiaries(selector)
-    // setDiaries(filterd)
-  }, [])
-
-  const changeYM = (date: Date) => {
-    dispatch(changeCurrentYM(date))
-  }
+    switch (props.sortType) {
+      case 'Alphabetical':
+        setIndex(AlphabetOptions)
+        break
+      case 'Parts of speech':
+        setIndex(PosOptions)
+        break
+      default:
+    }
+  }, [props.sortType])
 
   return (
-    <Box className={'archivelist-container'}>
+    <Box>
       <div className={'spacer-8'} />
-      <Box
-        sx={{
-          height: Math.max(scrollHeight, 320),
-          overflowY: 'auto',
-        }}
-      >
-        {/* {diaries && diaries.length > 0 ? (
-          diaries.map((value: Diary) => <Archive diary={value} key={value.id} />)
-        ) : (
-          <div className={'txt-center'}>No diary</div>
-        )} */}
+      <Box sx={{ height: '60px' }}>
+        {index &&
+          index.map((option) => {
+            return (
+              <button onClick={() => props.onClick(props.sortType, option)}>
+                <div key={option.key}>{option.value}</div>
+              </button>
+            )
+          })}
       </Box>
     </Box>
   )

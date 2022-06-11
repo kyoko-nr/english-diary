@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box } from '@mui/material'
+import { Box, Link } from '@mui/material'
 import { PosOptions, AlphabetOptions } from 'constants/Parts'
 import { SortType, Option } from 'types/types'
 
@@ -24,19 +24,27 @@ const DictIndex = (props: DictIndexProps): JSX.Element => {
   }, [props.sortType])
 
   return (
-    <Box>
+    <>
       <div className={'spacer-8'} />
-      <Box sx={{ height: '60px' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', height: '64px' }}>
         {index &&
           index.map((option) => {
             return (
-              <button onClick={() => props.onClick(props.sortType, option)}>
-                <div key={option.key}>{option.value}</div>
-              </button>
+              <Link
+                onClick={() => props.onClick(props.sortType, option)}
+                variant="body1"
+                sx={{
+                  cursor: 'pointer',
+                  margin: '0px 8px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {option.value}
+              </Link>
             )
           })}
       </Box>
-    </Box>
+    </>
   )
 }
 

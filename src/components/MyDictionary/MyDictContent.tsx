@@ -13,23 +13,22 @@ type MyDictContentProps = {
 const MyDictContent = (props: MyDictContentProps): JSX.Element => {
   const selector = useSelector((state) => state)
 
-  const [words, setWords] = useState<Array<Word>>()
-  const [wordsToShow, setWordsToShow] = useState<Array<Word>>()
+  const [words, setWords] = useState<Word[]>()
+  const [wordsToShow, setWordsToShow] = useState<Word[]>()
 
-  const filterWords = (sortType: SortType, filter: Option): void => {
-    console.log('filter words')
-    if (!words) return
+  const filterWords = (sortType: SortType, filter: Option, wordList?: Word[]): void => {
+    const toFilter = words ? words : wordList ? wordList : []
 
     let filtered: Word[] = []
     switch (sortType) {
       case 'Alphabetical':
-        filtered = words.filter((word) => word.title.startsWith(filter.value))
+        filtered = toFilter.filter((word) => word.title.startsWith(filter.value))
         break
       case 'Parts of speech':
-        filtered = words.filter((word) => word.pos === filter.key)
+        filtered = toFilter.filter((word) => word.pos === filter.key)
         break
       default:
-        filtered = [...words]
+        filtered = [...toFilter]
         break
     }
     setWordsToShow(filtered.sort((a, b) => alphabeticalSort(a, b)))
@@ -47,9 +46,9 @@ const MyDictContent = (props: MyDictContentProps): JSX.Element => {
     filterWords(props.sortType, props.defaultFilterWord)
   }, [])
 
-  // useEffect(() => {
-  //   filterWords(props.filter, props.defaultFilterWord)
-  // }, [props.filter])
+  useEffect(() => {
+    filterWords(props.sortType, props.defaultFilterWord)
+  }, [props.defaultFilterWord])
 
   return (
     <>

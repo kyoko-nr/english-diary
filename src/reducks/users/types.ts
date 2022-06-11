@@ -18,6 +18,7 @@ export type DiaryToSave = {
   title: string
   content: string
   updatedAt: Timestamp
+  words: Word[]
 }
 
 export type UsersAction = {

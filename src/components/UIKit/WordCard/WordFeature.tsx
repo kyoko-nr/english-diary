@@ -17,7 +17,7 @@ const WordFeature = (props: WordFeatureProps): JSX.Element => {
           {props.feature.map((fe) => {
             return (
               <Box
-                key={fe.id}
+                key={fe.value}
                 className="each"
                 sx={{
                   padding: props.fullWidth ? '4px 0px' : '0px 8px',

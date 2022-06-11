@@ -4,12 +4,12 @@ import { Feature } from 'types/types'
 
 type RemoveIconButtonProps = {
   feature: Feature
-  id: string
-  onClick: (feature: Feature, id: string) => void
+  index: number
+  onClick: (feature: Feature, index: number) => void
 }
 const RemoveIconButton = (props: RemoveIconButtonProps): JSX.Element => {
   return (
-    <IconButton onClick={() => props.onClick(props.feature, props.id)} color={'error'} size="small">
+    <IconButton onClick={() => props.onClick(props.feature, props.index)} color={'error'} size="small">
       <RemoveCircleOutlineIcon />
     </IconButton>
   )

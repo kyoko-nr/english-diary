@@ -18,7 +18,12 @@ export type DiaryToSave = {
   title: string
   content: string
   updatedAt: Timestamp
-  words: Word[]
+  words: WordToSave[]
+}
+
+export type WordToSave = Omit<Word, 'createdAt'> & {
+  diaryId: string
+  createdAt: Timestamp
 }
 
 export type UsersAction = {

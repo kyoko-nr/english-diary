@@ -29,10 +29,10 @@ export const signOutAction = (): Types.UsersAction => {
   }
 }
 
-export const UPDATE_DIARY = 'UPDATE_DIARY'
-export const updateDirayAction = (userState: Types.UserState): Types.UsersAction => {
+export const UPDATE_DIARY_WORD = 'UPDATE_DIARY_WORD'
+export const updateDirayWordAction = (userState: Types.UserState): Types.UsersAction => {
   return {
-    type: 'UPDATE_DIARY',
+    type: 'UPDATE_DIARY_WORD',
     payload: {
       ...userState,
     },

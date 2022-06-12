@@ -1,5 +1,3 @@
-import { Timestamp } from '@firebase/firestore'
-
 export type Diary = {
   id: string
   date: Date
@@ -9,17 +7,16 @@ export type Diary = {
 }
 
 export type Word = {
-  // wordId: string
   title: string
   meanings: Addible[]
   synonyms: Addible[]
   examples: Addible[]
   pos: string
-  // createdAt: string
+  createdAt?: string
+  diaryId?: string
 }
 
 export type Addible = {
-  // id: string
   value: string
 }
 

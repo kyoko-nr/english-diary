@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, CardContent, CardActions, Box } from '@mui/material'
-import { TextInputStandard, AddibleContent, TextMidButton, EnglishPartsSelect } from 'components/UIKit/index'
-import { Feature, Word } from 'reducks/users/types'
-import { getWordFeatureId } from 'reducks/users/operations'
-import { getUserId } from 'reducks/users/selectors'
+import { TextInputStandard, AddibleContent, TextMidButton, PosSelect } from 'components/UIKit/index'
+import { Feature, Word } from 'types/types'
 
 type NewWordProps = {
   word: Word
@@ -12,21 +10,15 @@ type NewWordProps = {
   name: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
-  deleteWord: (index: string, wordId: string) => void
+  deleteWord: (index: string) => void
   index: string
   update: (index: number, value: Partial<Word>) => void
 }
 
 const NewWord = (props: NewWordProps): JSX.Element => {
-  const selector = useSelector((state) => state)
-  const [wordId, setWordId] = useState('')
-
   const addInput = (feature: Feature) => {
-    const uid = getUserId(selector)
-    const id = getWordFeatureId(uid, props.diaryId, wordId, feature)
-    const input = { id: id, value: '' }
+    const input = { value: '' }
     const word: Word = {
-      wordId: wordId,
       title: props.word.title,
       meanings: [...props.word.meanings],
       synonyms: [...props.word.synonyms],
@@ -47,9 +39,8 @@ const NewWord = (props: NewWordProps): JSX.Element => {
     props.update(parseInt(props.index), word)
   }
 
-  const deleteInput = (feature: Feature, id: string) => {
+  const deleteInput = (feature: Feature, index: number) => {
     const word: Word = {
-      wordId: props.word.wordId,
       title: props.word.title,
       meanings: [...props.word.meanings],
       synonyms: [...props.word.synonyms],
@@ -58,21 +49,21 @@ const NewWord = (props: NewWordProps): JSX.Element => {
     }
     switch (feature) {
       case 'meanings':
-        word.meanings = word.meanings.filter((m) => m.id !== id)
+        word.meanings = word.meanings.filter((m, idx) => idx !== index)
         break
       case 'examples':
-        word.examples = word.examples.filter((m) => m.id !== id)
+        word.examples = word.examples.filter((m, idx) => idx !== index)
         break
       case 'synonyms':
-        word.synonyms = word.synonyms.filter((m) => m.id !== id)
+        word.synonyms = word.synonyms.filter((m, idx) => idx !== index)
         break
     }
     props.update(parseInt(props.index), word)
   }
 
-  useEffect(() => {
-    setWordId(props.word.wordId)
-  }, [props.word])
+  // useEffect(() => {
+  //   setWordId(props.word.wordId)
+  // }, [props.word])
 
   return (
     <Card sx={{ marginBottom: '16px' }} variant="outlined">
@@ -87,11 +78,10 @@ const NewWord = (props: NewWordProps): JSX.Element => {
             label={'New word'}
             type={'text'}
           />
-          <EnglishPartsSelect name={`${props.name}.pos`} control={props.control} />
+          <PosSelect name={`${props.name}.pos`} control={props.control} />
         </Box>
         <AddibleContent
           diaryId={props.diaryId}
-          wordId={props.word.wordId}
           feature="meanings"
           contents={props.word.meanings}
           fullWidth={true}
@@ -104,7 +94,6 @@ const NewWord = (props: NewWordProps): JSX.Element => {
         <div className="spacer-8" />
         <AddibleContent
           diaryId={props.diaryId}
-          wordId={props.word.wordId}
           feature="synonyms"
           contents={props.word.synonyms}
           fullWidth={false}
@@ -117,7 +106,6 @@ const NewWord = (props: NewWordProps): JSX.Element => {
         <div className="spacer-8" />
         <AddibleContent
           diaryId={props.diaryId}
-          wordId={props.word.wordId}
           feature="examples"
           contents={props.word.examples}
           fullWidth={true}
@@ -129,11 +117,7 @@ const NewWord = (props: NewWordProps): JSX.Element => {
         />
       </CardContent>
       <CardActions className="button-wrapper">
-        <TextMidButton
-          label="delete this word"
-          color="error"
-          onClick={() => props.deleteWord(props.index, props.word.wordId)}
-        />
+        <TextMidButton label="delete this word" color="error" onClick={() => props.deleteWord(props.index)} />
       </CardActions>
     </Card>
   )

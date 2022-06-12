@@ -1,7 +1,7 @@
 import { TextField, Box } from '@mui/material'
 import { RemoveIconButton } from 'components/UIKit/index'
 import { Controller, FieldValues, FieldName } from 'react-hook-form'
-import { Feature } from 'reducks/users/types'
+import { Feature } from 'types/types'
 
 type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   feature: Feature
@@ -9,8 +9,8 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: any
   fullWidth: boolean
-  onDelete: (feature: Feature, id: string) => void
-  id: string
+  onDelete: (feature: Feature, index: number) => void
+  index: number
   value: string
 }
 
@@ -25,7 +25,7 @@ const TextInputDeletable = (props: InputProps): JSX.Element => {
             <TextField {...field} variant="standard" required={false} fullWidth={props.fullWidth} />
           )}
         />
-        <RemoveIconButton feature={props.feature} id={props.id} onClick={props.onDelete} />
+        <RemoveIconButton feature={props.feature} index={props.index} onClick={props.onDelete} />
       </Box>
     </Box>
   )

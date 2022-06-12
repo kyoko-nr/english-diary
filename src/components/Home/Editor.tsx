@@ -5,7 +5,7 @@ import { getUserId } from 'reducks/users/selectors'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
-import { Diary, Word } from 'reducks/users/types'
+import { Diary, Word } from 'types/types'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -45,7 +45,6 @@ const Editor = (props: EditorProps): JSX.Element => {
 
   const [counter, setCounter] = useState(0)
   const [diaryId, setDiaryId] = useState('')
-  const [deletedWordIds, setDeletedWordIds] = useState<string[]>([])
 
   const uid = getUserId(selector)
   const date = props.diary ? props.diary.date : new Date()
@@ -53,16 +52,13 @@ const Editor = (props: EditorProps): JSX.Element => {
   const onSubmit = (data: IFormInput) => {
     dispatch(changeLoadingState(true))
     dispatch(
-      saveDiary(
-        {
-          id: diaryId,
-          date: date,
-          title: data.title,
-          content: data.content,
-          words: data.words,
-        },
-        deletedWordIds
-      )
+      saveDiary({
+        id: diaryId,
+        date: date,
+        title: data.title,
+        content: data.content,
+        words: data.words,
+      })
     )
   }
 
@@ -79,12 +75,7 @@ const Editor = (props: EditorProps): JSX.Element => {
     setCounter(0)
   }
 
-  const deleteWord = (index: string, wordId: string): void => {
-    remove(parseInt(index))
-    const deleted = [...deletedWordIds]
-    deleted.push(wordId)
-    setDeletedWordIds(deleted)
-  }
+  const deleteWord = (index: string): void => remove(parseInt(index))
 
   useEffect(() => {
     if (props.diary) {

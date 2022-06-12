@@ -1,4 +1,5 @@
 import { Timestamp } from '@firebase/firestore'
+import { Diary, Word } from 'types/types'
 
 export type UserState = {
   isSignedIn: boolean
@@ -8,13 +9,6 @@ export type UserState = {
   diaries: Diary[]
   currentYM: Date | undefined
   loading: boolean
-}
-
-export type Diary = {
-  id: string
-  date: Date
-  title: string
-  content: string
   words: Word[]
 }
 
@@ -24,20 +18,12 @@ export type DiaryToSave = {
   title: string
   content: string
   updatedAt: Timestamp
+  words: WordToSave[]
 }
 
-export type Word = {
-  wordId: string
-  title: string
-  meanings: Addible[]
-  synonyms: Addible[]
-  examples: Addible[]
-  pos: string
-}
-
-export type Addible = {
-  id: string
-  value: string
+export type WordToSave = Omit<Word, 'createdAt'> & {
+  diaryId: string
+  createdAt: Timestamp
 }
 
 export type UsersAction = {
@@ -52,9 +38,4 @@ export type SignUpParams = {
   passwordConfirm: string
 }
 
-export type signInParams = {
-  email: string
-  password: string
-}
-
-export type Feature = 'meanings' | 'examples' | 'synonyms'
+export type signInParams = Pick<SignUpParams, 'email' | 'password'>

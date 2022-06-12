@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDiaries, getCurrentYM } from 'reducks/users/selectors'
 import { changeCurrentYM } from 'reducks/users/operations'
-import { Diary } from 'reducks/users/types'
+import { Diary } from 'types/types'
 import { Archive, YMControl } from './index'
 import { isSameMonth } from 'date-fns'
 

@@ -1,19 +1,18 @@
 import { Box } from '@mui/material'
 import { TextInputDeletable, Label, AddIconButton } from 'components/UIKit/index'
-import { Addible, Feature } from 'reducks/users/types'
+import { Addible, Feature } from 'types/types'
 
 type AddibleContentProps = {
   feature: Feature
   fullWidth: boolean
   contents: Addible[]
   diaryId: string
-  wordId: string
   name: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any
   index: string
   addInput: (feature: Feature) => void
-  deleteInput: (feature: Feature, id: string) => void
+  deleteInput: (feature: Feature, index: number) => void
 }
 
 const AddibleContent = (props: AddibleContentProps): JSX.Element => {
@@ -31,9 +30,9 @@ const AddibleContent = (props: AddibleContentProps): JSX.Element => {
               name={`${props.name}.${index}`}
               fullWidth={props.fullWidth}
               onDelete={props.deleteInput}
-              key={val.id}
+              key={val.value}
               control={props.control}
-              id={val.id}
+              index={index}
               value={val.value}
             />
           )

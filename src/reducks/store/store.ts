@@ -4,29 +4,9 @@ import { ErrorsReducer } from 'reducks/errors/reducers'
 import { connectRouter, routerMiddleware, RouterState } from 'connected-react-router'
 import * as History from 'history'
 import thunk from 'redux-thunk'
-import { Diary, UsersAction, Word } from 'reducks/users/types'
-import { User } from '@firebase/auth'
+import { UsersAction } from 'reducks/users/types'
+import { UsersInfo, ErrorsInfo } from './types'
 import { ErrorsAction } from 'reducks/errors/types'
-
-export interface AppState {
-  users: UsersInfo
-  errors: ErrorsInfo
-}
-
-interface UsersInfo extends User {
-  isSignedIn: boolean
-  uid: string
-  username: string
-  email: string
-  diaries: Array<Diary>
-  currentYM: Date
-  words: Word[]
-  loading: boolean
-}
-
-interface ErrorsInfo {
-  errorMsgs: Array<string>
-}
 
 export default function createStore(history: History.History): Store<
   EmptyObject & {

@@ -13,10 +13,11 @@ export const UsersReducer = (state = initialState.users, action: Types.UsersActi
       return {
         ...action.payload,
       }
-    case Actions.UPDATE_DIARY:
+    case Actions.UPDATE_DIARY_WORD:
       return {
         ...state,
         diaries: action.payload.diaries,
+        words: action.payload.words,
       }
     case Actions.CHANGE_CURRENT_YM:
       return {

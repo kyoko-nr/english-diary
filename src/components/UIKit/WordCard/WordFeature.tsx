@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import { Label } from 'components/UIKit/index'
-import { Addible, Feature } from 'reducks/users/types'
+import { Addible, Feature } from 'types/types'
 
 type WordFeatureProps = {
   feature: Addible[]
@@ -17,7 +17,7 @@ const WordFeature = (props: WordFeatureProps): JSX.Element => {
           {props.feature.map((fe) => {
             return (
               <Box
-                key={fe.id}
+                key={fe.value}
                 className="each"
                 sx={{
                   padding: props.fullWidth ? '4px 0px' : '0px 8px',

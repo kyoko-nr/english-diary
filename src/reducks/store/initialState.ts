@@ -7,6 +7,7 @@ const initialState = {
     diaries: [],
     currentYM: undefined,
     loading: false,
+    words: [],
   },
   errors: {
     errorMsgs: [],

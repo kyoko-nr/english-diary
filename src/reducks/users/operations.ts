@@ -1,18 +1,5 @@
 import { auth, db } from 'firebase/index'
-import {
-  Timestamp,
-  setDoc,
-  doc,
-  getDoc,
-  collection,
-  getDocs,
-  deleteDoc,
-  orderBy,
-  query,
-  CollectionReference,
-  DocumentData,
-  DocumentReference,
-} from 'firebase/firestore'
+import { Timestamp, setDoc, doc, getDoc, collection, getDocs, deleteDoc, orderBy, query } from 'firebase/firestore'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -28,23 +15,23 @@ import {
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
-import { SignUpParams, signInParams, Diary, UserState, DiaryToSave, Word, Addible, Feature } from './types'
+import { SignUpParams, signInParams, UserState, DiaryToSave, WordToSave } from './types'
+
+import { Diary, Word } from 'types/types'
 import {
   signInAction,
   signOutAction,
-  updateDirayAction,
+  updateDirayWordAction,
   changeCurrentYMAction,
   updateAccountAction,
   updateLoadingState,
 } from './actions'
 import { setErrorsAction } from 'reducks/errors/actions'
 import { Messages } from 'constants/ErrorMessages'
-import { AppState } from 'reducks/store/store'
+import { UsersInfo, AppState } from 'reducks/store/types'
 
 const DOC_NAME_USERS = 'users'
 const DOC_NAME_DIARIES = 'diaries'
-const DOC_NAME_WORDS = 'words'
-const WORDS_FEATURES = ['meanings', 'synonyms', 'examples']
 
 /**
  * Change the status of changeYM.
@@ -249,65 +236,41 @@ export const resetPassword = (email: string) => {
 /**
  * Save diary.
  * @param diary diary
- * @param deletedWordIds wordIds
  * @returns
  */
-export const saveDiary = (diary: Diary, deletedWordIds: string[]) => {
+export const saveDiary = (diary: Diary) => {
   return async (dispatch: Dispatch, getState: () => AppState): Promise<void> => {
     const timestamp = Timestamp.now()
+    const createdAt = Timestamp.fromDate(diary.date)
     const user = getState().users
 
+    const wordToSave: WordToSave[] = []
+    diary.words?.forEach((word) =>
+      wordToSave.push({
+        diaryId: diary.id,
+        createdAt: createdAt,
+        title: word.title,
+        meanings: word.meanings,
+        examples: word.examples,
+        synonyms: word.synonyms,
+        pos: word.pos,
+      })
+    )
     const diaryToSave: DiaryToSave = {
       id: diary.id,
-      date: Timestamp.fromDate(diary.date),
+      date: createdAt,
       title: diary.title,
       content: diary.content,
       updatedAt: timestamp,
+      words: wordToSave,
     }
 
     const diaryRef = doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, diary.id)
     await setDoc(diaryRef, diaryToSave, { merge: true })
 
-    for await (const wordId of deletedWordIds) {
-      await deleteDoc(doc(diaryRef, DOC_NAME_WORDS, wordId))
-    }
+    updateDiaryWordState(diary, user, dispatch)
 
-    for await (const word of diary.words) {
-      const wordRef = doc(diaryRef, DOC_NAME_WORDS, word.wordId)
-      const wordToSave = {
-        title: word.title,
-        wordId: word.wordId,
-        pos: word.pos ? word.pos : '',
-      }
-      await setDoc(wordRef, wordToSave, { merge: true })
-
-      await saveFeature(word.examples, wordRef, 'examples')
-      await saveFeature(word.meanings, wordRef, 'meanings')
-      await saveFeature(word.synonyms, wordRef, 'synonyms')
-    }
-
-    const usersState = await fetchUsersState(user, user.loading)
-    dispatch(updateDirayAction(usersState))
     dispatch(push(`/post/${diary.id}`))
-  }
-}
-
-/**
- * Save features.
- * @param features
- * @param ref
- * @param featureName
- */
-const saveFeature = async (
-  features: Addible[],
-  ref: DocumentReference<DocumentData>,
-  featureName: Feature
-): Promise<void> => {
-  for await (const fe of features) {
-    if (fe.value.trim().length > 0) {
-      const featureRef = doc(ref, featureName, fe.id)
-      await setDoc(featureRef, fe)
-    }
   }
 }
 
@@ -321,9 +284,44 @@ export const deleteDiary = (id: string) => {
     const user = getState().users
     await deleteDoc(doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, id))
     const usersState = await fetchUsersState(user, user.loading)
-    dispatch(updateDirayAction(usersState))
+    dispatch(updateDirayWordAction(usersState))
     dispatch(push('/'))
   }
+}
+
+const updateDiaryWordState = (newDiary: Diary, user: UsersInfo, dispatch: Dispatch) => {
+  const diaries = [...user.diaries]
+  if (diaries.some((d) => d.id === newDiary.id)) {
+    diaries.forEach((d) => {
+      if (d.id === newDiary.id) {
+        d.content = newDiary.content
+        d.title = newDiary.title
+        d.words = newDiary.words
+      }
+    })
+  } else {
+    diaries.push(newDiary)
+  }
+
+  let words: Word[]
+  if (user.words.some((w) => w.diaryId && w.diaryId === newDiary.id)) {
+    words = user.words.filter((w) => w.diaryId && w.diaryId !== newDiary.id)
+    words.push(...newDiary.words)
+  } else {
+    words = [...user.words]
+  }
+
+  const usersState: UserState = {
+    username: user.username,
+    uid: user.uid,
+    email: user.email || '',
+    isSignedIn: true,
+    diaries: diaries,
+    currentYM: new Date(),
+    loading: user.loading,
+    words: words,
+  }
+  dispatch(updateDirayWordAction(usersState))
 }
 
 /**
@@ -338,6 +336,9 @@ const fetchUsersState = async (user: User, loading: boolean) => {
     throw new Error(Messages.UNKNOWN_UER_ERROR)
   }
   const diaries = await fetchDiaries(user.uid)
+  const words: Word[] = []
+  diaries.forEach((diary) => diary.words && words.push(...diary.words))
+
   const usersState: UserState = {
     username: usersData.username,
     uid: user.uid,
@@ -346,6 +347,7 @@ const fetchUsersState = async (user: User, loading: boolean) => {
     diaries: diaries,
     currentYM: new Date(),
     loading: loading,
+    words: words,
   }
   return usersState
 }
@@ -360,79 +362,17 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const diaryCollRef = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES)
   const q = query(diaryCollRef, orderBy('date', 'desc'), orderBy('title', 'desc'))
   const snapShot = await getDocs(q)
-  for await (const diary of snapShot.docs) {
-    const data = diary.data()
-    const words = await fetchWords(diaryCollRef, data.id)
-
+  snapShot.docs.forEach((doc) => {
+    const data = doc.data()
     diaries.push({
       id: data.id,
       date: data.date.toDate(),
       title: data.title,
       content: data.content,
-      words: words,
+      words: data.words,
     })
-  }
-  return diaries
-}
-
-const fetchWords = async (diaryCollRef: CollectionReference<DocumentData>, diaryId: string): Promise<Word[]> => {
-  const wordsCollRef = collection(diaryCollRef, diaryId, DOC_NAME_WORDS)
-  const q = query(wordsCollRef, orderBy('title', 'asc'))
-  const snapShot = await getDocs(q)
-  const words: Word[] = []
-
-  for await (const doc of snapShot.docs) {
-    if (doc.exists()) {
-      const data = doc.data()
-      let meanings: Addible[] = []
-      let examples: Addible[] = []
-      let synonyms: Addible[] = []
-      for await (const key of WORDS_FEATURES) {
-        const feature = await fetchWordFeature(wordsCollRef, data.wordId, key)
-        switch (key) {
-          case 'examples':
-            examples = feature
-            break
-          case 'meanings':
-            meanings = feature
-            break
-          case 'synonyms':
-            synonyms = feature
-            break
-          default:
-            break
-        }
-      }
-      const word: Word = {
-        wordId: data.wordId,
-        title: data.title,
-        meanings: meanings,
-        examples: examples,
-        synonyms: synonyms,
-        pos: data.pos,
-      }
-      words.push(word)
-    }
-  }
-  return words
-}
-
-const fetchWordFeature = async (
-  wordsCollRef: CollectionReference<DocumentData>,
-  wordId: string,
-  featurePath: string
-): Promise<Addible[]> => {
-  const featureCollRef = collection(wordsCollRef, wordId, featurePath)
-  const snapShot = await getDocs(featureCollRef)
-  const features: Addible[] = []
-  snapShot.forEach((doc) => {
-    if (doc.exists()) {
-      const data = doc.data()
-      const feature: Addible = { id: data.id, value: data.value }
-      features.push(feature)
-    }
   })
-  return features
+  return diaries
 }
 
 /**
@@ -442,31 +382,6 @@ const fetchWordFeature = async (
  */
 export const getDiaryId = (uid: string): string => {
   const ref = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES)
-  const id = doc(ref).id
-  return id
-}
-
-/**
- * Get ID of word feature.
- * @returns new ID
- */
-export const getWordFeatureId = (
-  uid: string,
-  diaryId: string,
-  wordId: string,
-  featurePath: 'meanings' | 'examples' | 'synonyms'
-): string => {
-  const ref = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS, wordId, featurePath)
-  const id = doc(ref).id
-  return id
-}
-
-/**
- * Get ID of word.
- * @returns new ID
- */
-export const getWordId = (uid: string, diaryId: string): string => {
-  const ref = collection(db, DOC_NAME_USERS, uid, DOC_NAME_DIARIES, diaryId, DOC_NAME_WORDS)
   const id = doc(ref).id
   return id
 }

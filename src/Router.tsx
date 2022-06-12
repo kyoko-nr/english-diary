@@ -2,7 +2,17 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router'
 import { clearErrors } from 'reducks/errors/operations'
-import { Home, Signin, Post, Signup, Reset, EmailSend, MyPage, DeleteAccountConfirm } from 'templates/index'
+import {
+  Home,
+  Signin,
+  Post,
+  Signup,
+  Reset,
+  EmailSend,
+  MyPage,
+  DeleteAccountConfirm,
+  MyDictionary,
+} from 'templates/index'
 import Auth from './Auth'
 
 type AppRouteProps = {
@@ -35,6 +45,7 @@ const Router = (): JSX.Element => {
         <AppRoute exact path="/mypage" component={MyPage}></AppRoute>
         <AppRoute exact path="/mypage/edit" component={MyPage}></AppRoute>
         <AppRoute exact path="/mypage/delete" component={DeleteAccountConfirm}></AppRoute>
+        <AppRoute exact path="/mydictionary" component={MyDictionary}></AppRoute>
       </Auth>
     </Switch>
   )

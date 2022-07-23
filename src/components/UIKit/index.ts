@@ -14,6 +14,7 @@ export { default as TextInputOutlined } from './Inputs/TextInputOutlined'
 export { default as TextInputDeletable } from './Inputs/TextInputDeletable'
 export { default as AddibleContent } from './Inputs/AddibleContent'
 export { default as PosSelect } from './Inputs/PosSelect'
+export { default as WordTitleInput } from './Inputs/WordTitleInput'
 /** WordCard */
 export { default as WordFeature } from './WordCard/WordFeature'
 export { default as WordCard } from './WordCard/WordCard'

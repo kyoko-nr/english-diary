@@ -33,3 +33,9 @@ export type SortOption = {
   key: string
   sort: SortType
 }
+
+export type WordForm = {
+  title: string
+  content: string
+  words: Word[]
+}

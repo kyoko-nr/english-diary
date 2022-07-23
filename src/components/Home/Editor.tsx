@@ -5,7 +5,7 @@ import { getUserId } from 'reducks/users/selectors'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
 import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
-import { Diary, Word } from 'types/types'
+import { Diary, Word, WordForm } from 'types/types'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -28,20 +28,16 @@ const schema = yup.object().shape({
 const Editor = (props: EditorProps): JSX.Element => {
   const selector = useSelector((state) => state)
   const dispatch = useDispatch()
-  const { control, handleSubmit, watch, setValue } = useForm<IFormInput>({
+  const { control, handleSubmit, watch, setValue } = useForm<WordForm>({
     resolver: yupResolver(schema),
   })
 
-  interface IFormInput {
-    title: string
-    content: string
-    words: Word[]
-  }
-
-  const { fields, append, remove, update } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     name: 'words',
     control,
   })
+  const addWord = () => append({})
+  const deleteWord = (wordIndex: number) => remove(wordIndex)
 
   const [counter, setCounter] = useState(0)
   const [diaryId, setDiaryId] = useState('')
@@ -49,7 +45,7 @@ const Editor = (props: EditorProps): JSX.Element => {
   const uid = getUserId(selector)
   const date = props.diary ? props.diary.date : new Date()
 
-  const onSubmit = (data: IFormInput) => {
+  const onSubmit = (data: WordForm) => {
     dispatch(changeLoadingState(true))
     dispatch(
       saveDiary({
@@ -74,8 +70,6 @@ const Editor = (props: EditorProps): JSX.Element => {
     setValue('words', [])
     setCounter(0)
   }
-
-  const deleteWord = (index: string): void => remove(parseInt(index))
 
   useEffect(() => {
     if (props.diary) {
@@ -126,15 +120,7 @@ const Editor = (props: EditorProps): JSX.Element => {
         type={'text'}
       />
       <div className={'spacer-8'} />
-      <NewWordList
-        diaryId={diaryId}
-        control={control}
-        fields={fields}
-        append={append}
-        remove={remove}
-        update={update}
-        deleteWord={deleteWord}
-      />
+      <NewWordList diaryId={diaryId} control={control} fields={fields} addWord={addWord} deleteWord={deleteWord} />
       <div className={'spacer-32'} />
       <div className={'button-wrapper'}>
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />

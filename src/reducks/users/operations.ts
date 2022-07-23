@@ -265,6 +265,8 @@ export const saveDiary = (diary: Diary) => {
       words: wordToSave,
     }
 
+    console.log('diaryToSave', diaryToSave)
+
     const diaryRef = doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, diary.id)
     await setDoc(diaryRef, diaryToSave, { merge: true })
 

@@ -70,16 +70,9 @@ export const Alphabets: Readonly<string[]> = [
   'z',
 ]
 
-// export const FilterOptions: Readonly<FilterOption[]> = [
-//   { key: '1', filter: 'Alphabetical', options: AlphabetOptions },
-//   { key: '2', filter: 'Parts of speech', options: PosOptions },
-//   { key: '3', filter: 'Newer', options: undefined },
-//   { key: '4', filter: 'Older', options: undefined },
-// ]
-
 export const SortOptions: Readonly<SortOption[]> = [
-  { key: '1', sort: 'Alphabetical' },
-  { key: '2', sort: 'Parts of speech' },
-  { key: '3', sort: 'Newer' },
-  { key: '4', sort: 'Older' },
+  { key: '1', value: 'Alphabetical' },
+  { key: '2', value: 'Parts of speech' },
+  { key: '3', value: 'Newer' },
+  { key: '4', value: 'Older' },
 ]

@@ -1,28 +1,26 @@
-import { useEffect, useState } from 'react'
-import { FormControl, Select, InputLabel, MenuItem } from '@mui/material'
-import { SelectChangeEvent } from '@mui/material/Select'
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { SortOptions } from 'constants/Parts'
+import { SortOption } from 'types/types'
 
 type SortSelectionProps = {
-  value: string
-  name: string
+  sortOption: SortOption
   onChange: (event: SelectChangeEvent) => void
 }
 
 const SortSelection = (props: SortSelectionProps): JSX.Element => {
-  const [test, setTest] = useState('')
-
-  useEffect(() => {
-    setTest(props.value)
-  }, [props.value])
-
   return (
     <FormControl sx={{ width: '200px' }}>
       <InputLabel id="sort-label">Sort</InputLabel>
-      <Select labelId="sort-label" id="sort-selection" value={test} label="Sort" onChange={props.onChange}>
+      <Select
+        labelId="sort-label"
+        id="sort-selection"
+        value={props.sortOption.key}
+        label="Sort"
+        onChange={props.onChange}
+      >
         {SortOptions.map((p) => (
           <MenuItem value={p.key} key={p.key}>
-            {p.sort}
+            {p.value}
           </MenuItem>
         ))}
       </Select>

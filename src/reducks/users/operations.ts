@@ -15,7 +15,7 @@ import {
 } from 'firebase/auth'
 import { Dispatch, Unsubscribe } from 'redux'
 import { push } from 'connected-react-router'
-import { SignUpParams, signInParams, UserState, DiaryToSave, WordToSave } from './types'
+import { SignUpParams, signInParams, UserState, DiaryDocType, WordDocType } from './types'
 
 import { Diary, Word } from 'types/types'
 import {
@@ -244,7 +244,7 @@ export const saveDiary = (diary: Diary) => {
     const createdAt = Timestamp.fromDate(diary.date)
     const user = getState().users
 
-    const wordToSave: WordToSave[] = []
+    const wordToSave: WordDocType[] = []
     diary.words?.forEach((word) =>
       wordToSave.push({
         diaryId: diary.id,
@@ -256,7 +256,7 @@ export const saveDiary = (diary: Diary) => {
         pos: word.pos,
       })
     )
-    const diaryToSave: DiaryToSave = {
+    const diaryToSave: DiaryDocType = {
       id: diary.id,
       date: createdAt,
       title: diary.title,
@@ -264,8 +264,6 @@ export const saveDiary = (diary: Diary) => {
       updatedAt: timestamp,
       words: wordToSave,
     }
-
-    console.log('diaryToSave', diaryToSave)
 
     const diaryRef = doc(db, DOC_NAME_USERS, user.uid, DOC_NAME_DIARIES, diary.id)
     await setDoc(diaryRef, diaryToSave, { merge: true })
@@ -339,6 +337,7 @@ const fetchUsersState = async (user: User, loading: boolean) => {
   }
   const diaries = await fetchDiaries(user.uid)
   const words: Word[] = []
+
   diaries.forEach((diary) => diary.words && words.push(...diary.words))
 
   const usersState: UserState = {
@@ -366,12 +365,20 @@ const fetchDiaries = async (uid: string): Promise<Diary[]> => {
   const snapShot = await getDocs(q)
   snapShot.docs.forEach((doc) => {
     const data = doc.data()
+    const words: Word[] = []
+    const wordDoc = data.words as WordDocType[] | undefined
+    wordDoc?.forEach((word) => {
+      words.push({
+        ...word,
+        createdAt: word.createdAt.toDate(),
+      })
+    })
     diaries.push({
       id: data.id,
       date: data.date.toDate(),
       title: data.title,
       content: data.content,
-      words: data.words,
+      words: words,
     })
   })
   return diaries

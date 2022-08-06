@@ -1,4 +1,4 @@
-import { Container } from '@mui/material'
+import { Box } from '@mui/material'
 import { ErrorPopup } from 'components/Base/index'
 import { ReactNode } from 'react'
 
@@ -8,12 +8,16 @@ type BaseFrameProps = {
 
 const BaseFrame = (props: BaseFrameProps): JSX.Element => {
   return (
-    <div className={'full-window bg-yellow flex-column'}>
-      <Container maxWidth="lg">
-        <ErrorPopup />
-        {props.children}
-      </Container>
-    </div>
+    <Box
+      className={'full-window bg-yellow'}
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <ErrorPopup />
+      {props.children}
+    </Box>
   )
 }
 

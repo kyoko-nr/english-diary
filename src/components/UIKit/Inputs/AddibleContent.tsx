@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { useFieldArray, Control } from 'react-hook-form'
 import { TextInputDeletable, Label, AddIconButton } from 'components/UIKit/index'
 import { Feature, WordForm } from 'types/types'
@@ -22,24 +22,26 @@ const AddibleContent = (props: AddibleContentProps): JSX.Element => {
 
   return (
     <>
-      <Box className="flex-center">
+      <Box display={'flex'} alignItems={'center'}>
         <Label label={props.feature} variant="body1" align="left" capitalize={true} bold={true} />
         <AddIconButton feature={props.feature} onClick={addFeature} />
       </Box>
-      {fields.map((field, index) => {
-        return (
-          <TextInputDeletable
-            feature={props.feature}
-            fullWidth={props.fullWidth}
-            deleteFeature={deleteFeature}
-            key={field.value}
-            control={props.control}
-            featureIndex={index}
-            wordIndex={props.wordIndex}
-            defaultValue={field.value}
-          />
-        )
-      })}
+      <Grid container spacing={1}>
+        {fields.map((field, index) => {
+          return (
+            <TextInputDeletable
+              feature={props.feature}
+              fullWidth={props.fullWidth}
+              deleteFeature={deleteFeature}
+              key={field.value}
+              control={props.control}
+              featureIndex={index}
+              wordIndex={props.wordIndex}
+              defaultValue={field.value}
+            />
+          )
+        })}
+      </Grid>
     </>
   )
 }

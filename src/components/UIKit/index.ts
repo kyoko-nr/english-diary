@@ -8,6 +8,8 @@ export { default as ArrowIconButton } from './Buttons/ArrowIconButton'
 export { default as OutlineLargeButton } from './Buttons/OutlineLargeButton'
 export { default as AddIconButton } from './Buttons/AddIconButton'
 export { default as RemoveIconButton } from './Buttons/RemoveIconButton'
+/** Containers */
+export { default as XsColumnGridContainer } from './Container/XsColumnGridContainer'
 /** Inputs */
 export { default as TextInputStandard } from './Inputs/TextInputStandard'
 export { default as TextInputOutlined } from './Inputs/TextInputOutlined'

@@ -18,16 +18,34 @@
   margin-top: 40px;
 }
 
-#root {
+.spacer-64 {
+  margin-top: 64px;
+}
+
+body {
+  font-size: 14px;
+}
+
+body #root {
   color: #4a4a4a;
 }
 
+body #root .MuiButton-containedSecondary, body #root .grey-text {
+  color: #4a4a4a;
+}
+
+body #root .main-logo {
+  color: #4a4a4a;
+  font-family: Pacifico, cursive;
+}
+
 .content {
-  padding: 40px 16px;
+  padding: 96px 8px 40px 8px;
 }
 
 .full-window {
   height: 100vh;
+  min-height: 600px;
   width: 100vw;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -38,10 +56,13 @@
   background-color: #FFDB46;
 }
 
-.flex-column .MuiContainer-root {
+.flex, .flex-column .MuiContainer-root, .flex-between, .flex-between-center, .flex-center {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.flex-column .MuiContainer-root {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -52,6 +73,24 @@
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+}
+
+.flex-between, .flex-between-center {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.flex-between-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.flex-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .button-wrapper {
@@ -65,5 +104,78 @@
 
 .button-wrapper > button {
   margin: 0 8px 0 8px;
+}
+
+.txt-center {
+  text-align: center;
+}
+
+.archivelist-container {
+  padding-left: 8px;
+}
+
+.synonyms .each {
+  position: relative;
+}
+
+.synonyms .each:not(:last-child)::before {
+  content: '/';
+  position: absolute;
+  right: -8px;
+  padding: 4px;
+}
+
+.wordchip-wrapper {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.wordchip-wrapper .wordchip:not(:first-child) {
+  margin-left: 4px;
+}
+
+.sweet-loading {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 1200;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.1);
+  position: fixed;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.sweet-loading.inactive {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 959px) {
+  #canvas-container > .canvas {
+    height: 120px;
+    width: 100%;
+  }
+  h4.MuiTypography-h4 {
+    font-size: 1.6rem;
+  }
+  .archivelist-container {
+    padding: 0 8px;
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 599px) {
+  .content {
+    padding-top: 84px;
+  }
 }
 /*# sourceMappingURL=App.css.map */

@@ -30,7 +30,6 @@ const TextInputStandard = (props: InputProps): JSX.Element => {
           label="New Word"
           required={true}
           type={'text'}
-          sx={{ maxWidth: 400, width: '80%' }}
         />
       )}
     />

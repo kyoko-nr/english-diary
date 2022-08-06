@@ -11,7 +11,7 @@ type PosSelectProps = {
 
 const PosSelect = (props: PosSelectProps): JSX.Element => {
   return (
-    <FormControl sx={{ width: '160px', marginLeft: '16px' }}>
+    <FormControl sx={{ width: '100%' }}>
       <Controller
         name={`words.${props.wordIndex}.pos`}
         control={props.control}

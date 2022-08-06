@@ -1,4 +1,4 @@
-import { TextField, Box } from '@mui/material'
+import { TextField, Box, Grid } from '@mui/material'
 import { RemoveIconButton } from 'components/UIKit/index'
 import { Controller, Control } from 'react-hook-form'
 import { Feature, WordForm } from 'types/types'
@@ -15,8 +15,8 @@ type InputProps = {
 
 const TextInputDeletable = (props: InputProps): JSX.Element => {
   return (
-    <Box sx={{ display: props.fullWidth ? 'block' : 'inline-block' }}>
-      <Box sx={{ marginLeft: '8px' }} className="flex-center">
+    <Grid item xs={props.fullWidth ? 12 : 3}>
+      <Box display={'flex'}>
         <Controller
           name={`words.${props.wordIndex}.${props.feature}.${props.featureIndex}.value`}
           control={props.control}
@@ -27,7 +27,7 @@ const TextInputDeletable = (props: InputProps): JSX.Element => {
         />
         <RemoveIconButton featureIndex={props.featureIndex} onClick={props.deleteFeature} />
       </Box>
-    </Box>
+    </Grid>
   )
 }
 

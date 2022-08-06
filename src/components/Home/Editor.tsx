@@ -4,7 +4,14 @@ import { getDiaryId, saveDiary, changeLoadingState } from 'reducks/users/operati
 import { getUserId } from 'reducks/users/selectors'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { NewWordList } from 'components/Home'
-import { ContainedMidButton, OutlineMidButton, Label, FormatDate, TextInputOutlined } from 'components/UIKit/index'
+import {
+  ContainedMidButton,
+  OutlineMidButton,
+  Label,
+  FormatDate,
+  TextInputOutlined,
+  RowGridContainer,
+} from 'components/UIKit/index'
 import { Diary, Word, WordForm } from 'types/types'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -122,10 +129,10 @@ const Editor = (props: EditorProps): JSX.Element => {
       <div className={'spacer-8'} />
       <NewWordList diaryId={diaryId} control={control} fields={fields} addWord={addWord} deleteWord={deleteWord} />
       <div className={'spacer-32'} />
-      <div className={'button-wrapper'}>
+      <RowGridContainer spacing={2} justifyContent="center">
         <OutlineMidButton label={'clear'} color={'inherit'} onClick={initFields} />
         <ContainedMidButton color={'primary'} onClick={handleSubmit(onSubmit)} label={'save'} />
-      </div>
+      </RowGridContainer>
     </>
   )
 }

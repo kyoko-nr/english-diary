@@ -14,58 +14,22 @@ body {
     }
   }
 }
+
 .content {
   padding: 96px 8px 40px 8px;
 }
+
 .full-window {
   height: 100vh;
   min-height: 600px;
   width: 100vw;
   display: flex;
 }
+
 .bg-yellow {
   background-color: $cYellow;
 }
-.flex {
-  display: flex;
 
-  &-column {
-    & .MuiContainer-root {
-      @extend .flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  &-between {
-    @extend .flex;
-    justify-content: space-between;
-
-    &-center {
-      @extend .flex-between;
-      align-items: center;
-    }
-  }
-
-  &-center {
-    @extend .flex;
-    align-items: center;
-  }
-}
-.button-wrapper {
-  display: flex;
-  justify-content: center;
-  & > button {
-    margin: 0 8px 0 8px;
-  }
-}
-.txt-center {
-  text-align: center;
-}
-.archivelist-container {
-  padding-left: 8px;
-}
 .synonyms .each{
   position: relative;
 
@@ -76,15 +40,7 @@ body {
     padding: 4px;
   }
 }
-.wordchip-wrapper {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
 
-  & .wordchip:not(:first-child) {
-    margin-left: 4px;
-  }
-}
 .sweet-loading {
   display: flex;
   justify-content: center;

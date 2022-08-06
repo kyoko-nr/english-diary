@@ -1,5 +1,5 @@
-import { Card, CardContent, CardActions, Box } from '@mui/material'
-import { AddibleContent, TextMidButton, PosSelect, WordTitleInput } from 'components/UIKit/index'
+import { Card, CardContent, CardActions, Grid } from '@mui/material'
+import { AddibleContent, TextMidButton, PosSelect, WordTitleInput, RowGridContainer } from 'components/UIKit/index'
 import { Control } from 'react-hook-form'
 import { Word, WordForm } from 'types/types'
 
@@ -16,10 +16,14 @@ const NewWord = (props: NewWordProps): JSX.Element => {
   return (
     <Card sx={{ marginBottom: '16px' }} variant="outlined">
       <CardContent sx={{ padding: '8px 16px', boxShadow: 'none' }}>
-        <Box sx={{ display: 'flex', alignItems: 'start' }}>
-          <WordTitleInput defaultValue={props.word.title} control={props.control} wordIndex={props.wordIndex} />
-          <PosSelect control={props.control} wordIndex={props.wordIndex} defautlValue={props.word.pos} />
-        </Box>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <WordTitleInput defaultValue={props.word.title} control={props.control} wordIndex={props.wordIndex} />
+          </Grid>
+          <Grid item xs={4}>
+            <PosSelect control={props.control} wordIndex={props.wordIndex} defautlValue={props.word.pos} />
+          </Grid>
+        </Grid>
         <AddibleContent
           diaryId={props.diaryId}
           feature="meanings"
@@ -44,8 +48,10 @@ const NewWord = (props: NewWordProps): JSX.Element => {
           wordIndex={props.wordIndex}
         />
       </CardContent>
-      <CardActions className="button-wrapper">
-        <TextMidButton label="delete this word" color="error" onClick={() => props.deleteWord(props.wordIndex)} />
+      <CardActions>
+        <RowGridContainer spacing={0} justifyContent="center">
+          <TextMidButton label="delete this word" color="error" onClick={() => props.deleteWord(props.wordIndex)} />
+        </RowGridContainer>
       </CardActions>
     </Card>
   )

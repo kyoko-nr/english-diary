@@ -6,6 +6,7 @@ import { changeCurrentYM } from 'reducks/users/operations'
 import { Diary } from 'types/types'
 import { Archive, YMControl } from './index'
 import { isSameMonth } from 'date-fns'
+import { Label } from 'components/UIKit'
 
 const scrollHeight = window.innerHeight - 160 - 48 // padding = 40 * 4, YMControl height = 48
 
@@ -28,7 +29,7 @@ const ArchiveList = (): JSX.Element => {
   }
 
   return (
-    <Box className={'archivelist-container'}>
+    <>
       <YMControl date={currentYM} onClick={changeYM} />
       <div className={'spacer-8'} />
       <Box
@@ -40,10 +41,10 @@ const ArchiveList = (): JSX.Element => {
         {diaries && diaries.length > 0 ? (
           diaries.map((value: Diary) => <Archive diary={value} key={value.id} />)
         ) : (
-          <div className={'txt-center'}>No diary</div>
+          <Label label="No diary" variant="body1" align="center" />
         )}
       </Box>
-    </Box>
+    </>
   )
 }
 

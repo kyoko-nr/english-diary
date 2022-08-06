@@ -30,44 +30,6 @@ body {
   background-color: $cYellow;
 }
 
-.flex {
-  display: flex;
-
-  &-between {
-    @extend .flex;
-    justify-content: space-between;
-
-    &-center {
-      @extend .flex-between;
-      align-items: center;
-    }
-  }
-
-  &-center {
-    @extend .flex;
-    align-items: center;
-  }
-}
-
-.button-wrapper {
-  display: flex;
-  justify-content: center;
-  > button {
-    margin-right: 16px;
-  }
-  > button:last-child {
-    margin-right: 0px;
-  }
-}
-
-.txt-center {
-  text-align: center;
-}
-
-.archivelist-container {
-  padding-left: 8px;
-}
-
 .synonyms .each{
   position: relative;
 
@@ -76,18 +38,6 @@ body {
     position: absolute;
     right: -8px;
     padding: 4px;
-  }
-}
-
-.wordchip-wrapper {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  > .wordchip {
-    margin-right: 4px;
-  }
-  > .wordchip:last-child {
-    margin-right: 0px;
   }
 }
 

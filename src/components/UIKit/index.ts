@@ -10,6 +10,8 @@ export { default as AddIconButton } from './Buttons/AddIconButton'
 export { default as RemoveIconButton } from './Buttons/RemoveIconButton'
 /** Containers */
 export { default as XsColumnGridContainer } from './Container/XsColumnGridContainer'
+export { default as RowGridContainer } from './Container/RowGridContainer'
+export { default as ColumnGridContainer } from './Container/ColumnGridContainer'
 /** Inputs */
 export { default as TextInputStandard } from './Inputs/TextInputStandard'
 export { default as TextInputOutlined } from './Inputs/TextInputOutlined'

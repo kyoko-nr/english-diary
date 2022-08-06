@@ -3,7 +3,13 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { updateUserAccount, changeLoadingState } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
-import { OutlineMidButton, ContainedMidButton, TextInputOutlined, Label } from 'components/UIKit/index'
+import {
+  OutlineMidButton,
+  ContainedMidButton,
+  TextInputOutlined,
+  Label,
+  RowGridContainer,
+} from 'components/UIKit/index'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -101,10 +107,10 @@ const MyPageEditForm = (props: MyPageEditFormProps): JSX.Element => {
       )}
 
       <div className={'spacer-40'} />
-      <div className={'button-wrapper'}>
+      <RowGridContainer spacing={2} justifyContent="center">
         <OutlineMidButton label={'cancel'} color={'inherit'} onClick={() => dispatch(push('/mypage'))} />
         <ContainedMidButton label={'save'} color={'primary'} onClick={handleSubmit(onSubmit)} />
-      </div>
+      </RowGridContainer>
     </>
   )
 }

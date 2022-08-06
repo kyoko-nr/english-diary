@@ -1,5 +1,5 @@
 import { NewWord } from 'components/Home'
-import { TextLargeButton } from 'components/UIKit/index'
+import { RowGridContainer, TextLargeButton } from 'components/UIKit/index'
 import { Control } from 'react-hook-form'
 import { WordForm, Word } from 'types/types'
 
@@ -28,9 +28,9 @@ const NewWordList = (props: NewWordListProps): JSX.Element => {
         )
       })}
       <div className="spacer-16" />
-      <div className="button-wrapper">
+      <RowGridContainer spacing={0} justifyContent="center">
         <TextLargeButton label={'add new word'} color="primary" onClick={props.addWord} />
-      </div>
+      </RowGridContainer>
     </>
   )
 }

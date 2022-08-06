@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { Card, CardActionArea, CardContent } from '@mui/material'
 import { push } from 'connected-react-router'
 import { Diary } from 'types/types'
-import { FormatDate, WordChip, Label } from '../UIKit/index'
+import { FormatDate, WordChip, Label, RowGridContainer } from '../UIKit/index'
 
 type ArchiveProps = {
   diary: Diary
@@ -21,11 +21,11 @@ const Archive = (props: ArchiveProps): JSX.Element => {
           {props.diary.words && props.diary.words.length > 0 && (
             <>
               <div className="spacer-8" />
-              <div className="wordchip-wrapper">
-                {props.diary.words.map((word) => (
-                  <WordChip label={word.title} key={word.title} />
-                ))}
-              </div>
+              <RowGridContainer spacing={1} justifyContent="flex-start">
+                {props.diary.words.map((word) => {
+                  return <WordChip label={word.title} key={word.title} />
+                })}
+              </RowGridContainer>
             </>
           )}
         </CardContent>

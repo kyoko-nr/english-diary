@@ -9,7 +9,7 @@ type Props = {
 
 const RowGridContainer = (props: Props): JSX.Element => {
   return (
-    <Grid container spacing={props.spacing} justifyContent={props.justifyContent}>
+    <Grid container spacing={props.spacing} justifyContent={props.justifyContent} alignItems="center">
       {Children.map(props.children, (child) => {
         return <Grid item>{child}</Grid>
       })}

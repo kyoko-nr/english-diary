@@ -1,5 +1,5 @@
 import { Word } from 'types/types'
-import { WordCard } from 'components/UIKit/index'
+import { ColumnGridContainer, WordCard } from 'components/UIKit/index'
 
 type WordCardsProps = {
   words: Word[]
@@ -8,9 +8,12 @@ type WordCardsProps = {
 
 const WordCards = (props: WordCardsProps): JSX.Element => {
   return (
-    <>
-      {props.words && props.words.map((value) => <WordCard word={value} key={value.title} widhDate={props.withDate} />)}
-    </>
+    <ColumnGridContainer spacing={2} justifyContent="flex-start">
+      {props.words &&
+        props.words.map((word) => {
+          return <WordCard word={word} key={word.title} widhDate={props.withDate} />
+        })}
+    </ColumnGridContainer>
   )
 }
 

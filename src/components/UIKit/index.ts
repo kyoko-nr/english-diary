@@ -21,6 +21,7 @@ export { default as PosSelect } from './Inputs/PosSelect'
 export { default as WordTitleInput } from './Inputs/WordTitleInput'
 /** WordCard */
 export { default as WordFeature } from './WordCard/WordFeature'
+export { default as WordFeatureSynonym } from './WordCard/WordFeatureSynonym'
 export { default as WordCard } from './WordCard/WordCard'
 export { default as Pos } from './WordCard/Pos'
 export { default as WordCards } from './WordCard/WordCards'

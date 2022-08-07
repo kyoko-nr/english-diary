@@ -88,7 +88,6 @@ const SignupForm = (): JSX.Element => {
       <div className={'spacer-16'} />
       <SimpleLink
         label={'Go to sign in page'}
-        component={'button'}
         onClick={() => dispatch(push('/signin'))}
         color={'textPrimary'}
         variant={'body2'}

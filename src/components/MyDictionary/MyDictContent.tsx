@@ -53,6 +53,7 @@ const MyDictContent = (props: MyDictContentProps): JSX.Element => {
   return (
     <>
       <DictIndex sortOption={props.sortOption} onClick={filterWords} />
+      <div className={'spacer-24'} />
       {wordsToShow.length > 0 ? <WordCards words={wordsToShow} withDate={true} /> : <div>No Words</div>}
     </>
   )

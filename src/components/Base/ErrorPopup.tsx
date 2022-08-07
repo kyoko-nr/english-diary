@@ -22,12 +22,9 @@ const ErrorPopup = (): JSX.Element => {
           <div>
             {msgs.map((msg: string, idx: number) => {
               return (
-                <>
-                  <div className={'spacer-8'} />
-                  <Alert severity="error" key={idx}>
-                    {msg}
-                  </Alert>
-                </>
+                <Alert severity="error" key={idx} sx={{ marginBottom: '8px' }}>
+                  {msg}
+                </Alert>
               )
             })}
           </div>

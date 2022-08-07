@@ -14,7 +14,7 @@ type NewWordProps = {
 
 const NewWord = (props: NewWordProps): JSX.Element => {
   return (
-    <Card sx={{ marginBottom: '16px' }} variant="outlined">
+    <Card variant="outlined" sx={{ width: '100%' }}>
       <CardContent sx={{ padding: '8px 16px', boxShadow: 'none' }}>
         <Grid container spacing={2}>
           <Grid item xs={8}>

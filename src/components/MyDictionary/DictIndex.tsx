@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Box, Link } from '@mui/material'
 import { PosOptions, AlphabetOptions } from 'constants/Parts'
 import { Option, SortOption } from 'types/types'
+import { RowGridContainer } from 'components/UIKit'
 
 type DictIndexProps = {
   sortOption: SortOption
@@ -26,28 +27,25 @@ const DictIndex = (props: DictIndexProps): JSX.Element => {
 
   return (
     <>
-      <div className={'spacer-8'} />
+      <div className={'spacer-24'} />
       {index.length > 0 && (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', minHeight: '64px' }}>
+        <RowGridContainer spacing={2} justifyContent="flex-start">
           {index.map((option) => {
             return (
-              <>
-                <Link
-                  onClick={() => props.onClick(option)}
-                  variant="body1"
-                  component="button"
-                  sx={{
-                    cursor: 'pointer',
-                    margin: '0px 8px',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  {option.value}
-                </Link>
-              </>
+              <Link
+                onClick={() => props.onClick(option)}
+                variant="body1"
+                component="button"
+                sx={{
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {option.value}
+              </Link>
             )
           })}
-        </Box>
+        </RowGridContainer>
       )}
     </>
   )

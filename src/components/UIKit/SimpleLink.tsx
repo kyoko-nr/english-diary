@@ -5,7 +5,7 @@ type SimpleLinkProps = {
   onClick: () => void
   color: 'primary' | 'textPrimary'
   upperCase?: boolean
-  variant: 'body1' | 'body2'
+  variant: 'body1' | 'body2' | 'h6'
   disabled?: boolean
 }
 
@@ -22,7 +22,7 @@ const SimpleLink = (props: SimpleLinkProps): JSX.Element => {
         textDecoration: props.disabled ? 'none' : '',
         opacity: props.disabled ? 0.5 : 1,
         cursor: props.disabled ? 'initial' : 'pointer',
-        minWidth: '24px',
+        minWidth: '20px',
       }}
       disabled={props.disabled}
     >

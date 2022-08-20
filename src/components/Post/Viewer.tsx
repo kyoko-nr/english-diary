@@ -1,15 +1,8 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { Diary } from 'types/types'
-import {
-  WordCards,
-  ContainedMidButton,
-  Label,
-  OutlineMidButton,
-  FormatDate,
-  ContentBody,
-  RowGridContainer,
-} from 'components/UIKit/index'
+import { WordCards, ContainedMidButton, Label, OutlineMidButton, FormatDate, ContentBody } from 'components/UIKit/index'
+import { Stack } from '@mui/material'
 
 type ViewerProps = {
   diary: Diary
@@ -36,14 +29,14 @@ const Viewer = (props: ViewerProps): JSX.Element => {
       <div className={'spacer-32'} />
       <WordCards words={props.diary.words} />
       <div className={'spacer-32'} />
-      <RowGridContainer spacing={2} justifyContent="center">
+      <Stack spacing={2} justifyContent="center" direction="row">
         <OutlineMidButton label={'delete'} color={'error'} onClick={() => props.onDelete(props.diary.id)} />
         <ContainedMidButton
           label={'edit'}
           color={'secondary'}
           onClick={() => dispatch(push(`/edit/${props.diary.id}`))}
         />
-      </RowGridContainer>
+      </Stack>
     </>
   )
 }

@@ -1,5 +1,6 @@
+import { Stack, Box } from '@mui/material'
 import { NewWord } from 'components/Home'
-import { ColumnGridContainer, RowGridContainer, TextLargeButton } from 'components/UIKit/index'
+import { TextLargeButton } from 'components/UIKit/index'
 import { Control } from 'react-hook-form'
 import { WordForm, Word } from 'types/types'
 
@@ -14,25 +15,23 @@ type NewWordListProps = {
 const NewWordList = (props: NewWordListProps): JSX.Element => {
   return (
     <>
-      <ColumnGridContainer spacing={2} justifyContent="center">
-        {props.fields.map((field, index) => {
-          return (
-            <NewWord
-              diaryId={props.diaryId}
-              word={field}
-              key={field.title}
-              name={`words.${index}`}
-              control={props.control}
-              deleteWord={props.deleteWord}
-              wordIndex={index}
-            />
-          )
-        })}
-      </ColumnGridContainer>
+      <Stack spacing={2}>
+        {props.fields.map((field, index) => (
+          <NewWord
+            diaryId={props.diaryId}
+            word={field}
+            key={field.title}
+            name={`words.${index}`}
+            control={props.control}
+            deleteWord={props.deleteWord}
+            wordIndex={index}
+          />
+        ))}
+      </Stack>
       <div className="spacer-16" />
-      <RowGridContainer spacing={0} justifyContent="center">
+      <Box display="flex" justifyContent="center">
         <TextLargeButton label={'add new word'} color="primary" onClick={props.addWord} />
-      </RowGridContainer>
+      </Box>
     </>
   )
 }

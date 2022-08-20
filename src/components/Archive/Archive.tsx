@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { Card, CardActionArea, CardContent } from '@mui/material'
+import { Card, CardActionArea, CardContent, Stack } from '@mui/material'
 import { push } from 'connected-react-router'
 import { Diary } from 'types/types'
 import { FormatDate, WordChip, Label, RowGridContainer } from '../UIKit/index'

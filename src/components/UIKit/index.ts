@@ -11,7 +11,6 @@ export { default as RemoveIconButton } from './Buttons/RemoveIconButton'
 /** Containers */
 export { default as XsColumnGridContainer } from './Container/XsColumnGridContainer'
 export { default as RowGridContainer } from './Container/RowGridContainer'
-export { default as ColumnGridContainer } from './Container/ColumnGridContainer'
 /** Inputs */
 export { default as TextInputStandard } from './Inputs/TextInputStandard'
 export { default as TextInputOutlined } from './Inputs/TextInputOutlined'
@@ -30,5 +29,4 @@ export { default as SimpleLink } from './SimpleLink'
 export { default as Label } from './Label'
 export { default as Logo } from './Logo'
 export { default as FormatDate } from './FormatDate'
-export { default as ContentBody } from './ContentBody'
 export { default as WordChip } from './WordChip'

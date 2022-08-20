@@ -42,7 +42,7 @@ const MyDictionary = (): JSX.Element => {
   return (
     <AppFrame maxWidth={'lg'}>
       <SortSelection onChange={sortSelect} sortOption={sortOption} />
-      <MyDictContent sortOption={sortOption} defaultFilterOption={filterWord} />
+      <MyDictContent sortOption={sortOption} defaultIndex={filterWord} />
     </AppFrame>
   )
 }

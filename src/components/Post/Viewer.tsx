@@ -1,15 +1,8 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { Diary } from 'types/types'
-import {
-  WordCards,
-  ContainedMidButton,
-  Label,
-  OutlineMidButton,
-  FormatDate,
-  ContentBody,
-  RowGridContainer,
-} from 'components/UIKit/index'
+import { WordCards, ContainedMidButton, Label, OutlineMidButton, FormatDate } from 'components/UIKit/index'
+import { Stack, Typography } from '@mui/material'
 
 type ViewerProps = {
   diary: Diary
@@ -20,7 +13,6 @@ const Viewer = (props: ViewerProps): JSX.Element => {
   const dispatch = useDispatch()
   const splited = props.diary.content.split(/[\s]/)
   const count = splited.filter((w: string) => w !== '').length
-  const contentLines = props.diary.content.split(/\n/)
 
   return (
     <>
@@ -30,20 +22,27 @@ const Viewer = (props: ViewerProps): JSX.Element => {
       <div className={'spacer-24'} />
       <Label label={`${count} words`} variant={'caption'} align={'right'} />
       <div className={'spacer-8'} />
-      {contentLines.map((line, idx) => (
-        <ContentBody content={line} key={idx} />
-      ))}
+      <Typography
+        variant={'body1'}
+        align="left"
+        sx={{
+          display: 'block',
+          whiteSpace: 'pre-wrap',
+        }}
+      >
+        {props.diary.content}
+      </Typography>
       <div className={'spacer-32'} />
       <WordCards words={props.diary.words} />
       <div className={'spacer-32'} />
-      <RowGridContainer spacing={2} justifyContent="center">
+      <Stack spacing={2} justifyContent="center" direction="row">
         <OutlineMidButton label={'delete'} color={'error'} onClick={() => props.onDelete(props.diary.id)} />
         <ContainedMidButton
           label={'edit'}
           color={'secondary'}
           onClick={() => dispatch(push(`/edit/${props.diary.id}`))}
         />
-      </RowGridContainer>
+      </Stack>
     </>
   )
 }

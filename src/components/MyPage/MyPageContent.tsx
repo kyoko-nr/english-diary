@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
-import { ColumnGridContainer, Label, OutlineLargeButton } from 'components/UIKit/index'
+import { Label, OutlineLargeButton } from 'components/UIKit/index'
+import { Stack } from '@mui/material'
 
 type MyPageContentProps = {
   username: string
@@ -18,10 +19,10 @@ const MyPageContent = (props: MyPageContentProps): JSX.Element => {
       <Label label={'Email：'} variant={'body2'} align={'left'} />
       <Label label={props.email} variant={'h5'} align={'left'} />
       <div className={'spacer-64'} />
-      <ColumnGridContainer spacing={2} justifyContent="center">
+      <Stack spacing={2} alignItems="center">
         <OutlineLargeButton label={'edit'} color={'inherit'} onClick={() => dispatch(push('/mypage/edit'))} />
         <OutlineLargeButton label={'delete account'} color={'error'} onClick={() => dispatch(push('/mypage/delete'))} />
-      </ColumnGridContainer>
+      </Stack>
     </>
   )
 }

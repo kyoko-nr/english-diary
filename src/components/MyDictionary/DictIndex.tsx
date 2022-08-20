@@ -1,51 +1,30 @@
-import { useEffect, useState } from 'react'
-import { Box, Link } from '@mui/material'
-import { PosOptions, AlphabetOptions } from 'constants/Parts'
-import { Option, SortOption } from 'types/types'
-import { RowGridContainer } from 'components/UIKit'
+import { Option } from 'types/types'
+import { SimpleLink } from 'components/UIKit'
+import { Stack } from '@mui/material'
 
 type DictIndexProps = {
-  sortOption: SortOption
   onClick: (option: Option) => void
+  options: readonly Option[]
+  selected: Option
 }
 
 const DictIndex = (props: DictIndexProps): JSX.Element => {
-  const [index, setIndex] = useState<Readonly<Option[]>>([])
-
-  useEffect(() => {
-    switch (props.sortOption.key) {
-      case '1':
-        setIndex(AlphabetOptions)
-        break
-      case '2':
-        setIndex(PosOptions)
-        break
-      default:
-        setIndex([])
-    }
-  }, [props.sortOption])
-
   return (
     <>
       <div className={'spacer-24'} />
-      {index.length > 0 && (
-        <RowGridContainer spacing={2} justifyContent="flex-start">
-          {index.map((option) => {
-            return (
-              <Link
-                onClick={() => props.onClick(option)}
-                variant="body1"
-                component="button"
-                sx={{
-                  cursor: 'pointer',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {option.value}
-              </Link>
-            )
-          })}
-        </RowGridContainer>
+      {props.options.length > 0 && (
+        <Stack spacing={2} direction="row">
+          {props.options.map((option) => (
+            <SimpleLink
+              label={option.value}
+              onClick={() => props.onClick(option)}
+              color="primary"
+              upperCase={true}
+              variant="body1"
+              disabled={option.key === props.selected.key}
+            />
+          ))}
+        </Stack>
       )}
     </>
   )

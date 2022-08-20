@@ -59,7 +59,6 @@ const SigninForm = (): JSX.Element => {
       <div className={'spacer-16'} />
       <SimpleLink
         label={'Forgot your password?'}
-        component={'button'}
         onClick={() => dispatch(push('/signin/reset'))}
         color={'textPrimary'}
         variant={'body2'}

@@ -1,5 +1,5 @@
-import { Card, CardContent, CardActions, Grid } from '@mui/material'
-import { AddibleContent, TextMidButton, PosSelect, WordTitleInput, RowGridContainer } from 'components/UIKit/index'
+import { Card, CardContent, CardActions, Grid, Box } from '@mui/material'
+import { AddibleContent, TextMidButton, PosSelect, WordTitleInput } from 'components/UIKit/index'
 import { Control } from 'react-hook-form'
 import { Word, WordForm } from 'types/types'
 
@@ -49,9 +49,9 @@ const NewWord = (props: NewWordProps): JSX.Element => {
         />
       </CardContent>
       <CardActions>
-        <RowGridContainer spacing={0} justifyContent="center">
+        <Box display="flex" justifyContent="center">
           <TextMidButton label="delete this word" color="error" onClick={() => props.deleteWord(props.wordIndex)} />
-        </RowGridContainer>
+        </Box>
       </CardActions>
     </Card>
   )

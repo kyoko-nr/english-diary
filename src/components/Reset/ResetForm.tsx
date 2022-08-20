@@ -44,7 +44,6 @@ const ResetForm = (): JSX.Element => {
       <div className={'spacer-16'} />
       <SimpleLink
         label={'Already have an account?'}
-        component={'button'}
         onClick={() => dispatch(push('/signin'))}
         color={'textPrimary'}
         variant={'body2'}

@@ -300,7 +300,7 @@ const updateDiaryWordState = (newDiary: Diary, user: UsersInfo, dispatch: Dispat
       }
     })
   } else {
-    diaries.push(newDiary)
+    diaries.unshift(newDiary)
   }
 
   let words: Word[]

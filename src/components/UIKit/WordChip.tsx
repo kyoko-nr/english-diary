@@ -4,7 +4,7 @@ type WordChipProps = {
   label: string
 }
 const WordChip = (props: WordChipProps): JSX.Element => {
-  return <Chip className="wordchip" label={props.label} variant="outlined" size="small" />
+  return <Chip label={props.label} variant="outlined" size="small" />
 }
 
 export default WordChip

@@ -20,7 +20,6 @@ const EmailSend = (): JSX.Element => {
       <div className={'spacer-16'} />
       <SimpleLink
         label={"Haven't received an email? Send it again!"}
-        component={'button'}
         onClick={() => dispatch(push('/signin/reset'))}
         color={'textPrimary'}
         variant={'body2'}

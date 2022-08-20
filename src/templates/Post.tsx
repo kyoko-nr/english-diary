@@ -40,7 +40,7 @@ const Post = (props: PostProps): JSX.Element => {
 
   return (
     <AppFrame maxWidth={'lg'}>
-      <Grid container spacing={1}>
+      <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           {diaryToShow ? <Viewer diary={diaryToShow} onDelete={deleteDiaryButton} /> : <div>No diary</div>}
         </Grid>

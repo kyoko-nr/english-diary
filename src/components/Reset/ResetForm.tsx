@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { push } from 'connected-react-router'
 import { resetPassword, changeLoadingState } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
-import { SimpleLink, PlaneLargeButton, Label, TextInputStandard } from 'components/UIKit/index'
+import { SimpleLink, PlaneLargeButton, Label, TextInputStandard, XsColumnGridContainer } from 'components/UIKit/index'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -29,20 +29,21 @@ const ResetForm = (): JSX.Element => {
     <>
       <Label label={'Reset your password'} variant={'h4'} align={'center'} />
       <div className={'spacer-40'} />
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'email'}
-        defaultValue={''}
-        label={'Email'}
-        type={'email'}
-        required={true}
-      />
+      <XsColumnGridContainer>
+        <TextInputStandard
+          control={control}
+          name={'email'}
+          defaultValue={''}
+          label={'Email'}
+          type={'email'}
+          required={true}
+        />
+      </XsColumnGridContainer>
+      <div className={'spacer-32'} />
       <PlaneLargeButton label={'send email'} onClick={handleSubmit(onSubmit)} />
       <div className={'spacer-16'} />
       <SimpleLink
         label={'Already have an account?'}
-        component={'button'}
         onClick={() => dispatch(push('/signin'))}
         color={'textPrimary'}
         variant={'body2'}

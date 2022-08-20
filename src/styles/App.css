@@ -1,33 +1,57 @@
 .spacer-8 {
-  margin-top: 8px;
+  height: 8px;
+  width: 100%;
 }
 
 .spacer-16 {
-  margin-top: 16px;
+  height: 16px;
+  width: 100%;
 }
 
 .spacer-24 {
-  margin-top: 24px;
+  height: 24px;
+  width: 100%;
 }
 
 .spacer-32 {
-  margin-top: 32px;
+  height: 32px;
+  width: 100%;
 }
 
 .spacer-40 {
-  margin-top: 40px;
+  height: 40px;
+  width: 100%;
 }
 
-#root {
+.spacer-64 {
+  height: 64px;
+  width: 100%;
+}
+
+body {
+  font-size: 14px;
+}
+
+body #root {
   color: #4a4a4a;
 }
 
+body #root .MuiButton-containedSecondary, body #root .grey-text {
+  color: #4a4a4a;
+}
+
+body #root .main-logo {
+  color: #4a4a4a;
+  font-family: Pacifico, cursive;
+}
+
 .content {
-  padding: 40px 16px;
+  padding: 96px 8px 40px 8px;
 }
 
 .full-window {
   height: 100vh;
+  min-height: 600px;
   width: 100vw;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -38,32 +62,58 @@
   background-color: #FFDB46;
 }
 
-.flex-column .MuiContainer-root {
+.synonyms .each {
+  position: relative;
+}
+
+.synonyms .each:not(:last-child)::before {
+  content: '/';
+  position: absolute;
+  right: -8px;
+  padding: 4px;
+}
+
+.sweet-loading {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  z-index: 1200;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.1);
+  position: fixed;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
-.button-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+.sweet-loading.inactive {
+  opacity: 0;
+  pointer-events: none;
 }
 
-.button-wrapper > button {
-  margin: 0 8px 0 8px;
+@media (max-width: 959px) {
+  #canvas-container > .canvas {
+    height: 120px;
+    width: 100%;
+  }
+  h4.MuiTypography-h4 {
+    font-size: 1.6rem;
+  }
+  .archivelist-container {
+    padding: 0 8px;
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 599px) {
+  .content {
+    padding-top: 84px;
+  }
 }
 /*# sourceMappingURL=App.css.map */

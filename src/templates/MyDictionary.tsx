@@ -6,24 +6,28 @@ import { clearErrors } from 'reducks/errors/operations'
 import { AppFrame } from 'components/Base/index'
 import { MyDictContent, SortSelection } from 'components/MyDictionary/index'
 import { AlphabetOptions, PosOptions, SortOptions } from 'constants/Parts'
-import { SortType, Option } from 'types/types'
+import { Option, SortOption } from 'types/types'
 
 const MyDictionary = (): JSX.Element => {
   const dispatch = useDispatch()
 
-  const [sortType, setSortType] = useState<SortType>('Alphabetical')
+  const [sortOption, setSortOption] = useState<SortOption>({ key: '1', value: 'Alphabetical' })
   const [filterWord, setFilterWord] = useState<Option>(AlphabetOptions[0])
 
   const sortSelect = (event: SelectChangeEvent): void => {
     const newSortType = SortOptions.filter((o) => o.key === event.target.value)[0]
-    setSortType(newSortType.sort)
+    setSortOption(newSortType)
 
-    switch (newSortType.sort) {
-      case 'Alphabetical':
+    switch (newSortType.key) {
+      case '1':
         setFilterWord(AlphabetOptions[0])
         break
-      case 'Parts of speech':
+      case '2':
         setFilterWord(PosOptions[0])
+        break
+      case '3':
+      case '4':
+        setFilterWord(newSortType)
         break
       default:
         break
@@ -37,8 +41,8 @@ const MyDictionary = (): JSX.Element => {
 
   return (
     <AppFrame maxWidth={'lg'}>
-      <SortSelection onChange={sortSelect} value={sortType} name={'Sort'} />
-      <MyDictContent sortType={sortType} defaultFilterWord={filterWord} />
+      <SortSelection onChange={sortSelect} sortOption={sortOption} />
+      <MyDictContent sortOption={sortOption} defaultIndex={filterWord} />
     </AppFrame>
   )
 }

@@ -12,16 +12,16 @@ export type UserState = {
   words: Word[]
 }
 
-export type DiaryToSave = {
+export type DiaryDocType = {
   id: string
   date: Timestamp
   title: string
   content: string
   updatedAt: Timestamp
-  words: WordToSave[]
+  words: WordDocType[]
 }
 
-export type WordToSave = Omit<Word, 'createdAt'> & {
+export type WordDocType = Omit<Word, 'createdAt'> & {
   diaryId: string
   createdAt: Timestamp
 }

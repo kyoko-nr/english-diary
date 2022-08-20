@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { OutlineMidButton, ContainedMidButton, TextInputOutlined, Label } from 'components/UIKit/index'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Stack } from '@mui/material'
 
 const schema = yup.object().shape({
   isPasswordChanged: yup.boolean(),
@@ -101,10 +102,10 @@ const MyPageEditForm = (props: MyPageEditFormProps): JSX.Element => {
       )}
 
       <div className={'spacer-40'} />
-      <div className={'button-wrapper'}>
+      <Stack spacing={2} direction="row" justifyContent="center">
         <OutlineMidButton label={'cancel'} color={'inherit'} onClick={() => dispatch(push('/mypage'))} />
         <ContainedMidButton label={'save'} color={'primary'} onClick={handleSubmit(onSubmit)} />
-      </div>
+      </Stack>
     </>
   )
 }

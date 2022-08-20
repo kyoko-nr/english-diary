@@ -3,7 +3,7 @@ import { signUp, changeLoadingState } from 'reducks/users/operations'
 import { clearErrors } from 'reducks/errors/operations'
 import { push } from 'connected-react-router'
 import { useForm } from 'react-hook-form'
-import { PlaneLargeButton, Label, SimpleLink, TextInputStandard } from 'components/UIKit/index'
+import { PlaneLargeButton, Label, SimpleLink, TextInputStandard, XsColumnGridContainer } from 'components/UIKit/index'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -49,51 +49,45 @@ const SignupForm = (): JSX.Element => {
     <>
       <Label label={'Sign up for your English Diary!'} variant={'h4'} align={'center'} />
       <div className={'spacer-40'} />
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'username'}
-        defaultValue={''}
-        label={'User name'}
-        type={'text'}
-        required={true}
-      />
-      <div className={'spacer-8'} />
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'email'}
-        defaultValue={''}
-        label={'Email'}
-        type={'email'}
-        required={true}
-      />
-      <div className={'spacer-8'} />
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'password'}
-        defaultValue={''}
-        label={'Password'}
-        type={'password'}
-        required={true}
-      />
-      <div className={'spacer-8'} />
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'passwordConfirm'}
-        defaultValue={''}
-        label={'Password to confirm'}
-        type={'password'}
-        required={true}
-      />
-      <div className={'spacer-16'} />
+      <XsColumnGridContainer>
+        <TextInputStandard
+          control={control}
+          name={'username'}
+          defaultValue={''}
+          label={'User name'}
+          type={'text'}
+          required={true}
+        />
+        <TextInputStandard
+          control={control}
+          name={'email'}
+          defaultValue={''}
+          label={'Email'}
+          type={'email'}
+          required={true}
+        />
+        <TextInputStandard
+          control={control}
+          name={'password'}
+          defaultValue={''}
+          label={'Password'}
+          type={'password'}
+          required={true}
+        />
+        <TextInputStandard
+          control={control}
+          name={'passwordConfirm'}
+          defaultValue={''}
+          label={'Password to confirm'}
+          type={'password'}
+          required={true}
+        />
+      </XsColumnGridContainer>
+      <div className={'spacer-32'} />
       <PlaneLargeButton label={'sign up'} onClick={handleSubmit(onSubmit)} />
       <div className={'spacer-16'} />
       <SimpleLink
         label={'Go to sign in page'}
-        component={'button'}
         onClick={() => dispatch(push('/signin'))}
         color={'textPrimary'}
         variant={'body2'}

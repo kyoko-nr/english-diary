@@ -7,7 +7,6 @@ type InputProps<TFieldValues extends FieldValues = FieldValues> = {
   defaultValue: unknown
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control?: any
-  fullWidth: boolean
   label: string
   type: 'text' | 'email' | 'password'
 }
@@ -26,12 +25,11 @@ const TextInputStandard = (props: InputProps): JSX.Element => {
           {...field}
           variant={'standard'}
           helperText={message}
-          fullWidth={props.fullWidth}
+          fullWidth={true}
           error={fieldState.invalid}
           label={props.label}
           required={props.required}
           type={props.type}
-          sx={{ maxWidth: 400, width: '80%' }}
         />
       )}
     />

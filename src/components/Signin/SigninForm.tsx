@@ -4,7 +4,13 @@ import { clearErrors } from 'reducks/errors/operations'
 import { push } from 'connected-react-router'
 import { signIn } from 'reducks/users/operations'
 import { useForm } from 'react-hook-form'
-import { PlaneLargeButton, SimpleLink, TextLargeButton, TextInputStandard } from 'components/UIKit/index'
+import {
+  PlaneLargeButton,
+  SimpleLink,
+  TextLargeButton,
+  TextInputStandard,
+  XsColumnGridContainer,
+} from 'components/UIKit/index'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 
@@ -32,33 +38,32 @@ const SigninForm = (): JSX.Element => {
 
   return (
     <>
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'email'}
-        defaultValue={''}
-        label={'Email'}
-        type={'email'}
-        required={true}
-      />
-      <div className={'spacer-8'} />
-      <TextInputStandard
-        control={control}
-        fullWidth={false}
-        name={'password'}
-        defaultValue={''}
-        label={'Password'}
-        type={'password'}
-        required={true}
-      />
+      <XsColumnGridContainer>
+        <TextInputStandard
+          control={control}
+          name={'email'}
+          defaultValue={''}
+          label={'Email'}
+          type={'email'}
+          required={true}
+        />
+        <TextInputStandard
+          control={control}
+          name={'password'}
+          defaultValue={''}
+          label={'Password'}
+          type={'password'}
+          required={true}
+        />
+      </XsColumnGridContainer>
       <div className={'spacer-16'} />
       <SimpleLink
         label={'Forgot your password?'}
-        component={'button'}
         onClick={() => dispatch(push('/signin/reset'))}
         color={'textPrimary'}
         variant={'body2'}
       />
+      <div className={'spacer-32'} />
       <PlaneLargeButton label={'sign in'} onClick={handleSubmit(onSubmit)} />
       <div className={'spacer-16'} />
       <TextLargeButton label={'sign up'} onClick={() => dispatch(push('/signup'))} color={'primary'} />

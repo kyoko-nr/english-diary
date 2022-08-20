@@ -3,57 +3,71 @@ import { useSelector } from 'react-redux'
 import { getWords } from 'reducks/users/selectors'
 import { DictIndex } from 'components/MyDictionary/index'
 import { WordCards } from 'components/UIKit/index'
-import { Word, Option, SortType } from 'types/types'
+import { Word, Option, SortOption } from 'types/types'
+import { sortBy } from 'lodash'
+import { AlphabetOptions, PosOptions } from 'constants/Parts'
 
 type MyDictContentProps = {
-  sortType: SortType
-  defaultFilterWord: Option
+  sortOption: SortOption
+  defaultIndex: Option
 }
 
 const MyDictContent = (props: MyDictContentProps): JSX.Element => {
   const selector = useSelector((state) => state)
 
-  const [words, setWords] = useState<Word[]>()
-  const [wordsToShow, setWordsToShow] = useState<Word[]>()
+  const words = getWords(selector) as Word[]
+  const [wordsToShow, setWordsToShow] = useState<Word[]>([])
+  const [index, setIndex] = useState<Option>(AlphabetOptions[0])
+  const [options, setOptions] = useState<Readonly<Option[]>>(AlphabetOptions)
 
-  const filterWords = (sortType: SortType, filter: Option, wordList?: Word[]): void => {
-    const toFilter = words ? words : wordList ? wordList : []
-
+  const filterWords = (index: Option): void => {
     let filtered: Word[] = []
-    switch (sortType) {
-      case 'Alphabetical':
-        filtered = toFilter.filter((word) => word.title.startsWith(filter.value))
+    switch (props.sortOption.key) {
+      case '1':
+        // Alphabetical
+        filtered = words.filter((word) => word.title.startsWith(index.value))
+        setWordsToShow(sortBy(filtered, 'title'))
+        setOptions(AlphabetOptions)
+        setIndex(index)
         break
-      case 'Parts of speech':
-        filtered = toFilter.filter((word) => word.pos === filter.key)
+      case '2':
+        // Parts of speech
+        filtered = words.filter((word) => word.pos === index.key)
+        setWordsToShow(sortBy(filtered, 'title'))
+        setOptions(PosOptions)
+        setIndex(index)
+        break
+      case '3':
+        // Newer
+        filtered = [...words]
+        setWordsToShow(sortBy(filtered, 'createdAt').reverse())
+        setOptions([])
+        setIndex(index)
+        break
+      case '4':
+        // Older
+        filtered = [...words]
+        setWordsToShow(sortBy(filtered, 'createdAt'))
+        setOptions([])
+        setIndex(index)
         break
       default:
-        filtered = [...toFilter]
+        filtered = [...words]
+        setOptions([])
+        setIndex(index)
         break
     }
-    setWordsToShow(filtered.sort((a, b) => alphabeticalSort(a, b)))
-  }
-
-  const alphabeticalSort = (a: Word, b: Word): number => {
-    if (a.title > b.title) return 1
-    if (a.title < b.title) return -1
-    return 0
   }
 
   useEffect(() => {
-    const wordList = getWords(selector)
-    setWords(wordList)
-    filterWords(props.sortType, props.defaultFilterWord)
-  }, [])
-
-  useEffect(() => {
-    filterWords(props.sortType, props.defaultFilterWord)
-  }, [props.defaultFilterWord])
+    filterWords(props.defaultIndex)
+  }, [props.defaultIndex])
 
   return (
     <>
-      <DictIndex sortType={props.sortType} onClick={filterWords} />
-      {wordsToShow ? <WordCards words={wordsToShow} /> : <div>No Words</div>}
+      <DictIndex onClick={filterWords} options={options} selected={index} />
+      <div className={'spacer-24'} />
+      {wordsToShow.length > 0 ? <WordCards words={wordsToShow} withDate={true} /> : <div>No Words</div>}
     </>
   )
 }

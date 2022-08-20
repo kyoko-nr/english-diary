@@ -1,19 +1,21 @@
 import { TextField, FormControl, MenuItem } from '@mui/material'
-import { Controller } from 'react-hook-form'
+import { Controller, Control } from 'react-hook-form'
 import { PosOptions } from 'constants/Parts'
+import { WordForm } from 'types/types'
 
 type PosSelectProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: any
-  name: string
+  control: Control<WordForm>
+  wordIndex: number
+  defautlValue?: string
 }
 
 const PosSelect = (props: PosSelectProps): JSX.Element => {
   return (
-    <FormControl sx={{ width: '160px', marginLeft: '16px' }}>
+    <FormControl sx={{ width: '100%' }}>
       <Controller
-        name={props.name}
+        name={`words.${props.wordIndex}.pos`}
         control={props.control}
+        defaultValue={props.defautlValue || ''}
         render={({ field }) => (
           <TextField {...field} label="Parts of speech" required={false} variant="standard" select>
             {PosOptions.map((p) => (

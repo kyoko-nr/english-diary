@@ -28,7 +28,7 @@ const Home = (props: HomeProps): JSX.Element => {
 
   return (
     <AppFrame maxWidth={'lg'}>
-      <Grid container spacing={1}>
+      <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           {diaryToEdit ? <Editor diary={diaryToEdit} /> : <Editor />}
         </Grid>

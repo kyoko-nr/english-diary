@@ -12,7 +12,7 @@ export type Word = {
   synonyms: Addible[]
   examples: Addible[]
   pos: string
-  createdAt?: string
+  createdAt: Date
   diaryId?: string
 }
 
@@ -31,5 +31,11 @@ export type SortType = 'Alphabetical' | 'Parts of speech' | 'Newer' | 'Older'
 
 export type SortOption = {
   key: string
-  sort: SortType
+  value: SortType
+}
+
+export type WordForm = {
+  title: string
+  content: string
+  words: Word[]
 }

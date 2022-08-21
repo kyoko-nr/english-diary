@@ -22,9 +22,9 @@ const Archive = (props: ArchiveProps): JSX.Element => {
             <>
               <div className="spacer-8" />
               <RowGridContainer spacing={1} justifyContent="flex-start">
-                {props.diary.words.map((word) => {
-                  return <WordChip label={word.title} key={word.title} />
-                })}
+                {props.diary.words.map((word) => (
+                  <WordChip label={word.title} key={word.title} />
+                ))}
               </RowGridContainer>
             </>
           )}

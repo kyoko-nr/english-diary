@@ -27,20 +27,18 @@ const AddibleContent = (props: AddibleContentProps): JSX.Element => {
         <AddIconButton feature={props.feature} onClick={addFeature} />
       </Box>
       <Grid container spacing={1}>
-        {fields.map((field, index) => {
-          return (
-            <TextInputDeletable
-              feature={props.feature}
-              fullWidth={props.fullWidth}
-              deleteFeature={deleteFeature}
-              key={field.value}
-              control={props.control}
-              featureIndex={index}
-              wordIndex={props.wordIndex}
-              defaultValue={field.value}
-            />
-          )
-        })}
+        {fields.map((field, index) => (
+          <TextInputDeletable
+            feature={props.feature}
+            fullWidth={props.fullWidth}
+            deleteFeature={deleteFeature}
+            key={field.value}
+            control={props.control}
+            featureIndex={index}
+            wordIndex={props.wordIndex}
+            defaultValue={field.value}
+          />
+        ))}
       </Grid>
     </>
   )

@@ -20,13 +20,11 @@ const ErrorPopup = (): JSX.Element => {
       {msgs && (
         <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={open}>
           <div>
-            {msgs.map((msg: string, idx: number) => {
-              return (
-                <Alert severity="error" key={idx} sx={{ marginBottom: '8px' }}>
-                  {msg}
-                </Alert>
-              )
-            })}
+            {msgs.map((msg: string, idx: number) => (
+              <Alert severity="error" key={idx} sx={{ marginBottom: '8px' }}>
+                {msg}
+              </Alert>
+            ))}
           </div>
         </Snackbar>
       )}

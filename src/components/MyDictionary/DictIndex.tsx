@@ -19,7 +19,6 @@ const DictIndex = (props: DictIndexProps): JSX.Element => {
               onClick={() => props.onClick(option)}
               color="primary"
               upperCase={true}
-              // variant="body1"
               variant="h6"
               disabled={option.key === props.selected.key}
             />
